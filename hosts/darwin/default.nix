@@ -43,8 +43,6 @@
     };
   };
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   environment = {
     etc = {
       terminfo = {
@@ -52,11 +50,6 @@
       };
 
     };
-
-    extraInit = ''
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-      # export PATH=/run/current-system/sw/bin:$PATH
-    '';
 
     systemPackages = with pkgs;
       [
