@@ -7,7 +7,7 @@ in
 {
   git = {
     enable = true;
-    ignores = [ "*.swp" ];
+    ignores = [ "*.swp" ".DS_STORE" ];
     userName = name;
     userEmail = email;
     lfs = {
