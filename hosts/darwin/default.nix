@@ -54,6 +54,9 @@
     systemPackages = with pkgs;
       [
         nix
+        yabai
+        skhd
+        sketchybar
       ];
   };
 
