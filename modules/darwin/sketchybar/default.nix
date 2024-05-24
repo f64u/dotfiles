@@ -1,17 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
+let configPath = "/Users/fadyadal/.config/nix/modules/darwin/sketchybar/config"; in
 {
-  launchd.user.agents.sketchybar =
-    {
-      path = [ pkgs.sketchybar ];
-      script = ''
-        ${pkgs.sketchybar} --config ${./config/sketchybarrc}
-      '';
+  #launchd.user.agents.sketchybar =
+  #  {
+  #    path = [ pkgs.sketchybar pkgs.lua ] ++ config.environment.systemPackages;
+  #    environment = {
+  #      LUA_PATH = "${configPath}/?.lua;${configPath}/?/?.lua;;";
+  #    };
+  #    command = "sketchybar --config ${configPath}/sketchybarrc";
 
-      serviceConfig =
-        {
-          KeepAlive = true;
-          StandardErrorPath = "/tmp/sketchybar.stderr.log";
-          StandardOutPath = "/tmp/sketchybar.stdout.log";
-        };
-    };
+  #    serviceConfig =
+  #      {
+  #        KeepAlive = true;
+  #        StandardErrorPath = "/tmp/sketchybar.stderr.log";
+  #        StandardOutPath = "/tmp/sketchybar.stdout.log";
+  #      };
+  #  };
 }
