@@ -1,53 +1,71 @@
 { pkgs }:
 
 with pkgs; [
+
+  # Terminal stuff
   alacritty
-  aldente
   atuin
-  autoconf
-  cairo
-  ccls
-  clang_18
-  cmake
   curl
-  discord
-  expat
   eza
   fastfetch
   fd
   fzf
   gettext
   git
-  gnome.adwaita-icon-theme
-  gtk3
-  gtksourceview
-  languagetool
-  libxml2
-  llvm_18
-  lua5_4
-  millet
-  ncurses
-  neofetch
   neovim
-  nodejs
-  pkg-config
-  poetry
-  (python312.withPackages (ppkgs: [
-    ppkgs.python-lsp-server
-    ppkgs.ipython
-  ]))
-  readline
   ripgrep
   rlwrap
-  slack
-  spotify
   starship
   tmux
   vim
+  zoxide
+
+  # Building libraries
+  autoconf
+  cmake
+  pkg-config
+
+  # Common libraries
+  cairo
+  gnome.adwaita-icon-theme
+  gtk3
+  gtksourceview
+  libxml2
+  ncurses
+  readline
+  zstd
+
+  # C
+  ccls
+  clang_18
+  llvm_18
+
+  # Apps
+  discord
+  expat
+  slack
+  spotify
+  zoom-us
   # FIXME: Breaks builds because qtmultimedia fails to compile
   #wireshark
-  zoom-us
-  zoxide
-  zstd
+
+  # Latex 
+  languagetool
+
+  # Python
+  poetry
+  ruff
+  (python312.withPackages (p: [
+    p.ipython
+    p.mypy
+    p.pylsp-mypy
+    p.python-lsp-server
+    p.yapf
+  ]))
+
+  # Other PLs
+  lua5_4
+  millet # SML lsp
+  nodejs
 ]
 
