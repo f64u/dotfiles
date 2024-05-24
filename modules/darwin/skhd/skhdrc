@@ -41,9 +41,6 @@ lalt - t : yabai -m window --toggle float;\
 # toggle window split type
 lalt - e : yabai -m window --toggle split
 
-# toggle sticky(+float), picture-in-picture
-alt - p : yabai -m window --toggle sticky --toggle pip
-
 # balance size of windows
 shift + lalt - 0 : yabai -m space --balance
 
@@ -57,13 +54,6 @@ shift + lalt - 6 : yabai -m window --space 6 && sketchybar --trigger windows_on_
 shift + lalt - 7 : yabai -m window --space 7 && sketchybar --trigger windows_on_spaces; yabai -m space --focus 7
 shift + lalt - 8 : yabai -m window --space 8 && sketchybar --trigger windows_on_spaces; yabai -m space --focus 8
 shift + lalt - 9 : yabai -m window --space 9 && sketchybar --trigger windows_on_spaces; yabai -m space --focus 9
-
-
-# create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
-shift + lalt - n : yabai -m space --create && \
-                   index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
-                   yabai -m window --space "${index}" && \
-                   yabai -m space --focus "${index}"
 
 # fast focus desktop
 lalt - tab : yabai -m space --focus recent
