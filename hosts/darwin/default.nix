@@ -9,6 +9,7 @@
     ../../modules/darwin/homebrew.nix
     ../../modules/darwin/yabai
     ../../modules/darwin/skhd
+    ../../modules/darwin/sketchybar.nix
   ];
 
   security.pam.enableSudoTouchIdAuth = true;
