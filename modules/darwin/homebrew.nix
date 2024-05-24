@@ -8,7 +8,6 @@
     brews = [
       #"sketchybar"
       "gmp"
-      "lua"
       # {
       #   name = "llvm";
       #   link = true;

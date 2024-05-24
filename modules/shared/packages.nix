@@ -24,7 +24,7 @@ with pkgs; [
   languagetool
   libxml2
   llvm_18
-  lua
+  lua5_4
   millet
   ncurses
   neofetch
