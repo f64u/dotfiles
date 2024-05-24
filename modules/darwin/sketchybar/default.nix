@@ -3,7 +3,7 @@ let configPath = "/Users/fadyadal/.config/nix/modules/darwin/sketchybar/config";
 {
   launchd.user.agents.sketchybar =
     {
-      path = [ pkgs.sketchybar pkgs.lua5_4 pkgs.gnumake ] ++ config.environment.systemPackages;
+      path = [ pkgs.sketchybar pkgs.lua5_4 pkgs.gnumake "/usr/bin" ] ++ config.environment.systemPackages;
       environment = {
         LUA_PATH = "${configPath}/?.lua;${configPath}/?/?.lua;;";
       };
