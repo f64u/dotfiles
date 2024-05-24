@@ -32,7 +32,10 @@ with pkgs; [
   nodejs
   pkg-config
   poetry
-  pyenv
+  (python312.withPackages (ppkgs: [
+    ppkgs.python-lsp-server
+    ppkgs.ipython
+  ]))
   readline
   ripgrep
   rlwrap
