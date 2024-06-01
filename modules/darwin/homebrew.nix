@@ -15,16 +15,17 @@
     ];
 
     casks = [
-      "smlnj"
       "1password"
-      "mactex"
-      "minecraft"
+      "firefox"
       "font-caskaydia-cove-nerd-font"
       "font-sf-mono"
       "font-sf-pro"
-      "shottr"
-      "firefox"
+      "mactex"
+      "minecraft"
       "multipass"
+      "shottr"
+      "smlnj"
+      "steam"
     ];
 
     taps = [
