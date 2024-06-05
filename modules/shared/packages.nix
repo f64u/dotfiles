@@ -47,7 +47,7 @@ with pkgs; [
   spotify
   zoom-us
   # FIXME: Breaks builds because qtmultimedia fails to compile
-  #wireshark
+  wireshark
 
   # Latex 
   languagetool
