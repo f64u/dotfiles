@@ -23,9 +23,6 @@
       enableKeyMapping = true;
       remapCapsLockToControl = true;
     };
-    activationScripts.postActivation.text = ''
-      su - fadyadal -c '${pkgs.skhd}/bin/skhd -r'
-    '';
 
     defaults = {
       # minimal dock

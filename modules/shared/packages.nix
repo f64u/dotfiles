@@ -46,7 +46,6 @@ with pkgs; [
   slack
   spotify
   zoom-us
-  # FIXME: Breaks builds because qtmultimedia fails to compile
   wireshark
 
   # Latex 
