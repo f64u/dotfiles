@@ -107,7 +107,7 @@ in
       bind -T copy-mode-vi H send -X start-of-line
       bind -T copy-mode-vi L send -X end-of-line
 
-      
+
       bind-key x kill-pane # skip "kill-pane 1? (y/n)" prompt (cmd+w)
     '';
   };
