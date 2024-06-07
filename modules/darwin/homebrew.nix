@@ -6,12 +6,7 @@
     onActivation.cleanup = "uninstall";
 
     brews = [
-      #"sketchybar"
       "gmp"
-      # {
-      #   name = "llvm";
-      #   link = true;
-      # }
     ];
 
     casks = [
