@@ -5,6 +5,56 @@ let
   email = "2masadel@gmail.com";
 in
 {
+  zsh = {
+    enable = true;
+    plugins = [
+      {
+        name = "evalcache";
+        src = pkgs.fetchFromGitHub {
+          owner = "mroth";
+          repo = "evalcache";
+          rev = "v1.0.2";
+          sha256 = "sha256-qzpnGTrLnq5mNaLlsjSA6VESA88XBdN3Ku/YIgLCb28=";
+        };
+      }
+    ];
+    syntaxHighlighting.enable = true;
+    autosuggestion.enable = true;
+    initExtra = ''
+      export TERM=xterm-256color
+
+      _evalcache starship init zsh
+      _evalcache zoxide init zsh
+      _evalcache atuin init zsh --disable-up-arrow
+
+      alias ls='eza --icons'
+      alias cp=xcp
+      alias q=exit
+      alias ghci='TERM=linux ghci'
+      alias stack='TERM=linux stack'
+      alias idris2='rlwrap idris2'
+      alias tg=topgrade
+      alias n=nvim
+      alias vim=nvim
+      alias cd=z
+      alias sml='rlwrap sml'
+      alias ssh='TERM=xterm-256color ssh'
+
+      source ~/.opam/opam-init/init.zsh
+
+      _evalcache ${pkgs.starship}/bin/starship init zsh
+      _evalcache ${pkgs.zoxide}/bin/zoxide init zsh
+      _evalcache ${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow
+
+      source ~/.ghcup/env
+
+      servers=(ra amun set anubis seshat hathor thoth maat)
+      for server in $servers; do
+        alias $server="ssh fady@$server.cs.uchicago.edu"
+      done
+    '';
+  };
+
   git = {
     enable = true;
     ignores = [ "*.swp" ".DS_STORE" ];
