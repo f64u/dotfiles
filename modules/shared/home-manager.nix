@@ -23,10 +23,6 @@ in
     initExtra = ''
       export TERM=xterm-256color
 
-      _evalcache starship init zsh
-      _evalcache zoxide init zsh
-      _evalcache atuin init zsh --disable-up-arrow
-
       alias ls='eza --icons'
       alias cp=xcp
       alias q=exit
@@ -42,9 +38,9 @@ in
 
       source ~/.opam/opam-init/init.zsh
 
-      _evalcache ${pkgs.starship}/bin/starship init zsh
-      _evalcache ${pkgs.zoxide}/bin/zoxide init zsh
-      _evalcache ${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow
+      _evalcache starship init zsh
+      _evalcache zoxide init zsh
+      _evalcache atuin init zsh --disable-up-arrow
 
       source ~/.ghcup/env
 
