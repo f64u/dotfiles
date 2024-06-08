@@ -13,6 +13,7 @@ with pkgs; [
   gettext
   git
   neovim
+  nushell
   ripgrep
   rlwrap
   starship
@@ -20,7 +21,7 @@ with pkgs; [
   vim
   zoxide
 
-  # Building libraries
+  # Building
   autoconf
   cmake
   pkg-config
