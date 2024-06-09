@@ -12,6 +12,7 @@ with pkgs; [
   fzf
   gettext
   git
+  lazygit
   neovim
   nushell
   ripgrep
