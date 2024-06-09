@@ -19,7 +19,7 @@ in
         packages = pkgs.callPackage ./packages.nix { inherit pkgs; };
         stateVersion = "23.11";
       };
-      programs = { } // import ../shared/home-manager.nix { inherit config pkgs lib; };
+      programs = { } // import ../shared/home.nix { inherit config pkgs lib; };
     };
   };
 

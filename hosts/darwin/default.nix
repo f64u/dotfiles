@@ -5,7 +5,7 @@
   nix.settings.experimental-features = "nix-command flakes";
 
   imports = [
-    ../../modules/darwin/home-manager.nix
+    ../../modules/darwin/home.nix
     ../../modules/darwin/homebrew.nix
     ../../modules/darwin/yabai
     ../../modules/darwin/skhd
