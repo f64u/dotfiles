@@ -1,13 +1,19 @@
 { pkgs, config, ... }:
-let configPath = "/Users/fadyadal/.config/nix/modules/darwin/sketchybar/config"; in
+let
+  sketchybarConfig = pkgs.stdenv.mkDerivation {
+    name = "sketchybar-config";
+    src = ./config;
+    buildCommand = "cp -r $src $out";
+  };
+in
 {
   launchd.user.agents.sketchybar =
     {
       path = [ pkgs.sketchybar pkgs.lua5_4 pkgs.gnumake "/usr/bin" "/usr/sbin" ] ++ config.environment.systemPackages;
       environment = {
-        LUA_PATH = "${configPath}/?.lua;${configPath}/?/?.lua;;";
+        LUA_PATH = "${sketchybarConfig}/?.lua;${sketchybarConfig}/?/?.lua;;";
       };
-      command = "sketchybar --config ${configPath}/sketchybarrc";
+      command = "sketchybar --config ${sketchybarConfig}/sketchybarrc";
 
       serviceConfig =
         {
