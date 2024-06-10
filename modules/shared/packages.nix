@@ -12,6 +12,7 @@ with pkgs; [
   fzf
   gettext
   git
+  gnupatch
   lazygit
   neovim
   nushell
@@ -37,11 +38,6 @@ with pkgs; [
   readline
   zstd
 
-  # C
-  ccls
-  clang_18
-  llvm_18
-
   # Apps
   discord
   expat
@@ -50,8 +46,21 @@ with pkgs; [
   zoom-us
   wireshark
 
+  # C
+  ccls
+  clang_18
+  llvm_18
+
+  # Coq
+  coq
+  coqPackages.coq-lsp
+
   # Latex 
   languagetool
+
+  # OCaml
+  dune_3
+  opam
 
   # Python
   poetry
@@ -64,7 +73,7 @@ with pkgs; [
     p.yapf
   ]))
 
-  # Other PLs
+
   lua5_4
   millet # SML lsp
   nodejs

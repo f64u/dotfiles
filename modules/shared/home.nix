@@ -36,8 +36,6 @@ in
       alias sml='rlwrap sml'
       alias ssh='TERM=xterm-256color ssh'
 
-      source ~/.opam/opam-init/init.zsh
-
       _evalcache starship init zsh
       _evalcache zoxide init zsh
       _evalcache atuin init zsh --disable-up-arrow
