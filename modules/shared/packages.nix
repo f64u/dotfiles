@@ -1,6 +1,15 @@
 { pkgs }:
 
 with pkgs; [
+  # Apps
+  discord
+  expat
+  slack
+  spotify
+  texliveFull
+  wireshark
+  zathura
+  zoom-us
 
   # Terminal stuff
   alacritty
@@ -33,18 +42,12 @@ with pkgs; [
   gnome.adwaita-icon-theme
   gtk3
   gtksourceview
+  libgit2
   libxml2
   ncurses
+  openssl
   readline
   zstd
-
-  # Apps
-  discord
-  expat
-  slack
-  spotify
-  zoom-us
-  wireshark
 
   # C
   ccls

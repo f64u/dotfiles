@@ -15,7 +15,6 @@
       "font-caskaydia-cove-nerd-font"
       "font-sf-mono"
       "font-sf-pro"
-      "mactex"
       "minecraft"
       "multipass"
       "shottr"
