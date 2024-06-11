@@ -63,6 +63,7 @@ with pkgs; [
   opam
 
   # Python
+  (pdm.override { python3 = python312; })
   poetry
   ruff
   (python312.withPackages (p: [
