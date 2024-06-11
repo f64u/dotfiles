@@ -72,6 +72,7 @@ with pkgs; [
   (python312.withPackages (p: [
     p.ipython
     p.mypy
+    p.numpy
     p.pylsp-mypy
     p.python-lsp-server
     p.yapf
