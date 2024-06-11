@@ -360,7 +360,4 @@ in
         ];
       };
     };
-  zathura = {
-    enable = true;
-  };
 }

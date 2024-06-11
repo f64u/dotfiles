@@ -4,7 +4,6 @@ with pkgs; [
   # Apps
   discord
   expat
-  mupdf
   slack
   spotify
   texliveFull

@@ -6,4 +6,5 @@ shared-packages ++ [
   # XXX: yabai & skhd are installed system-wide
   lima
   aldente
+  skimpdf
 ]
