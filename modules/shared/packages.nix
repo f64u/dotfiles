@@ -4,11 +4,11 @@ with pkgs; [
   # Apps
   discord
   expat
+  mupdf
   slack
   spotify
   texliveFull
   wireshark
-  zathura
   zoom-us
 
   # Terminal stuff
