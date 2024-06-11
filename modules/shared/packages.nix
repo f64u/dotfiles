@@ -14,6 +14,7 @@ with pkgs; [
   # Terminal stuff
   alacritty
   atuin
+  bat
   curl
   eza
   fastfetch
