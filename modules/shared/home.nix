@@ -38,12 +38,10 @@ in
       ghci = "TERM=linux ghci";
       stack = "TERM=linux stack";
       idris2 = "rlwrap idris2";
-      tg = "topgrade";
       n = "nvim";
       vim = "nvim";
       cd = "z";
       sml = "rlwrap sml";
-      ssh = "TERM=xterm-256color ssh";
     } // (
       let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" ];
       in
