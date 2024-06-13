@@ -11,11 +11,7 @@ with pkgs; [
   zoom-us
 
   # Terminal stuff
-  alacritty
-  atuin
-  bat
   curl
-  eza
   fastfetch
   fd
   fzf
@@ -24,13 +20,8 @@ with pkgs; [
   gnupatch
   lazygit
   neovim
-  nushell
-  ripgrep
   rlwrap
-  starship
-  tmux
   vim
-  zoxide
 
   # Building
   autoconf

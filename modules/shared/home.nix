@@ -7,24 +7,9 @@ in
 {
   zsh = {
     enable = true;
-    plugins = [
-      {
-        name = "evalcache";
-        src = pkgs.fetchFromGitHub {
-          owner = "mroth";
-          repo = "evalcache";
-          rev = "v1.0.2";
-          sha256 = "sha256-qzpnGTrLnq5mNaLlsjSA6VESA88XBdN3Ku/YIgLCb28=";
-        };
-      }
-    ];
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
     initExtra = ''
-      _evalcache starship init zsh
-      _evalcache zoxide init zsh
-      _evalcache atuin init zsh --disable-up-arrow
-
       source ~/.ghcup/env
     '';
     sessionVariables = {
@@ -32,7 +17,6 @@ in
       TERM = "xterm-256color";
     };
     shellAliases = {
-      ls = "eza --icons";
       cp = "xcp";
       q = "exit";
       ghci = "TERM=linux ghci";
@@ -40,7 +24,6 @@ in
       idris2 = "rlwrap idris2";
       n = "nvim";
       vim = "nvim";
-      cd = "z";
       sml = "rlwrap sml";
     } // (
       let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" ];
@@ -52,6 +35,36 @@ in
         })
         servers)
     );
+  };
+
+  eza = {
+    enable = true;
+    icons = true;
+  };
+
+  zoxide = {
+    enable = true;
+  };
+
+  starship = {
+    enable = true;
+  };
+
+  atuin = {
+    enable = true;
+    flags = [ "--disable-up-arrow" ];
+  };
+
+  bat = {
+    enable = true;
+  };
+
+  ripgrep = {
+    enable = true;
+  };
+
+  lazygit = {
+    enable = true;
   };
 
   git = {
