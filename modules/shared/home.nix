@@ -21,32 +21,39 @@ in
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
     initExtra = ''
-      export TERM=xterm-256color
-
-      alias ls='eza --icons'
-      alias cp=xcp
-      alias q=exit
-      alias ghci='TERM=linux ghci'
-      alias stack='TERM=linux stack'
-      alias idris2='rlwrap idris2'
-      alias tg=topgrade
-      alias n=nvim
-      alias vim=nvim
-      alias cd=z
-      alias sml='rlwrap sml'
-      alias ssh='TERM=xterm-256color ssh'
-
       _evalcache starship init zsh
       _evalcache zoxide init zsh
       _evalcache atuin init zsh --disable-up-arrow
 
       source ~/.ghcup/env
-
-      servers=(ra amun set anubis seshat hathor thoth maat)
-      for server in $servers; do
-        alias $server="ssh fady@$server.cs.uchicago.edu"
-      done
     '';
+    sessionVariables = {
+      EDITOR = "nvim";
+      TERM = "xterm-256color";
+    };
+    shellAliases = {
+      ls = "eza --icons";
+      cp = "xcp";
+      q = "exit";
+      ghci = "TERM=linux ghci";
+      stack = "TERM=linux stack";
+      idris2 = "rlwrap idris2";
+      tg = "topgrade";
+      n = "nvim";
+      vim = "nvim";
+      cd = "z";
+      sml = "rlwrap sml";
+      ssh = "TERM=xterm-256color ssh";
+    } // (
+      let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" ];
+      in
+      builtins.listToAttrs (map
+        (server: {
+          name = server;
+          value = "ssh fady@${server}.cs.uchicago.edu";
+        })
+        servers)
+    );
   };
 
   git = {
