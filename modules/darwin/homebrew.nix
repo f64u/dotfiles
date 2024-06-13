@@ -16,14 +16,12 @@
       "font-sf-mono"
       "font-sf-pro"
       "minecraft"
-      "multipass"
       "shottr"
       "smlnj"
       "steam"
     ];
 
     taps = [
-      "felixkratz/formulae"
       "homebrew/cask-fonts"
       "homebrew/cask-versions"
       "homebrew/services"
