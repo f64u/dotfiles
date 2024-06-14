@@ -39,18 +39,14 @@ with pkgs; [
 
   # C
   ccls
-  clang_18
-  llvm_18
-
-  # Coq
-  coq
-  coqPackages.coq-lsp
+  #clang_18
+  #llvm_18
 
   # Latex 
   languagetool
+  texlab
 
   # OCaml
-  dune_3
   opam
 
   # Python
@@ -66,8 +62,10 @@ with pkgs; [
   python312Packages.virtualenv
   ruff
 
+  elan
   lua5_4
   millet # SML lsp
   nodejs
+  rustup
 ]
 

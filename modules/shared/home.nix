@@ -343,12 +343,11 @@ in
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
     initExtra = ''
+      export TERM=xterm-256color
+
       source ~/.ghcup/env
+      eval $(opam env)
     '';
-    sessionVariables = {
-      EDITOR = "nvim";
-      TERM = "xterm-256color";
-    };
     shellAliases = {
       cp = "xcp";
       q = "exit";
