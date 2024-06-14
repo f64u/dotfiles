@@ -56,16 +56,15 @@ with pkgs; [
   # Python
   (pdm.override { python3 = python312; })
   poetry
+  python312
+  python312Packages.ipython
+  python312Packages.mypy
+  python312Packages.numpy
+  python312Packages.pylsp-mypy
+  python312Packages.python-lsp-server
+  python312Packages.yapf
+  python312Packages.virtualenv
   ruff
-  (python312.withPackages (p: [
-    p.ipython
-    p.mypy
-    p.numpy
-    p.pylsp-mypy
-    p.python-lsp-server
-    p.yapf
-  ]))
-
 
   lua5_4
   millet # SML lsp
