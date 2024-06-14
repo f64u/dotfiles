@@ -13,12 +13,9 @@ with pkgs; [
   # Terminal stuff
   curl
   fastfetch
-  fd
-  fzf
   gettext
   git
   gnupatch
-  lazygit
   neovim
   rlwrap
   vim
