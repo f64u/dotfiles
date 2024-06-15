@@ -57,6 +57,14 @@
       ];
   };
 
+  fonts.packages = [
+    (pkgs.nerdfonts.override {
+      fonts = [
+        "CascadiaCode"
+      ];
+    })
+  ];
+
   nix.package = pkgs.nix;
   nix.gc.automatic = true;
   nix.settings.trusted-users = [ "fadyadal" ];

@@ -1,11 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let user = "fadyadal";
 in
 {
   users.users.${user} = {
     name = "${user}";
-    home = "/Users/${user}";
+    home = lib.mkMerge [
+      (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "/Users/${user}")
+      (lib.mkIf pkgs.stdenv.hostPlatform.isLinux "/home/${user}")
+    ];
     isHidden = false;
     shell = pkgs.zsh;
   };
