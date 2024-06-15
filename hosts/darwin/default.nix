@@ -1,9 +1,4 @@
 { config, pkgs, ... }: {
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-
-  nix.settings.experimental-features = "nix-command flakes";
-
   imports = [
     ../../modules/darwin/home.nix
     ../../modules/darwin/homebrew.nix
@@ -12,12 +7,13 @@
     ../../modules/darwin/sketchybar
   ];
 
-  security.pam.enableSudoTouchIdAuth = true;
 
   system = {
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
     stateVersion = 4;
+    # Set Git commit hash for darwin-version.
+    configurationRevision = config.rev or config.dirtyRev or null;
 
     keyboard = {
       enableKeyMapping = true;
@@ -40,6 +36,7 @@
       };
     };
   };
+
 
   environment = {
     etc = {
@@ -65,29 +62,35 @@
     })
   ];
 
-  nix.package = pkgs.nix;
-  nix.gc.automatic = true;
-  nix.settings.trusted-users = [ "fadyadal" ];
+  security.pam.enableSudoTouchIdAuth = true;
 
-  # # Necessary for using flakes on this system.
-  # nix.extraOptions = ''
-  #   extra-platforms = x86_64-darwin aarch64-darwin
-  # '';
-  # nix.linux-builder.enable = true;
+  # Auto upgrade nix package and the daemon service.
+  services.nix-daemon.enable = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  programs.zsh = {
-    enable = true; # default shell on catalina
-    enableFzfCompletion = true;
-    enableFzfGit = true;
+  nix = {
+    settings = {
+      experimental-features = "nix-command flakes";
+      trusted-users = [ "fadyadal" ];
+    };
+
+    package = pkgs.nix;
+    gc.automatic = true;
+    extraOptions = ''
+      extra-platforms = x86_64-darwin aarch64-darwin
+    '';
+    # linux-builder.enable = true;
   };
-  programs.bash.enable = true;
-  # programs.fish.enable = true;
-  programs.nix-index.enable = true;
 
-  # Set Git commit hash for darwin-version.
-  system.configurationRevision = config.rev or config.dirtyRev or null;
-
+  programs = {
+    # Create /etc/zshrc that loads the nix-darwin environment.
+    zsh = {
+      enable = true; # default shell on catalina
+      enableFzfCompletion = true;
+      enableFzfGit = true;
+    };
+    bash.enable = true;
+    nix-index.enable = true;
+  };
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
