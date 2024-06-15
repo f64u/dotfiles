@@ -61,11 +61,11 @@
   nix.gc.automatic = true;
   nix.settings.trusted-users = [ "fadyadal" ];
 
-  # Necessary for using flakes on this system.
-  nix.extraOptions = ''
-    extra-platforms = x86_64-darwin aarch64-darwin
-  '';
-  nix.linux-builder.enable = true;
+  # # Necessary for using flakes on this system.
+  # nix.extraOptions = ''
+  #   extra-platforms = x86_64-darwin aarch64-darwin
+  # '';
+  # nix.linux-builder.enable = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh = {

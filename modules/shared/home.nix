@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 let
   name = "Fady Adal";
   user = "fadyadal";
@@ -209,22 +209,17 @@ in
         ];
       };
     };
-
   atuin = {
     enable = true;
     flags = [ "--disable-up-arrow" ];
   };
-
   bat.enable = true;
-
   eza = {
     enable = true;
     icons = true;
   };
-
   fd.enable = true;
   fzf.enable = true;
-
   git = {
     enable = true;
     ignores = [ "*.swp" ".DS_STORE" ];
@@ -243,11 +238,9 @@ in
       rebase.autoStash = true;
     };
   };
-
   lazygit.enable = true;
   ripgrep.enable = true;
   starship.enable = true;
-
   tmux = {
     enable = true;
     plugins = with pkgs.tmuxPlugins; [
@@ -335,9 +328,7 @@ in
       bind-key x kill-pane # skip "kill-pane 1? (y/n)" prompt (cmd+w)
     '';
   };
-
   zoxide.enable = true;
-
   zsh = {
     enable = true;
     autocd = true;
