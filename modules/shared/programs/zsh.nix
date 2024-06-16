@@ -17,7 +17,6 @@
       stack = "TERM=linux stack";
       idris2 = "rlwrap idris2";
       n = "nvim";
-      vim = "nvim";
       sml = "rlwrap sml";
     } // (
       let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" ];

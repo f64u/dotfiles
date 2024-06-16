@@ -18,6 +18,7 @@ with pkgs; [
   gnupatch
   rlwrap
   vim
+  xcp
 
   # Building
   autoconf
