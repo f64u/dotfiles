@@ -1,14 +1,13 @@
-{ pkgs, lib, ... }:
-
-let user = "fadyadal";
+{ pkgs, ... }:
+let
+  fullName = "Fady Adal";
+  user = "fadyadal";
+  email = "2masadel@gmail.com";
 in
 {
   users.users.${user} = {
     name = "${user}";
-    home = lib.mkMerge [
-      (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "/Users/${user}")
-      (lib.mkIf pkgs.stdenv.hostPlatform.isLinux "/home/${user}")
-    ];
+    home = "/Users/${user}";
     isHidden = false;
     shell = pkgs.zsh;
   };
@@ -16,13 +15,16 @@ in
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "bak";
+    extraSpecialArgs = { inherit fullName user email; };
     users.${user} = { pkgs, config, lib, ... }: {
+      imports = [
+        ../shared/programs
+      ];
       home = {
         enableNixpkgsReleaseCheck = false;
         packages = pkgs.callPackage ./packages.nix { inherit pkgs; };
         stateVersion = "23.11";
       };
-      programs = { } // import ../shared/home.nix { inherit config pkgs lib; };
     };
   };
 
