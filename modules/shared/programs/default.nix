@@ -3,6 +3,7 @@
   imports = [
     ./alacritty.nix
     ./git.nix
+    ./neovim
     ./tmux.nix
     ./zsh.nix
   ];

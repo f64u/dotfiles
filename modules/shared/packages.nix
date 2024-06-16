@@ -16,7 +16,6 @@ with pkgs; [
   gettext
   git
   gnupatch
-  neovim
   rlwrap
   vim
 
