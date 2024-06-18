@@ -12,7 +12,6 @@
     casks = [
       "1password"
       "firefox"
-      "font-caskaydia-cove-nerd-font"
       "font-sf-mono"
       "font-sf-pro"
       "minecraft"
