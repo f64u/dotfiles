@@ -1,6 +1,17 @@
 { pkgs }:
 
-with pkgs; [
+with pkgs; let
+  myPython = python312.withPackages (ps: [
+    ps.ipython
+    ps.mypy
+    ps.numpy
+    ps.pylsp-mypy
+    ps.python-lsp-server
+    ps.yapf
+    ps.virtualenv
+  ]);
+in
+[
   # Apps
   discord
   expat
@@ -49,16 +60,9 @@ with pkgs; [
   opam
 
   # Python
-  (pdm.override { python3 = python312; })
+  myPython
+  (pdm.override { python3 = myPython; })
   poetry
-  python312
-  python312Packages.ipython
-  python312Packages.mypy
-  python312Packages.numpy
-  python312Packages.pylsp-mypy
-  python312Packages.python-lsp-server
-  python312Packages.yapf
-  python312Packages.virtualenv
   ruff
 
   elan
@@ -66,5 +70,5 @@ with pkgs; [
   millet # SML lsp
   nodejs
   rustup
-]
+] 
 
