@@ -43,7 +43,6 @@
       terminfo = {
         source = "${pkgs.ncurses}/share/terminfo";
       };
-
     };
 
     systemPackages = with pkgs;
