@@ -27,6 +27,7 @@ in
   gettext
   git
   gnupatch
+  parallel
   rlwrap
   xcp
 
