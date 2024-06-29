@@ -82,11 +82,7 @@
 
   programs = {
     # Create /etc/zshrc that loads the nix-darwin environment.
-    zsh = {
-      enable = true; # default shell on catalina
-      enableFzfCompletion = true;
-      enableFzfGit = true;
-    };
+    zsh.enable = true;
     bash.enable = true;
     nix-index.enable = true;
   };
