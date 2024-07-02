@@ -38,7 +38,7 @@ in
 
   # Common libraries
   cairo
-  gnome.adwaita-icon-theme
+  adwaita-icon-theme
   gtk3
   gtksourceview
   libgit2
