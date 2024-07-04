@@ -57,19 +57,22 @@ in
   languagetool
   texlab
 
-  # OCaml
-  opam
-
   # Python
   myPython
   (pdm.override { python3 = myPython; })
   poetry
   ruff
 
+  # Typst
+  typst
+  typst-lsp
+
+  # Other
   elan
   lua5_4
   millet # SML lsp
   nodejs
+  opam
   rustup
 ] 
 

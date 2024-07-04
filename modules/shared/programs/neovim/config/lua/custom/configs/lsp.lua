@@ -53,6 +53,7 @@ local servers = {
   wgsl_analyzer = {},
   racket_langserver = {},
   texlab = {},
+  typst_lsp = {},
 
   lua_ls = {
     Lua = {
