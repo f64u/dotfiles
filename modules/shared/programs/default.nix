@@ -4,6 +4,7 @@
     ./alacritty.nix
     ./git.nix
     ./neovim
+    ./vscode.nix
     ./tmux.nix
     ./zsh.nix
   ];
