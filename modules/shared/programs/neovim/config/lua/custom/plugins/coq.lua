@@ -10,7 +10,7 @@ return {
           init_options = {
             show_notices_as_diagnostics = true,
           },
-          autostart = false,
+          -- autostart = false,
         }
       }
     }
