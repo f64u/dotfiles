@@ -18,6 +18,7 @@
       "shottr"
       "smlnj"
       "steam"
+      "vmware-fusion"
       "whisky"
     ];
 
