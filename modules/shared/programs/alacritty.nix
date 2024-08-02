@@ -46,13 +46,12 @@ in
         };
         window = {
           decorations = "buttonless";
-          dynamic_padding = true;
           opacity = 0.7;
           option_as_alt = "OnlyLeft";
           blur = true;
           padding = {
             x = 5;
-            y = 5;
+            y = 2;
           };
         };
         keyboard.bindings = [

@@ -20,7 +20,7 @@
 
           set -g @catppuccin_status_modules_right "directory session"
           set -g @catppuccin_status_modules_left ""
-          set -g @catppuccin_directory_text "#{pane_current_path}"
+          set -g @catppuccin_directory_text "#{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
           set -g @catppuccin_status_left_separator "█"
           set -g @catppuccin_status_right_separator "█"
           set -g @catppuccin_status_background "default"
