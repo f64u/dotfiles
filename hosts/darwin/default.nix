@@ -1,10 +1,6 @@
 { config, pkgs, ... }: {
   imports = [
-    ../../modules/darwin/home.nix
-    ../../modules/darwin/homebrew.nix
-    ../../modules/darwin/yabai
-    ../../modules/darwin/skhd
-    ../../modules/darwin/sketchybar
+    ../../modules/darwin
   ];
 
 
