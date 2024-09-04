@@ -9,4 +9,5 @@ shared-packages ++ [
   skimpdf
   utm
   whatsapp-for-mac
+  maccy
 ]
