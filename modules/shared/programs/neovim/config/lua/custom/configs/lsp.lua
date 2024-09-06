@@ -41,7 +41,7 @@ local servers = {
   },
   -- Should be managed by rust-tools.nvim:
   -- rust_analyzer = {},
-  tsserver = {},
+  ts_ls = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
   ccls = {},
