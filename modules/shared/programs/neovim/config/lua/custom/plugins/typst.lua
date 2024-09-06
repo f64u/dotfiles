@@ -1,12 +1,11 @@
 return {
   {
     'kaarmu/typst.vim',
-    ft = 'typst',
-    lazy = false,
+    -- not ft='typst' because the plugin itself offers the ft
+    event = 'VeryLazy',
     init = function()
       vim.g.typst_syntax_highlight = 0
       vim.g.typst_conceal_emoji = true
-      vim.g.typst_pdf_viewer = 'mupdf'
     end
   },
   {

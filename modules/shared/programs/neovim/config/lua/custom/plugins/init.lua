@@ -90,7 +90,8 @@ return {
   -- Latex
   {
     'lervag/vimtex',
-    lazy = false,
+    -- not ft='latex' because the plugin itself offers the ft
+    event = 'VeryLazy',
     init = function()
       vim.g.conceal_level = 2
       vim.g.vimtex_view_method = 'skim'
