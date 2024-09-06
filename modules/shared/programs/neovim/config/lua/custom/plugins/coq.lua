@@ -3,16 +3,26 @@ return {
   'whonore/Coqtail',
   dependencies = {
     {
-      'tomtomjhj/coq-lsp.nvim',
+      'tomtomjhj/vscoq.nvim',
+      vscoq = {
+        proof = {
+          -- In manual mode, don't move the cursor when stepping forward/backward a command
+          cursor = { sticky = false },
+        }
+      },
       opts = {
         lsp = {
-          on_attach = require('custom.util.lspconfig').on_attach,
-          init_options = {
-            show_notices_as_diagnostics = true,
-          },
-          -- autostart = false,
+          on_attach = function(client, bufnr)
+            require('custom.util.lspconfig').on_attach(client, bufnr)
+          end,
+          autostart = false,
         }
-      }
+      },
+      config = function(opts)
+        require('vscoq').setup(opts)
+        vim.g.loaded_coqtail = 1
+        vim.g['coqtail#supported'] = 0
+      end
     }
   }
 }
