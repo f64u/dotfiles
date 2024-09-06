@@ -14,6 +14,7 @@
     flags = [ "--disable-up-arrow" ];
   };
   programs.bat.enable = true;
+  programs.btop.enable = true;
   programs.eza = {
     enable = true;
     icons = true;

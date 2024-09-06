@@ -2,6 +2,7 @@
 {
   programs.git = {
     enable = true;
+    delta.enable = true;
     ignores = [ "*.swp" ".DS_STORE" ];
     userName = fullName;
     userEmail = email;
