@@ -36,6 +36,7 @@ in
   autoconf
   cmake
   pkg-config
+  tree-sitter
 
   # Common libraries
   cairo
