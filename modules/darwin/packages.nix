@@ -8,6 +8,5 @@ shared-packages ++ [
   lima
   skimpdf
   utm
-  whatsapp-for-mac
   maccy
 ]
