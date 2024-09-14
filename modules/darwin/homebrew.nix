@@ -17,6 +17,7 @@
       "minecraft"
       "shottr"
       "smlnj"
+      "spacelauncher"
       "steam"
       "vmware-fusion"
       "whisky"
