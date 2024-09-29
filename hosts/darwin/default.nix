@@ -53,6 +53,7 @@
     (pkgs.nerdfonts.override {
       fonts = [
         "CascadiaCode"
+        "Recursive"
       ];
     })
   ];

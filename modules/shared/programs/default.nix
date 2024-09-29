@@ -6,6 +6,7 @@
     ./neovim
     ./vscode.nix
     ./tmux.nix
+    ./wezterm
     ./zsh.nix
   ];
 
