@@ -2,14 +2,19 @@
 let
   fullName = "Fady Adal";
   user = "fadyadal";
+  uid = 501;
   email = "2masadel@gmail.com";
 in
 {
-  users.users.${user} = {
-    name = "${user}";
-    home = "/Users/${user}";
-    isHidden = false;
-    shell = pkgs.zsh;
+  users = {
+    knownUsers = [ user ];
+    users.${user} = {
+      name = "${user}";
+      uid = uid;
+      home = "/Users/${user}";
+      isHidden = false;
+      shell = "/bin/zsh";
+    };
   };
 
   home-manager = {

@@ -41,6 +41,8 @@
     escapeTime = 0;
     historyLimit = 1000000;
     mouse = true;
+    shell = "$SHELL";
+    keyMode = "vi";
     extraConfig = ''
       setw -g pane-base-index 1
       setw -g automatic-rename on
@@ -51,6 +53,7 @@
       set -g status-interval 2      # update status every 2 seconds
       set -g status-left-length 200 # increase status line length
       set -g status-position top    # macOS / darwin style
+      set -g default-command /bin/zsh
 
       set -g prefix2 C-a
       bind C-a send-prefix -2
@@ -64,8 +67,6 @@
       set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
       set-option -g focus-events on
-
-      set-window-option -g mode-key vi
 
       unbind v 
       unbind %

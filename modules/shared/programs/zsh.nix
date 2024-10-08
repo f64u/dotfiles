@@ -8,7 +8,7 @@
       export TERM=xterm-256color
 
       source ~/.ghcup/env
-      eval $(opam env)
+      # eval $(opam env)
     '';
     shellAliases = {
       cp = "xcp";
