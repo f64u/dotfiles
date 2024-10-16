@@ -18,7 +18,7 @@
   programs.btop.enable = true;
   programs.eza = {
     enable = true;
-    icons = true;
+    icons = "auto";
   };
   programs.fd.enable = true;
   programs.fzf.enable = true;

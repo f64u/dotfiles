@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/home-manager/master";
@@ -22,7 +17,7 @@
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
-  outputs = { self, nix-darwin, nix-homebrew, home-manager, lix-module, ... }@inputs:
+  outputs = { self, nix-darwin, nix-homebrew, home-manager, ... }@inputs:
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Fadys-MacBook-Pro
@@ -39,7 +34,6 @@
               autoMigrate = true;
             };
           }
-          lix-module.nixosModules.default
 
           ./hosts/darwin
         ];
