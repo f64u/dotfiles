@@ -9,6 +9,7 @@
 
       source ~/.ghcup/env
       eval $(opam env)
+      export PATH=/usr/local/smlnj/bin:$PATH
     '';
     shellAliases = {
       cp = "xcp";
