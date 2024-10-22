@@ -69,7 +69,7 @@
       trusted-users = [ "fadyadal" ];
     };
 
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     gc.automatic = true;
     extraOptions = ''
       extra-platforms = x86_64-darwin aarch64-darwin
