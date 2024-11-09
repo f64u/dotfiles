@@ -15,6 +15,7 @@
       "font-sf-mono"
       "font-sf-pro"
       "minecraft"
+      "paintbrush"
       "shottr"
       "smlnj"
       "spacelauncher"

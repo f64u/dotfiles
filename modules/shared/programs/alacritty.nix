@@ -22,7 +22,11 @@ in
     {
       enable = true;
       settings = colors // {
-        live_config_reload = true;
+        general.live_config_reload = true;
+        terminal.shell = {
+          args = [ "-l" "-c" "tmux attach || tmux -2" ];
+          program = "${pkgs.zsh}/bin/zsh";
+        };
         selection.save_to_clipboard = true;
         cursor = {
           blink_interval = 400;
@@ -39,10 +43,6 @@ in
             family = "CaskaydiaCove Nerd Font Mono";
             style = "Regular";
           };
-        };
-        shell = {
-          args = [ "-l" "-c" "tmux attach || tmux -2" ];
-          program = "${pkgs.zsh}/bin/zsh";
         };
         window = {
           decorations = "buttonless";
