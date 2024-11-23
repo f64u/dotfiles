@@ -5,24 +5,20 @@ let
   prefix = (builtins.fromTOML ''b = "\u0002"'').b;
   catppuccin-alacritty = builtins.fetchGit {
     url = "https://github.com/catppuccin/alacritty.git";
-    rev = "94800165c13998b600a9da9d29c330de9f28618e";
+    rev = "f6cb5a5c2b404cdaceaff193b9c52317f62c62f7";
   };
-  catppuccin-mocha =
-    pkgs.stdenv.mkDerivation
-      {
-        name = "extract-mocha";
-        src = catppuccin-alacritty;
-        buildCommand = "cp $src/catppuccin-mocha.toml $out";
-      };
-  catppuccin-mocha-contents = builtins.readFile catppuccin-mocha;
-  colors = builtins.fromTOML catppuccin-mocha-contents;
 in
 {
   programs.alacritty =
     {
       enable = true;
-      settings = colors // {
-        general.live_config_reload = true;
+      settings = {
+        general = {
+          live_config_reload = true;
+          import = [
+            "${catppuccin-alacritty}/catppuccin-mocha.toml"
+          ];
+        };
         terminal.shell = {
           args = [ "-l" "-c" "tmux attach || tmux -2" ];
           program = "${pkgs.zsh}/bin/zsh";
@@ -45,7 +41,7 @@ in
           };
         };
         window = {
-          decorations = "buttonless";
+          decorations = "Buttonless";
           opacity = 0.7;
           option_as_alt = "OnlyLeft";
           blur = true;
