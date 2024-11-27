@@ -49,13 +49,9 @@
       ];
   };
 
-  fonts.packages = [
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "CascadiaCode"
-        "Recursive"
-      ];
-    })
+  fonts.packages = with pkgs.nerd-fonts; [
+    caskaydia-cove
+    recursive-mono
   ];
 
   security.pam.enableSudoTouchIdAuth = true;
