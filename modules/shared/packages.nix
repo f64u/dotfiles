@@ -15,6 +15,7 @@ in
   # Apps
   discord
   expat
+  nmap
   slack
   spotify
   texliveFull
