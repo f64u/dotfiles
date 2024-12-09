@@ -11,7 +11,14 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim',  opts = {} },
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = {
+            'tinymist'
+          }
+        }
+      },
 
       -- Useful status updates for LSP
       { 'j-hui/fidget.nvim',        tag = 'legacy',                     opts = {},         event = 'LspAttach' },

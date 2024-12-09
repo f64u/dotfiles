@@ -19,7 +19,6 @@ in
   slack
   spotify
   texliveFull
-  wireshark
   zoom-us
 
   # Terminal stuff
