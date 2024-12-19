@@ -6,31 +6,6 @@ return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
-  {
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      {
-        'williamboman/mason.nvim',
-        opts = {
-          ensure_installed = {
-            'tinymist'
-          }
-        }
-      },
-
-      -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim',        tag = 'legacy',                     opts = {},         event = 'LspAttach' },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      { 'folke/neodev.nvim',        opts = {} },
-
-      -- As you type parameter listing
-      { 'ray-x/lsp_signature.nvim', opts = { floating_window = false }, event = 'VeryLazy' }
-    },
-  },
-
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',  opts = {}, event = 'VeryLazy' },
 
@@ -98,7 +73,7 @@ return {
   {
     'lervag/vimtex',
     -- not ft='latex' because the plugin itself offers the ft
-    event = 'VeryLazy',
+    lazy = false,
     init = function()
       vim.g.conceal_level = 2
       vim.g.vimtex_view_method = 'skim'
