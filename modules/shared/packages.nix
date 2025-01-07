@@ -61,7 +61,6 @@ in
 
   # Python
   myPython
-  (pdm.override { python3 = myPython; })
   poetry
   ruff
 
