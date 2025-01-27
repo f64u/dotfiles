@@ -1,4 +1,11 @@
-{ ... }: {
+{ ... }:
+let
+  catppuccin-zsh-syntax-highlighting = builtins.fetchGit {
+    url = "https://github.com/catppuccin/zsh-syntax-highlighting.git";
+    rev = "7926c3d3e17d26b3779851a2255b95ee650bd928";
+  };
+in
+{
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -8,6 +15,7 @@
       export TERM=xterm-256color
 
       source ~/.ghcup/env
+      source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
       eval $(opam env)
       export PATH=/usr/local/smlnj/bin:$PATH
     '';

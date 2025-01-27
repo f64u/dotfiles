@@ -18,7 +18,7 @@ in
   nmap
   slack
   spotify
-  texliveFull
+  # texliveFull # FIX: Failing to build
   zoom-us
 
   # Terminal stuff
@@ -66,7 +66,7 @@ in
 
   # Typst
   typst
-  typst-lsp
+  tinymist
 
   # Other
   elan

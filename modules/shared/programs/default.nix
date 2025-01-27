@@ -5,6 +5,7 @@
     ./git.nix
     ./neovim
     ./vscode.nix
+    ./starship.nix
     ./tmux.nix
     ./wezterm
     ./zsh.nix
@@ -24,7 +25,6 @@
   programs.fzf.enable = true;
   programs.lazygit.enable = true;
   programs.ripgrep.enable = true;
-  programs.starship.enable = true;
   programs.vim.enable = true;
   programs.zoxide.enable = true;
 }
