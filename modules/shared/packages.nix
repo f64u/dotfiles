@@ -18,7 +18,7 @@ in
   nmap
   slack
   spotify
-  # texliveFull # FIX: Failing to build
+  texliveFull
   zoom-us
 
   # Terminal stuff
