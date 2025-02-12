@@ -28,13 +28,13 @@
       }
       vim-tmux-navigator
       t-smart-tmux-session-manager
-      resurrect
-      {
-        plugin = continuum;
-        extraConfig = ''
-          set -g @continuum-restore 'on'
-        '';
-      }
+      # resurrect
+      # {
+      #   plugin = continuum;
+      #   extraConfig = ''
+      #     set -g @continuum-restore 'on'
+      #   '';
+      # }
       extrakto
     ];
     baseIndex = 1;

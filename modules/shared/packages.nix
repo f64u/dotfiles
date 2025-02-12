@@ -16,6 +16,7 @@ in
   discord
   expat
   nmap
+  postman
   slack
   spotify
   texliveFull
