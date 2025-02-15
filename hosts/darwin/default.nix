@@ -57,6 +57,7 @@
   security.pam.enableSudoTouchIdAuth = true;
 
   nix = {
+    enable = true;
     settings = {
       experimental-features = "nix-command flakes";
       trusted-users = [ "fadyadal" ];
