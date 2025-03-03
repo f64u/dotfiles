@@ -28,7 +28,7 @@ in
       n = "nvim";
       sml = "rlwrap sml";
     } // (
-      let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" ];
+      let servers = [ "ra" "amun" "set" "anubis" "seshat" "hathor" "thoth" "maat" "sekhmet" ];
       in
       builtins.listToAttrs (map
         (server: {

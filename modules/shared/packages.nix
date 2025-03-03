@@ -74,6 +74,7 @@ in
   lua5_4
   millet # SML lsp
   nodejs
+  ollama
   opam
   rustup
 ] 
