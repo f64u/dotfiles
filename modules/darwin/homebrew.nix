@@ -14,6 +14,7 @@
       "firefox"
       "font-sf-mono"
       "font-sf-pro"
+      "licecap"
       "minecraft"
       "paintbrush"
       "shottr"
