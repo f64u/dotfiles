@@ -5,25 +5,14 @@
       {
         plugin = catppuccin;
         extraConfig = ''
-          set -g @catppuccin_flavour 'mocha'
-          set -g @catppuccin_window_default_text "#W at #{b:pane_current_path}"
-          set -g @catppuccin_window_current_text "#W at #{b:pane_current_path}"
-          set -g @catppuccin_window_right_separator_inverse "yes"
-
-          set -g @catppuccin_window_right_separator "█ "
-          set -g @catppuccin_window_number_position "right"
-          set -g @catppuccin_window_middle_separator " | "
-
-          set -g @catppuccin_window_default_fill "none"
-
-          set -g @catppuccin_window_current_fill "all"
-
-          set -g @catppuccin_status_modules_right "directory session"
-          set -g @catppuccin_status_modules_left ""
-          set -g @catppuccin_directory_text "#{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
+          set -g @catppuccin_flavor "mocha"
           set -g @catppuccin_status_left_separator "█"
           set -g @catppuccin_status_right_separator "█"
-          set -g @catppuccin_status_background "default"
+          set -g @catppuccin_status_background "none"
+          set -g @catppuccin_directory_text " #{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
+
+          set -ogq @catppuccin_window_text " #W at #{b:pane_current_path}"
+          set -ogq @catppuccin_window_current_text " #W at #{b:pane_current_path}"
         '';
       }
       vim-tmux-navigator
@@ -44,6 +33,12 @@
     shell = "$SHELL";
     keyMode = "vi";
     extraConfig = ''
+      set -g status-left ""
+      set -g status-right "#{E:@catppuccin_status_directory}"
+      set -agF status-right "#{E:@catppuccin_status_session}"
+
+
+
       setw -g pane-base-index 1
       setw -g automatic-rename on
 

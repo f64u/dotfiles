@@ -36,7 +36,7 @@ in
   # Building
   autoconf
   cmake
-  pkg-config
+  pkgconf
   tree-sitter
 
   # Common libraries
