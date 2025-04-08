@@ -1,12 +1,16 @@
 { pkgs }:
 
 with pkgs; let
-  myPython = python312.withPackages (ps: [
+  myPython = python313.withPackages (ps: [
+    ps.distutils
+    ps.flit
     ps.ipython
     ps.mypy
     ps.numpy
+    ps.pip
     ps.pylsp-mypy
     ps.python-lsp-server
+    ps.setuptools
     ps.yapf
     ps.virtualenv
   ]);
@@ -23,6 +27,7 @@ in
   zoom-us
 
   # Terminal stuff
+  android-tools
   curl
   fastfetch
   gettext

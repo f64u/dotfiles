@@ -17,6 +17,8 @@
       "licecap"
       "minecraft"
       "paintbrush"
+      "rstudio"
+      "r"
       "shottr"
       "smlnj"
       "spacelauncher"
