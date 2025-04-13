@@ -7,6 +7,7 @@ with pkgs; let
     ps.ipython
     ps.mypy
     ps.numpy
+    ps.pandas
     ps.pip
     ps.pylsp-mypy
     ps.python-lsp-server
