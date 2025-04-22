@@ -25,6 +25,7 @@
       "steam"
       "vmware-fusion"
       "whisky"
+      "zoom"
     ];
 
     taps = [

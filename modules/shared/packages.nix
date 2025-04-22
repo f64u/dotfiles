@@ -25,7 +25,6 @@ in
   slack
   spotify
   texliveFull
-  zoom-us
 
   # Terminal stuff
   android-tools
@@ -70,6 +69,7 @@ in
   myPython
   poetry
   ruff
+  uv
 
   # Typst
   typst
