@@ -25,6 +25,7 @@
       "steam"
       "vmware-fusion"
       "whisky"
+      "xquartz"
       "zoom"
     ];
 

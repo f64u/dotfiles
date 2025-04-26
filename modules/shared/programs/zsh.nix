@@ -11,7 +11,7 @@ in
     autocd = true;
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
-    initExtra = ''
+    initContent = ''
       export TERM=xterm-256color
 
       source ~/.ghcup/env
