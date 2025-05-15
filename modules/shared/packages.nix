@@ -40,6 +40,7 @@ in
 
   # Building
   autoconf
+  ccache
   cmake
   pkgconf
   tree-sitter

@@ -7,6 +7,7 @@
 
     brews = [
       "gmp"
+      "libuv"
     ];
 
     casks = [
