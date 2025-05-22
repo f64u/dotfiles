@@ -14,10 +14,9 @@ in
     initContent = ''
       export TERM=xterm-256color
 
-      source ~/.ghcup/env
       source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
       eval $(opam env)
-      export PATH=/usr/local/smlnj/bin:$PATH
+      export PATH=~/.local/bin:/usr/local/smlnj/bin:$PATH
     '';
     shellAliases = {
       cp = "xcp";
