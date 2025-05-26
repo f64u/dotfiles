@@ -8,10 +8,6 @@ let
       rev = "1589c769e28f110b1177f6a83fa145235c8f7bd6";
       hash = "sha256-vo/PmrYlrg6kwBbFtrwbTZffLrQgzTSuqVxfNQba3YI=";
     };
-    buildInputs = with pkgs.darwin.apple_sdk.frameworks; [
-      Carbon
-      SkyLight
-    ];
     buildPhase = ''
       patch -p0 -d ./.config/sketchybar -i ${./config.patch}
       make -C ./.config/sketchybar/helpers

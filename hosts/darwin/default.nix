@@ -36,12 +36,8 @@
 
 
   environment = {
-    etc = {
-      terminfo = {
-        source = "${pkgs.ncurses}/share/terminfo";
-      };
-    };
 
+    enableAllTerminfo = true;
     systemPackages = with pkgs;
       [
         yabai

@@ -27,6 +27,7 @@
       "vmware-fusion"
       "whisky"
       "xquartz"
+      "zen-browser"
       "zoom"
     ];
 
