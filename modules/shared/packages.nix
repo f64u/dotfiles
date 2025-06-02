@@ -23,12 +23,12 @@ in
   nmap
   postman
   slack
-  spotify
   texliveFull
 
   # Terminal stuff
   android-tools
   curl
+  dos2unix
   fastfetch
   gettext
   git

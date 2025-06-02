@@ -3,10 +3,15 @@
 {
   homebrew = {
     enable = true;
-    onActivation.cleanup = "uninstall";
+    onActivation.cleanup = "zap";
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
 
     brews = [
-      "gmp"
+      {
+        name = "gmp";
+        link = true;
+      }
       "libuv"
     ];
 
@@ -22,12 +27,12 @@
       "r"
       "shottr"
       "smlnj"
-      "spacelauncher"
+      "spotify"
       "steam"
       "vmware-fusion"
       "whisky"
       "xquartz"
-      "zen-browser"
+      "zen"
       "zoom"
     ];
 
