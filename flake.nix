@@ -42,4 +42,4 @@
 
       darwinPackages = self.darwinConfigurations."Fadys-MacBook-Pro".pkgs;
     };
-} 
+}

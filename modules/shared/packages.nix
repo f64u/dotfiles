@@ -36,7 +36,7 @@ in
   jq
   parallel
   rlwrap
-  xcp
+  # xcp
 
   # Building
   autoconf
@@ -83,6 +83,7 @@ in
   nodejs
   ollama
   opam
+  qemu
   rustup
 ] 
 

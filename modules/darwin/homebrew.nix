@@ -16,7 +16,7 @@
     ];
 
     casks = [
-      "1password"
+      "dolphin"
       "firefox"
       "font-sf-mono"
       "font-sf-pro"
