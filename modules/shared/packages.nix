@@ -18,12 +18,14 @@ with pkgs; let
 in
 [
   # Apps
+  _1password-gui
+  code-cursor
   discord
   expat
   nmap
   postman
   slack
-  texliveFull
+  # texliveFull
 
   # Terminal stuff
   android-tools
@@ -36,6 +38,7 @@ in
   jq
   parallel
   rlwrap
+  wget
   # xcp
 
   # Building
