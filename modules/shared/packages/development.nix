@@ -15,6 +15,7 @@ with pkgs; [
   texlab
   typst
   tinymist
+  lua-language-server
 
   # Specialized tools
   elan
