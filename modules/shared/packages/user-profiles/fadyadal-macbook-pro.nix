@@ -7,9 +7,7 @@ let
   media-packages = import ../media.nix { inherit pkgs; };
 in
 base-packages ++ development-packages ++ media-packages ++ [
-  # Additional packages specific to fadyadal on macbook-pro
   pkgs.claude-code
   pkgs.nmap
-  # Example: More powerful tools on Pro
-  # pkgs.texliveFull  # Heavy LaTeX distribution
+  pkgs.texliveFull 
 ]
