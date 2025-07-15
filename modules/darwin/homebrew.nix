@@ -26,20 +26,14 @@
       "paintbrush"
       "rstudio"
       "shottr"
+      "slack"
       "smlnj"
       "spotify"
       "steam"
-      "vmware-fusion"
       "whisky"
       "xquartz"
       "zen"
       "zoom"
-    ];
-
-    taps = [
-      "homebrew/cask-fonts"
-      "homebrew/cask-versions"
-      "homebrew/services"
     ];
   };
 }

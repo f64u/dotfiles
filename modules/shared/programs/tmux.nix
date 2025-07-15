@@ -24,7 +24,7 @@
           set -g @continuum-restore 'on'
         '';
       }
-      extrakto
+      # extrakto
     ];
     baseIndex = 1;
     escapeTime = 0;

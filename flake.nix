@@ -17,29 +17,69 @@
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
-  outputs = { self, nix-darwin, nix-homebrew, home-manager, ... }@inputs:
+  outputs = { self, nix-darwin, nix-homebrew, home-manager, nixpkgs, ... }@inputs:
+    let
+      # Common system builder function for Darwin
+      mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [] }:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          modules = [
+            home-manager.darwinModules.home-manager
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = true;
+                user = "fadyadal";
+                autoMigrate = true;
+              };
+            }
+            ./hosts/darwin/common.nix
+            ./hosts/darwin/${hostname}.nix
+          ] ++ extraModules;
+          specialArgs = { inherit inputs hostname; };
+        };
+
+      # Common system builder function for NixOS
+      mkNixosSystem = { hostname, system ? "x86_64-linux", extraModules ? [] }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./hosts/nixos/common.nix
+            ./hosts/nixos/${hostname}.nix
+          ] ++ extraModules;
+          specialArgs = { inherit inputs hostname; };
+        };
+    in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#Fadys-MacBook-Pro
-      darwinConfigurations."Fadys-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-        modules = [
-          home-manager.darwinModules.home-manager
-
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
-              user = "fadyadal";
-              autoMigrate = true;
-            };
-          }
-
-          ./hosts/darwin
-        ];
-        specialArgs = { inherit inputs; };
+      # $ darwin-rebuild build --flake .#macbook-air
+      # $ darwin-rebuild build --flake .#macbook-pro
+      darwinConfigurations = {
+        "macbook-air" = mkDarwinSystem { 
+          hostname = "macbook-air"; 
+          system = "aarch64-darwin"; 
+        };
+        "macbook-pro" = mkDarwinSystem { 
+          hostname = "macbook-pro"; 
+          system = "aarch64-darwin"; 
+        };
       };
 
-      darwinPackages = self.darwinConfigurations."Fadys-MacBook-Pro".pkgs;
+      # Build nixos flake using:
+      # $ nixos-rebuild build --flake .#nixos-desktop
+      nixosConfigurations = {
+        "nixos-desktop" = mkNixosSystem {
+          hostname = "nixos-desktop";
+          system = "x86_64-linux";
+        };
+      };
+
+      # For backward compatibility
+      darwinConfigurations."Fadys-MacBook-Air" = self.darwinConfigurations."macbook-air";
+      
+      # For backward compatibility
+      darwinPackages = self.darwinConfigurations."macbook-air".pkgs;
     };
 }
