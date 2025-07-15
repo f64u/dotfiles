@@ -10,12 +10,14 @@ with pkgs; [
   discord
 
   # Language servers and tools
+  bash-language-server
   ccls
   languagetool
+  nil
+  lua-language-server
   texlab
   typst
   tinymist
-  lua-language-server
 
   # Specialized tools
   elan
