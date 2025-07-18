@@ -15,15 +15,16 @@ with pkgs; [
   languagetool
   nil
   lua-language-server
-  texlab
+  taplo # toml
+  texlab # latex
   typst
-  tinymist
+  tinymist # typst
+  millet # SML
 
   # Specialized tools
   elan
   fstar
   lua5_4
-  millet # SML lsp
   ollama
   opam
   qemu
