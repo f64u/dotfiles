@@ -7,7 +7,6 @@
     primaryUser = "fadyadal";
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
-    stateVersion = 5;
     # Set Git commit hash for darwin-version.
     configurationRevision = config.rev or config.dirtyRev or null;
 
@@ -78,3 +77,4 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
 }
+
