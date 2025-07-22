@@ -30,6 +30,7 @@
       "smlnj"
       "spotify"
       "steam"
+      "whatsapp"
       "whisky"
       "xquartz"
       "zen"
