@@ -17,6 +17,11 @@
   };
   programs.bat.enable = true;
   programs.btop.enable = true;
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
   programs.eza = {
     enable = true;
     icons = "auto";
