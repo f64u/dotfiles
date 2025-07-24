@@ -13,7 +13,6 @@ with pkgs; let
     ps.pylsp-mypy
     ps.python-lsp-server
     ps.setuptools
-    ps.yapf
     ps.virtualenv
   ]);
 in

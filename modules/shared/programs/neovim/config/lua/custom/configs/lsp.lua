@@ -31,11 +31,8 @@ local servers = {
           mypy = {
             enabled = true
           },
-          yapf = {
-            enabled = true
-          },
         },
-        configurationSources = { 'mypy', 'ruff', 'yapf' }
+        configurationSources = { 'mypy', 'ruff' }
       }
     }
   },
