@@ -12,7 +12,7 @@ in
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
     initContent = ''
-      export TERM=xterm-256color
+      export TERM=rio
 
       source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
       eval $(opam env)

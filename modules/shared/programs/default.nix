@@ -2,7 +2,9 @@
 {
   imports = [
     ./alacritty.nix
+    ./ghostty.nix
     ./git.nix
+    ./rio.nix
     ./neovim
     ./vscode.nix
     ./starship.nix

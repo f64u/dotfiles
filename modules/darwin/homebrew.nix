@@ -20,6 +20,7 @@
       "firefox"
       "font-sf-mono"
       "font-sf-pro"
+      "ghostty"
       "nvidia-geforce-now"
       "licecap"
       "minecraft"

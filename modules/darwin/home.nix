@@ -13,7 +13,7 @@ in
       uid = uid;
       home = "/Users/${user}";
       isHidden = false;
-      shell = "/bin/zsh";
+      shell = "/run/current-system/sw/bin/zsh";
     };
   };
 
@@ -27,8 +27,8 @@ in
       ];
       home = {
         enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix { inherit pkgs hostname; } ++ 
-                   pkgs.callPackage ../shared/packages.nix { inherit pkgs hostname; user = "${user}"; };
+        packages = pkgs.callPackage ./packages.nix { inherit pkgs hostname; } ++
+          pkgs.callPackage ../shared/packages.nix { inherit pkgs hostname; user = "${user}"; };
         stateVersion = "23.11";
       };
     };
