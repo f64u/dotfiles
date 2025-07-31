@@ -13,7 +13,7 @@ return {
     },
 
     -- Useful status updates for LSP
-    { 'j-hui/fidget.nvim', tag = 'legacy', opts = {}, event = 'LspAttach' },
+    { 'j-hui/fidget.nvim', opts = {}, event = 'LspAttach' },
 
     -- Additional lua configuration, makes nvim stuff amazing!
     { 'folke/neodev.nvim', opts = {} },

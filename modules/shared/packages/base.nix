@@ -38,8 +38,6 @@ in
 
   # Python
   myPython
-  poetry
-  ruff
   uv
 
   # Core development
