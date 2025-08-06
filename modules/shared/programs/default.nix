@@ -31,6 +31,9 @@
   programs.fd.enable = true;
   programs.fzf.enable = true;
   programs.lazygit.enable = true;
+  programs.nh = {
+    enable = true;
+  };
   programs.ripgrep.enable = true;
   programs.vim.enable = true;
   programs.zoxide.enable = true;

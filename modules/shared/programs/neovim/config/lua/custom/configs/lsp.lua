@@ -20,19 +20,29 @@ local servers = {
     }
   },
   bashls = {},
-  pylsp = {
+  -- pylsp = {
+  --   settings = {
+  --     pylsp = {
+  --       plugins = {
+  --         ruff = {
+  --           enabled = true,
+  --           extendSelect = { 'I' }
+  --         },
+  --         mypy = {
+  --           enabled = true
+  --         },
+  --       },
+  --       configurationSources = { 'mypy', 'ruff' }
+  --     }
+  --   }
+  -- },
+  ruff = {},
+  basedpyright = {
     settings = {
-      pylsp = {
-        plugins = {
-          ruff = {
-            enabled = true,
-            extendSelect = { 'I' }
-          },
-          mypy = {
-            enabled = true
-          },
-        },
-        configurationSources = { 'mypy', 'ruff' }
+      analysis = {
+        inlayHints = {
+          callArgumentNames = false,
+        }
       }
     }
   },
@@ -99,3 +109,5 @@ for server, opts in pairs(servers) do
   end
   require('lspconfig')[server].setup(base_config)
 end
+
+vim.lsp.inlay_hint.enable(true)

@@ -12,7 +12,7 @@ in
 {
   programs.rio =
     {
-      enable = true;
+      enable = false;
       settings = {
         editor.program = "nvim";
         colors = rio-colors;
