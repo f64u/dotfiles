@@ -111,3 +111,9 @@ for server, opts in pairs(servers) do
 end
 
 vim.lsp.inlay_hint.enable(true)
+
+vim.diagnostic.config({
+  virtual_lines = {
+    current_line = true,
+  }
+})
