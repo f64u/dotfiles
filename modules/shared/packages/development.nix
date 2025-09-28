@@ -29,4 +29,11 @@ with pkgs; [
   opam
   qemu
   z3
+  texliveFull 
+
+  # Build tools
+  autoconf
+  cmake
+  pkg-config
+  tree-sitter
 ]

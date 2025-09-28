@@ -8,10 +8,7 @@
     onActivation.upgrade = true;
 
     brews = [
-      {
-        name = "gmp";
-        link = true;
-      }
+      "gmp"
       "libuv"
     ];
 

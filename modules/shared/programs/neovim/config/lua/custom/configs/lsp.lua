@@ -1,5 +1,9 @@
 -- [[ Configure LSP ]]
 
+if vim.g.vscode then
+  return
+end
+
 local on_attach = require('custom.util.lspconfig').on_attach
 
 local servers = {
@@ -105,9 +109,11 @@ for server, opts in pairs(servers) do
   }
 
   for opt, value in pairs(opts) do
+    ---@diagnostic disable-next-line: assign-type-mismatch
     base_config[opt] = value
   end
-  require('lspconfig')[server].setup(base_config)
+  vim.lsp.enable(server)
+  vim.lsp.config(server, base_config)
 end
 
 vim.lsp.inlay_hint.enable(true)

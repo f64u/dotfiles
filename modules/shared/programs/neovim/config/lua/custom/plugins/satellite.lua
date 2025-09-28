@@ -1,4 +1,5 @@
 return {
   'lewis6991/satellite.nvim',
-  opts = {}
+  opts = {},
+  enabled = false,
 }

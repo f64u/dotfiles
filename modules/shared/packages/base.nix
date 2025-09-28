@@ -18,18 +18,13 @@ with pkgs; let
 in
 [
   # Core terminal and development tools
+  uutils-coreutils-noprefix
   curl
   git
   jq
   wget
   fastfetch
   dos2unix
-
-  # Build tools
-  autoconf
-  cmake
-  pkgconf
-  tree-sitter
 
   # Common libraries
   openssl

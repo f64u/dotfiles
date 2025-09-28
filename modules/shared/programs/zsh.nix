@@ -19,7 +19,6 @@ in
       export PATH=~/.local/bin:/usr/local/smlnj/bin:$PATH
     '';
     shellAliases = {
-      cp = "xcp";
       q = "exit";
       ghci = "TERM=linux ghci";
       stack = "TERM=linux stack";
