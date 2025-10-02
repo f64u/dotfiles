@@ -17,6 +17,16 @@ in
       source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
       eval $(opam env)
       export PATH=~/.local/bin:/usr/local/smlnj/bin:$PATH
+
+      function mksudo {
+        MINS="''${1:-5}"
+        SECS=$(( MINS * 60 ))
+        echo Temporarily granting sudo access to $USER for "$MINS"m...
+        DOREVOKE="echo Revoking... && dseditgroup -o edit -d $USER -t user admin && echo Revoked."
+        DOGRANT="dseditgroup -o edit -a $USER -t user admin && echo Granted."
+        su tomasadal -c "sudo bash -c \"trap \\\"$DOREVOKE\\\" EXIT && "$DOGRANT" && sleep $SECS\""
+      }
+
     '';
     shellAliases = {
       q = "exit";

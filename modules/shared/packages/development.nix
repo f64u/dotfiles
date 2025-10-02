@@ -24,7 +24,8 @@ with pkgs; [
   # Specialized tools
   elan
   fstar
-  lua5_4
+  lua5_1
+  lua51Packages.luarocks
   ollama
   opam
   qemu

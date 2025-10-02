@@ -36,7 +36,12 @@ require('lazy').setup('custom.plugins', {
   },
   change_detection = {
     notify = false
-  }
+  },
+  rocks = {
+    enabled = true,
+    server = 'https://luarocks.org/dev'
+  },
+
 })
 
 require 'custom.configs'

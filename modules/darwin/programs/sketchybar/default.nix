@@ -2,18 +2,12 @@
 let
   sketchybarConfig = pkgs.stdenv.mkDerivation {
     name = "sketchybar-config-v0.1.0";
-    src = pkgs.fetchFromGitHub {
-      owner = "FelixKratz";
-      repo = "dotfiles";
-      rev = "1589c769e28f110b1177f6a83fa145235c8f7bd6";
-      hash = "sha256-vo/PmrYlrg6kwBbFtrwbTZffLrQgzTSuqVxfNQba3YI=";
-    };
+    src = ./config;
     buildPhase = ''
-      patch -p0 -d ./.config/sketchybar -i ${./config.patch}
-      make -C ./.config/sketchybar/helpers
+      make -C ./helpers
     '';
     installPhase = ''
-      cp -r ./.config/sketchybar $out
+      cp -r . $out
     '';
   };
 in
