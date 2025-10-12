@@ -30,7 +30,7 @@ with pkgs; [
   opam
   qemu
   z3
-  texliveFull 
+  texliveFull
 
   # Build tools
   autoconf

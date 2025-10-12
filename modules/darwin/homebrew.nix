@@ -25,6 +25,7 @@
       "rstudio"
       "shottr"
       "slack"
+      "skim"
       "smlnj"
       "spotify"
       "steam"

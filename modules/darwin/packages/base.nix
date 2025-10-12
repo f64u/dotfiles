@@ -4,7 +4,6 @@
 with pkgs; [
   # macOS-specific base packages
   aldente
-  raycast
-  skimpdf
   maccy
 ]
+

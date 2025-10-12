@@ -136,28 +136,28 @@ space_window_observer:subscribe('aerospace_workspace_change', function(env)
   local focused_workspace = env.FOCUSED_WORKSPACE
   for i = 1, 10 do
     sbar.exec('aerospace list-windows --workspace ' .. i .. " --format '%{app-name}'", function(apps_output)
-        local icon_line = ''
-        local no_app = true
-        local apps_seen = {}
+      local icon_line = ''
+      local no_app = true
+      local apps_seen = {}
 
-        for app in string.gmatch(apps_output, '[^\r\n]+') do
-          if app and app ~= '' and not apps_seen[app] then
-            apps_seen[app] = true
-            no_app = false
-            local lookup = app_icons[app]
-            local icon = ((lookup == nil) and app_icons['Default'] or lookup)
-            icon_line = icon_line .. icon
-          end
+      for app in string.gmatch(apps_output, '[^\r\n]+') do
+        if app and app ~= '' and not apps_seen[app] then
+          apps_seen[app] = true
+          no_app = false
+          local lookup = app_icons[app]
+          local icon = ((lookup == nil) and app_icons['Default'] or lookup)
+          icon_line = icon_line .. icon
         end
+      end
 
-        if no_app then
-          icon_line = ' —'
-        end
+      if no_app then
+        icon_line = '—'
+      end
 
-        sbar.animate('tanh', 10, function()
-          spaces[i]:set({ label = icon_line })
-        end)
+      sbar.animate('tanh', 10, function()
+        spaces[i]:set({ label = icon_line })
       end)
+    end)
   end
 end)
 

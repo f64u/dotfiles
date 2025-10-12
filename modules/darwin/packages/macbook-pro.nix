@@ -7,3 +7,4 @@ with pkgs; [
   # docker-desktop  # Heavy tools on Pro only
   # android-studio  # Development tools on Pro
 ]
+
