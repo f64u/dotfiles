@@ -20,7 +20,7 @@
   outputs = { self, nix-darwin, nix-homebrew, home-manager, nixpkgs, ... }@inputs:
     let
       # Common system builder function for Darwin
-      mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [] }:
+      mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [ ] }:
         nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
@@ -41,7 +41,7 @@
         };
 
       # Common system builder function for NixOS
-      mkNixosSystem = { hostname, system ? "x86_64-linux", extraModules ? [] }:
+      mkNixosSystem = { hostname, system ? "x86_64-linux", extraModules ? [ ] }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
@@ -57,13 +57,13 @@
       # $ darwin-rebuild build --flake .#macbook-air
       # $ darwin-rebuild build --flake .#macbook-pro
       darwinConfigurations = {
-        "macbook-air" = mkDarwinSystem { 
-          hostname = "macbook-air"; 
-          system = "aarch64-darwin"; 
+        "macbook-air" = mkDarwinSystem {
+          hostname = "macbook-air";
+          system = "aarch64-darwin";
         };
-        "macbook-pro" = mkDarwinSystem { 
-          hostname = "macbook-pro"; 
-          system = "aarch64-darwin"; 
+        "macbook-pro" = mkDarwinSystem {
+          hostname = "macbook-pro";
+          system = "aarch64-darwin";
         };
       };
 
@@ -78,7 +78,7 @@
 
       # For backward compatibility
       darwinConfigurations."Fadys-MacBook-Air" = self.darwinConfigurations."macbook-air";
-      
+
       # For backward compatibility
       darwinPackages = self.darwinConfigurations."macbook-air".pkgs;
     };

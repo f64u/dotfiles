@@ -12,8 +12,6 @@ in
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
     initContent = ''
-      export TERM=rio
-
       source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
       eval $(opam env)
       export PATH=~/.local/bin:/usr/local/smlnj/bin:$PATH

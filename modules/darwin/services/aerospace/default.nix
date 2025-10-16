@@ -107,7 +107,7 @@
           run = "move-node-to-workspace 1";
         }
         {
-          "if".app-id = "org.alacritty";
+          "if".app-id = "com.github.wez.wezterm";
           run = "move-node-to-workspace 2";
         }
         {

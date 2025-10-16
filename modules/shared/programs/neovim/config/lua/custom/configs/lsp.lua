@@ -121,5 +121,17 @@ vim.lsp.inlay_hint.enable(true)
 vim.diagnostic.config({
   virtual_lines = {
     current_line = true,
-  }
+  },
+  underline = true,
+  signs = true,
+  virtual_text = false,
+  severity_sort = true,
 })
+
+-- Set diagnostic highlights to use undercurl
+vim.cmd([[
+  hi DiagnosticUnderlineError cterm=undercurl gui=undercurl
+  hi DiagnosticUnderlineWarn cterm=undercurl gui=undercurl
+  hi DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
+  hi DiagnosticUnderlineHint cterm=undercurl gui=undercurl
+]])
