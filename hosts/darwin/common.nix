@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   imports = [
     ../../modules/darwin
   ];
@@ -34,11 +35,10 @@
 
   environment = {
     enableAllTerminfo = true;
-    systemPackages = with pkgs;
-      [
-        aerospace
-        sketchybar
-      ];
+    systemPackages = with pkgs; [
+      aerospace
+      sketchybar
+    ];
   };
 
   fonts.packages = with pkgs.nerd-fonts; [
@@ -60,7 +60,10 @@
     extraOptions = ''
       extra-platforms = x86_64-darwin aarch64-darwin
     '';
-    # linux-builder.enable = true;
+    # linux-builder = {
+    #   enable = true;
+    #   ephemeral = false;
+    # };
   };
 
   programs = {
@@ -69,11 +72,9 @@
     bash.enable = true;
 
     nix-index.enable = true;
-    _1password-gui.enable = true;
   };
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
 }
-

@@ -13,6 +13,7 @@
     ];
 
     casks = [
+      "docker-desktop"
       "dolphin"
       "firefox"
       "font-sf-mono"

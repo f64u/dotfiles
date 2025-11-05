@@ -1,7 +1,8 @@
 # Base packages for all systems and users
 { pkgs }:
 
-with pkgs; let
+with pkgs;
+let
   myPython = python313.withPackages (ps: [
     ps.distutils
     ps.flit
@@ -18,13 +19,14 @@ with pkgs; let
 in
 [
   # Core terminal and development tools
-  uutils-coreutils-noprefix
+  comma
   curl
+  dos2unix
+  fastfetch
   git
   jq
   wget
-  fastfetch
-  dos2unix
+  uutils-coreutils-noprefix
 
   # Common libraries
   openssl

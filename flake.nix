@@ -15,12 +15,31 @@
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    nix-rosetta-builder = {
+      url = "github:cpick/nix-rosetta-builder";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nix-darwin, nix-homebrew, home-manager, nixpkgs, ... }@inputs:
+  outputs =
+    {
+      self,
+      nix-darwin,
+      nix-homebrew,
+      home-manager,
+      nix-rosetta-builder,
+      nixpkgs,
+      ...
+    }@inputs:
     let
       # Common system builder function for Darwin
-      mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [ ] }:
+      mkDarwinSystem =
+        {
+          hostname,
+          system ? "aarch64-darwin",
+          extraModules ? [ ],
+        }:
         nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
@@ -34,21 +53,35 @@
                 autoMigrate = true;
               };
             }
+
             ./hosts/darwin/common.nix
             ./hosts/darwin/${hostname}.nix
-          ] ++ extraModules;
+
+            nix-rosetta-builder.darwinModules.default
+            {
+              # see available options in module.nix's `options.nix-rosetta-builder`
+              nix-rosetta-builder.onDemand = true;
+            }
+          ]
+          ++ extraModules;
           specialArgs = { inherit inputs hostname; };
         };
 
       # Common system builder function for NixOS
-      mkNixosSystem = { hostname, system ? "x86_64-linux", extraModules ? [ ] }:
+      mkNixosSystem =
+        {
+          hostname,
+          system ? "x86_64-linux",
+          extraModules ? [ ],
+        }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
             home-manager.nixosModules.home-manager
             ./hosts/nixos/common.nix
             ./hosts/nixos/${hostname}.nix
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
           specialArgs = { inherit inputs hostname; };
         };
     in

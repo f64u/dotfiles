@@ -1,7 +1,8 @@
 # Development packages that can be enabled per system
 { pkgs }:
 
-with pkgs; [
+with pkgs;
+[
   # Advanced development tools
   android-tools
   google-cloud-sdk
@@ -14,6 +15,7 @@ with pkgs; [
   ccls
   languagetool
   nil
+  nixfmt-rfc-style
   lua-language-server
   taplo # toml
   texlab # latex
@@ -24,6 +26,7 @@ with pkgs; [
   # Specialized tools
   elan
   fstar
+  gh
   lua5_1
   lua51Packages.luarocks
   ollama

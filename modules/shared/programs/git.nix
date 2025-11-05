@@ -2,14 +2,12 @@
 {
   programs.git = {
     enable = true;
-    delta.enable = true;
     ignores = [ "*.swp" ".DS_STORE" ];
-    userName = fullName;
-    userEmail = email;
-    lfs = {
-      enable = true;
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        name = fullName;
+        inherit email;
+      };
       init.defaultBranch = "main";
       core = {
         editor = "nvim";
@@ -17,6 +15,9 @@
       };
       pull.rebase = true;
       rebase.autoStash = true;
+    };
+    lfs = {
+      enable = true;
     };
   };
 }
