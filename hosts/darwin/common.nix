@@ -34,7 +34,7 @@
   };
 
   environment = {
-    enableAllTerminfo = true;
+    # enableAllTerminfo = true;
     systemPackages = with pkgs; [
       aerospace
       sketchybar

@@ -4,8 +4,7 @@ return {
     return not vim.g.vscode
   end,
   dependencies = 'rafamadriz/friendly-snippets',
-
-  version = '1.*',
+  build = 'cargo build --release', -- for delimiters
   opts = {
     keymap = { preset = 'default' },
 
