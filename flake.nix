@@ -16,10 +16,10 @@
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
-    nix-rosetta-builder = {
-      url = "github:cpick/nix-rosetta-builder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nix-rosetta-builder = {
+    #   url = "github:cpick/nix-rosetta-builder";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs =
@@ -28,7 +28,7 @@
       nix-darwin,
       nix-homebrew,
       home-manager,
-      nix-rosetta-builder,
+      # nix-rosetta-builder,
       nixpkgs,
       ...
     }@inputs:
@@ -57,11 +57,11 @@
             ./hosts/darwin/common.nix
             ./hosts/darwin/${hostname}.nix
 
-            nix-rosetta-builder.darwinModules.default
-            {
-              # see available options in module.nix's `options.nix-rosetta-builder`
-              nix-rosetta-builder.onDemand = true;
-            }
+            # nix-rosetta-builder.darwinModules.default
+            # {
+            #   # see available options in module.nix's `options.nix-rosetta-builder`
+            #   nix-rosetta-builder.onDemand = true;
+            # }
           ]
           ++ extraModules;
           specialArgs = { inherit inputs hostname; };
@@ -109,10 +109,5 @@
         };
       };
 
-      # For backward compatibility
-      darwinConfigurations."Fadys-MacBook-Air" = self.darwinConfigurations."macbook-air";
-
-      # For backward compatibility
-      darwinPackages = self.darwinConfigurations."macbook-air".pkgs;
     };
 }

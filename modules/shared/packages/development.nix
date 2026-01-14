@@ -15,7 +15,7 @@ with pkgs;
   ccls
   languagetool
   nil
-  nixfmt-rfc-style
+  nixfmt
   lua-language-server
   taplo # toml
   texlab # latex
