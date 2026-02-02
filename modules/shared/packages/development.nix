@@ -32,7 +32,7 @@ with pkgs;
   ollama
   opam
   qemu
-  z3
+  # z3
   texliveFull
 
   # Build tools
