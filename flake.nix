@@ -87,11 +87,11 @@
     in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#macbook-air
+      # $ darwin-rebuild build --flake .#macbook-pro-work
       # $ darwin-rebuild build --flake .#macbook-pro
       darwinConfigurations = {
         "macbook-pro" = mkDarwinSystem {
-          hostname = "macbook-air";
+          hostname = "macbook-pro";
           system = "aarch64-darwin";
         };
         "macbook-pro-work" = mkDarwinSystem {

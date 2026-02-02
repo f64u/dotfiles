@@ -1,4 +1,7 @@
-{ hostname ? "macbook-air", ... }:
+{
+  hostname ? "macbook-pro",
+  ...
+}:
 let
   fullName = "Fady Adal";
   user = "fadyadal";
@@ -20,19 +23,37 @@ in
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "bak";
-    extraSpecialArgs = { inherit fullName user email hostname; };
-    users.${user} = { pkgs, config, lib, ... }: {
-      imports = [
-        ../shared/programs
-        ./programs
-      ];
-      home = {
-        enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix { inherit pkgs hostname; } ++
-          pkgs.callPackage ../shared/packages.nix { inherit pkgs hostname; user = "${user}"; };
-        stateVersion = "23.11";
-      };
+    extraSpecialArgs = {
+      inherit
+        fullName
+        user
+        email
+        hostname
+        ;
     };
+    users.${user} =
+      {
+        pkgs,
+        config,
+        lib,
+        ...
+      }:
+      {
+        imports = [
+          ../shared/programs
+          ./programs
+        ];
+        home = {
+          enableNixpkgsReleaseCheck = false;
+          packages =
+            pkgs.callPackage ./packages.nix { inherit pkgs hostname; }
+            ++ pkgs.callPackage ../shared/packages.nix {
+              inherit pkgs hostname;
+              user = "${user}";
+            };
+          stateVersion = "23.11";
+        };
+      };
   };
 
 }

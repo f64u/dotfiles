@@ -1,6 +1,10 @@
-{ pkgs, hostname ? "macbook-air", ... }:
+{
+  pkgs,
+  hostname ? "macbook-pro",
+  ...
+}:
 
-let 
+let
   shared-packages = import ../shared/packages.nix { inherit pkgs; };
   base-packages = import ./packages/base.nix { inherit pkgs; };
   system-packages = import ./packages/${hostname}.nix { inherit pkgs; };

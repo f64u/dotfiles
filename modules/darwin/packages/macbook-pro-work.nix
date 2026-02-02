@@ -3,6 +3,4 @@
 
 with pkgs;
 [
-  utm
 ]
-

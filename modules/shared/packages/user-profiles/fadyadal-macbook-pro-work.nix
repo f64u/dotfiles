@@ -1,4 +1,3 @@
-# Package profile for fadyadal on macbook-air
 { pkgs }:
 
 let
@@ -6,8 +5,10 @@ let
   development-packages = import ../development.nix { inherit pkgs; };
   media-packages = import ../media.nix { inherit pkgs; };
 in
-base-packages ++ development-packages ++ media-packages ++ [
-  # Additional packages specific to fadyadal on macbook-air
+base-packages
+++ development-packages
+++ media-packages
+++ [
   pkgs.claude-code
   pkgs.nmap
 ]
