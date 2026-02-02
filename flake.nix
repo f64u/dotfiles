@@ -90,12 +90,12 @@
       # $ darwin-rebuild build --flake .#macbook-air
       # $ darwin-rebuild build --flake .#macbook-pro
       darwinConfigurations = {
-        "macbook-air" = mkDarwinSystem {
+        "macbook-pro" = mkDarwinSystem {
           hostname = "macbook-air";
           system = "aarch64-darwin";
         };
-        "macbook-pro" = mkDarwinSystem {
-          hostname = "macbook-pro";
+        "macbook-pro-work" = mkDarwinSystem {
+          hostname = "macbook-pro-work";
           system = "aarch64-darwin";
         };
       };
