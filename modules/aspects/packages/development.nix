@@ -8,9 +8,8 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        # GUI apps kept here because they are daily drivers; their Electron
-        # runtime is shared with vscode, so the marginal cost is small.
-        code-cursor
+        # Kept here as a daily driver; its Electron runtime is shared with
+        # vscode, so the marginal cost is small.
         discord
 
         # Language servers and tools
