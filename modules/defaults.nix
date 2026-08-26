@@ -18,7 +18,17 @@
           ];
           trusted-users = [ "fadyadal" ];
         };
-        gc.automatic = true;
+
+        # `gc.automatic` alone never actually collected anything: it needs a
+        # schedule (launchd `interval` on darwin, a systemd calendar spec on
+        # NixOS -- set in each platform's base aspect) and an age bound.
+        gc = {
+          automatic = true;
+          options = "--delete-older-than 30d";
+        };
+
+        # Hard-link identical files in the store after each build.
+        optimise.automatic = true;
       };
 
       # home-manager is evaluated with the host's nixpkgs, so `allowUnfree`

@@ -37,5 +37,19 @@
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # Catppuccin themes consumed as plain source trees. These were previously
+    # `builtins.fetchGit` calls pinned by rev inside the aspects, which meant
+    # full git clones on every evaluation and revisions that flake.lock knew
+    # nothing about -- `nix flake update` could not see them.
+    catppuccin-starship = {
+      url = "github:catppuccin/starship";
+      flake = false;
+    };
+
+    catppuccin-zsh-syntax-highlighting = {
+      url = "github:catppuccin/zsh-syntax-highlighting";
+      flake = false;
+    };
   };
 }

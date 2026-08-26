@@ -1,7 +1,26 @@
+{ lib, ... }:
 {
   den.aspects.aerospace.darwin =
     { ... }:
+    let
+      workspaces = map toString (lib.range 1 9);
 
+      # `alt-N` focuses workspace N.
+      focusBindings = lib.listToAttrs (map (n: lib.nameValuePair "alt-${n}" "workspace ${n}") workspaces);
+
+      # `alt-shift-N` moves the focused window to workspace N, follows it, and
+      # nudges sketchybar to redraw its per-workspace app icons.
+      moveBindings = lib.listToAttrs (
+        map (
+          n:
+          lib.nameValuePair "alt-shift-${n}" [
+            "move-node-to-workspace ${n}"
+            "workspace ${n}"
+            "exec-and-forget sketchybar --trigger windows_on_spaces"
+          ]
+        ) workspaces
+      );
+    in
     {
       services.aerospace = {
         enable = true;
@@ -77,69 +96,14 @@
             # Balance windows
             alt-shift-0 = "balance-sizes";
 
-            # Move window to workspace and focus
-            alt-shift-1 = [
-              "move-node-to-workspace 1"
-              "workspace 1"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-2 = [
-              "move-node-to-workspace 2"
-              "workspace 2"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-3 = [
-              "move-node-to-workspace 3"
-              "workspace 3"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-4 = [
-              "move-node-to-workspace 4"
-              "workspace 4"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-5 = [
-              "move-node-to-workspace 5"
-              "workspace 5"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-6 = [
-              "move-node-to-workspace 6"
-              "workspace 6"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-7 = [
-              "move-node-to-workspace 7"
-              "workspace 7"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-8 = [
-              "move-node-to-workspace 8"
-              "workspace 8"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-            alt-shift-9 = [
-              "move-node-to-workspace 9"
-              "workspace 9"
-              "exec-and-forget sketchybar --trigger windows_on_spaces"
-            ];
-
             # Focus workspace
             alt-tab = "workspace-back-and-forth";
 
-            alt-1 = "workspace 1";
-            alt-2 = "workspace 2";
-            alt-3 = "workspace 3";
-            alt-4 = "workspace 4";
-            alt-5 = "workspace 5";
-            alt-6 = "workspace 6";
-            alt-7 = "workspace 7";
-            alt-8 = "workspace 8";
-            alt-9 = "workspace 9";
-
             # Service commands
             alt-shift-semicolon = "mode service";
-          };
+          }
+          // focusBindings
+          // moveBindings;
 
           mode.service.binding = {
             esc = [

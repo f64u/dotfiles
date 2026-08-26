@@ -1,25 +1,30 @@
+-- Catppuccin Mocha, matching the rest of the setup (neovim, tmux, starship,
+-- wezterm, zsh syntax highlighting).
+--
+-- NOTE: these were Macchiato values -- except bar.bg and popup.bg, which were
+-- already Mocha's base -- so the bar sat a shade off from every other surface.
 return {
-  black = 0xff181926,
-  white = 0xffcad3f5,
-  red = 0xffed8796,
-  green = 0xffa6da95,
-  blue = 0xff8aadf4,
-  yellow = 0xffeed49f,
-  orange = 0xfff5a97f,
-  magenta = 0xffc6a0f6,
-  grey = 0xff939ab7,
+  black = 0xff181825,   -- mantle
+  white = 0xffcdd6f4,   -- text
+  red = 0xfff38ba8,
+  green = 0xffa6e3a1,
+  blue = 0xff89b4fa,
+  yellow = 0xfff9e2af,
+  orange = 0xfffab387,  -- peach
+  magenta = 0xffcba6f7, -- mauve
+  grey = 0xff9399b2,    -- overlay2
   transparent = 0x00000000,
 
   bar = {
-    bg = 0xff1e1e2e,
-    border = 0xff494d64,
+    bg = 0xff1e1e2e, -- base
+    border = 0xff45475a, -- surface1
   },
   popup = {
     bg = 0xff1e1e2e,
-    border = 0xffcad3f5
+    border = 0xffcdd6f4,
   },
-  bg1 = 0x603c3e4f,
-  bg2 = 0x60494d64,
+  bg1 = 0x60313244, -- surface0, translucent
+  bg2 = 0x6045475a, -- surface1, translucent
 
   with_alpha = function(color, alpha)
     if alpha > 1.0 or alpha < 0.0 then return color end

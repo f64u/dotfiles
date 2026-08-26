@@ -103,12 +103,11 @@ local space_window_observer = sbar.add('item', {
   updates = true,
 })
 
--- Periodic update every 2 seconds to catch window changes
-sbar.add('item', {
-  drawing = false,
-  update_freq = 2,
-  script = 'sketchybar --trigger windows_on_spaces'
-})
+-- NOTE: there used to be a hidden item here with `update_freq = 2` firing
+-- `windows_on_spaces`, which fanned out into ten `aerospace list-windows`
+-- subprocesses plus ten animations -- about eleven process spawns every two
+-- seconds, forever, whether or not anything had changed. Updates are now
+-- driven purely by events (see the subscriptions at the bottom of this file).
 
 local spaces_indicator = sbar.add('item', {
   padding_left = -3,
@@ -132,40 +131,46 @@ local spaces_indicator = sbar.add('item', {
   }
 })
 
-space_window_observer:subscribe('aerospace_workspace_change', function(env)
-  local focused_workspace = env.FOCUSED_WORKSPACE
-  for i = 1, 10 do
-    sbar.exec('aerospace list-windows --workspace ' .. i .. " --format '%{app-name}'", function(apps_output)
-      local icon_line = ''
-      local no_app = true
-      local apps_seen = {}
+-- A single `--all` query covers every workspace, replacing the previous
+-- ten-subprocess fan-out.
+local function refresh_space_icons()
+  sbar.exec("aerospace list-windows --all --format '%{workspace}|%{app-name}'", function(output)
+    local icon_lines = {}
+    local seen = {}
 
-      for app in string.gmatch(apps_output, '[^\r\n]+') do
-        if app and app ~= '' and not apps_seen[app] then
-          apps_seen[app] = true
-          no_app = false
-          local lookup = app_icons[app]
-          local icon = ((lookup == nil) and app_icons['Default'] or lookup)
-          icon_line = icon_line .. icon
-        end
+    for line in string.gmatch(output, '[^\r\n]+') do
+      -- app names contain spaces, so only the workspace field is anchored
+      local workspace, app = string.match(line, '^%s*(%S+)%s*|%s*(.-)%s*$')
+      local index = tonumber(workspace)
+
+      if index and app and app ~= '' and not seen[workspace .. '\0' .. app] then
+        seen[workspace .. '\0' .. app] = true
+        local lookup = app_icons[app]
+        icon_lines[index] = (icon_lines[index] or '')
+            .. ((lookup == nil) and app_icons['Default'] or lookup)
       end
+    end
 
-      if no_app then
-        icon_line = '—'
+    sbar.animate('tanh', 10, function()
+      for i = 1, 10 do
+        spaces[i]:set({ label = icon_lines[i] or '—' })
       end
-
-      sbar.animate('tanh', 10, function()
-        spaces[i]:set({ label = icon_line })
-      end)
     end)
-  end
-end)
-
-space_window_observer:subscribe('windows_on_spaces', function(env)
-  sbar.exec('aerospace list-workspaces --focused', function(focused_ws)
-    sbar.trigger('aerospace_workspace_change', { FOCUSED_WORKSPACE = focused_ws:gsub('%s+', '') })
   end)
-end)
+end
+
+-- `aerospace_workspace_change` comes from aerospace's exec-on-workspace-change
+-- hook and its alt-shift-N bindings; `front_app_switched` catches apps being
+-- launched or quit without a workspace switch. If a window closes while the
+-- focused app stays put the strip can go briefly stale -- add a hidden item
+-- with a slow `update_freq` (30+) triggering `windows_on_spaces` if that
+-- bothers you, but not a two-second one.
+space_window_observer:subscribe(
+  { 'aerospace_workspace_change', 'front_app_switched' },
+  refresh_space_icons
+)
+
+space_window_observer:subscribe('windows_on_spaces', refresh_space_icons)
 
 spaces_indicator:subscribe('swap_menus_and_spaces', function(env)
   local currently_on = spaces_indicator:query().icon.value == icons.switch.on

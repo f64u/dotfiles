@@ -17,6 +17,38 @@
         "type": "github"
       }
     },
+    "catppuccin-starship": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754058577,
+        "narHash": "sha256-FLHjbClpTqaK4n2qmepCPkb8rocaAo3qeV4Zp1hia0g=",
+        "owner": "catppuccin",
+        "repo": "starship",
+        "rev": "5906cc369dd8207e063c0e6e2d27bd0c0b567cb8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "starship",
+        "type": "github"
+      }
+    },
+    "catppuccin-zsh-syntax-highlighting": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721499242,
+        "narHash": "sha256-l6tztApzYpQ2/CiKuLBf8vI2imM6vPJuFdNDSEi7T/o=",
+        "owner": "catppuccin",
+        "repo": "zsh-syntax-highlighting",
+        "rev": "7926c3d3e17d26b3779851a2255b95ee650bd928",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "zsh-syntax-highlighting",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -144,6 +176,8 @@
     },
     "root": {
       "inputs": {
+        "catppuccin-starship": "catppuccin-starship",
+        "catppuccin-zsh-syntax-highlighting": "catppuccin-zsh-syntax-highlighting",
         "darwin": "darwin",
         "den": "den",
         "flake-parts": "flake-parts",

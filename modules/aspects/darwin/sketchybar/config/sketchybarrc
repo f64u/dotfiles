@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
--- Load the sketchybar-package and prepare the helper binaries
-require("helpers")
+-- The `sketchybar` lua module is on LUA_CPATH already: home-manager's
+-- programs.sketchybar wraps the binary with LUA_PATH/LUA_CPATH pointing at
+-- sbarLuaPackage. The helper binaries are compiled by the derivation in
+-- ../default.nix, so there is nothing to build at startup either.
 require("init")

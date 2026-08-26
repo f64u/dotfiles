@@ -1,12 +1,7 @@
+{ inputs, ... }:
 {
   den.aspects.zsh.homeManager =
     { ... }:
-    let
-      catppuccin-zsh-syntax-highlighting = builtins.fetchGit {
-        url = "https://github.com/catppuccin/zsh-syntax-highlighting.git";
-        rev = "7926c3d3e17d26b3779851a2255b95ee650bd928";
-      };
-    in
     {
       programs.zsh = {
         enable = true;
@@ -14,8 +9,14 @@
         syntaxHighlighting.enable = true;
         autosuggestion.enable = true;
         initContent = ''
-          source ${catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
-          eval $(opam env)
+          source ${inputs.catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
+
+          # `opam env` shells out to opam on every prompt-less shell start, so
+          # only pay for it when opam is actually installed.
+          if command -v opam >/dev/null; then
+            eval "$(opam env)"
+          fi
+
           export PATH=~/.local/bin:/usr/local/smlnj/bin:$PATH
 
           function mksudo {

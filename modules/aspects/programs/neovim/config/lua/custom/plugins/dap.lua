@@ -54,12 +54,11 @@ return {
         }
       },
 
-      -- Installs the debug adapters for you
-      'mason-org/mason.nvim',
-      'jay-babu/mason-nvim-dap.nvim',
+      -- NOTE: mason.nvim / mason-nvim-dap.nvim used to be here to fetch
+      -- debugpy. They are gone: debug adapters come from the nix package set
+      -- (see ../../../default.nix), which also means they work on NixOS,
+      -- where mason's downloaded binaries would not run.
       'theHamsta/nvim-dap-virtual-text',
-
-      -- 'leoluz/nvim-dap-go',
 
       'nvim-neotest/nvim-nio',
     },
@@ -67,62 +66,47 @@ return {
       local dap = require 'dap'
       local dapui = require 'dapui'
 
-      require('mason-nvim-dap').setup {
-        -- Makes a best effort to setup the various debuggers with
-        -- reasonable debug configurations
-        automatic_setup = true,
-
-        automatic_installation = false,
-
-        -- You can provide additional configuration to the handlers,
-        -- see mason-nvim-dap README for more information
-        handlers = {},
-
-        -- You'll need to check that you have the required things installed
-        -- online, please don't ask me how to install them :)
-        ensure_installed = {
-          'debugpy',
-          --  'delve',
-        },
-      }
-
       require('nvim-dap-virtual-text').setup()
 
       dap.listeners.after.event_initialized['dapui_config'] = dapui.open
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
       dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-      -- require('dap-go').setup()
+      -- C/C++/Rust debugging via lldb-dap. Resolved from PATH rather than
+      -- hardcoded: this was `/opt/homebrew/opt/llvm@12/bin/lldb-vscode`, a
+      -- path that is both Homebrew-only and named after a binary LLVM renamed
+      -- to `lldb-dap` in LLVM 18.
+      local lldb_dap = vim.fn.exepath('lldb-dap')
+      if lldb_dap ~= '' then
+        dap.adapters.lldb = {
+          type = 'executable',
+          command = lldb_dap,
+          name = 'lldb',
+        }
 
-      require('dap-python').setup('uv')
+        dap.configurations.cpp = {
+          {
+            name = 'Launch',
+            type = 'lldb',
+            request = 'launch',
+            program = function()
+              ---@diagnostic disable-next-line: redundant-parameter
+              return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            end,
+            cwd = '${workspaceFolder}',
+            stopOnEntry = false,
+            args = {},
+            runInTerminal = false,
+          },
+        }
 
-      -- C/C++/Rust debugging using lldb
-      dap.adapters.lldb = {
-        type = 'executable',
-        command = '/opt/homebrew/opt/llvm@12/bin/lldb-vscode',
-        name = 'lldb',
-      }
-
-      dap.configurations.cpp = {
-        {
-          name = 'Launch',
-          type = 'lldb',
-          request = 'launch',
-          program = function()
-            ---@diagnostic disable-next-line: redundant-parameter
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
-          cwd = '${workspaceFolder}',
-          stopOnEntry = false,
-          args = {},
-          runInTerminal = false,
-        },
-      }
-
-      dap.configurations.c = dap.configurations.cpp
+        dap.configurations.c = dap.configurations.cpp
+      end
     end,
   },
   {
+    -- Owns the python adapter setup; nvim-dap's config above deliberately
+    -- does not also call dap_python.setup().
     'mfussenegger/nvim-dap-python',
     dependencies = {
       'mfussenegger/nvim-dap'

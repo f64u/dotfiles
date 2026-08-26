@@ -1,12 +1,12 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
-    -- Automatically install LSPs to stdpath for neovim
-    -- NOTE: repo moved from williamboman/ to mason-org/ (v2). `ensure_installed`
-    -- was dropped here because mason.nvim has no such option (that belongs to
-    -- mason-lspconfig / mason-tool-installer) -- it was silently doing nothing,
-    -- and tinymist comes from the nix package set anyway.
-    { 'mason-org/mason.nvim', opts = {} },
+    -- NOTE: no mason.nvim. Every server in custom/configs/lsp.lua now comes
+    -- from the nix package set (see ../../../default.nix), so servers are
+    -- declared in one place and work identically on darwin and NixOS --
+    -- mason's downloaded binaries would not run on the latter.
+    --
+    -- ~/.local/share/nvim/mason/ is now orphaned and can be deleted.
 
     -- Useful status updates for LSP
     { 'j-hui/fidget.nvim', opts = {}, event = 'LspAttach' },

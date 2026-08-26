@@ -86,11 +86,6 @@ return {
   -- Icons in nvim tabs
   { 'alvarosevilla95/luatab.nvim', opts = {} },
 
-
-  -- gth
-  { 'github/copilot.vim',          enabled = false },
-
-
   -- Highlight todo
   {
     'folke/todo-comments.nvim',

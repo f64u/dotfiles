@@ -28,20 +28,24 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup('custom.plugins', {
   defaults = {
-    cond = vim.g.vscode
+    -- Skip plugins entirely when running inside vscode-neovim. This was
+    -- `cond = vim.g.vscode`, i.e. exactly backwards: nil (a no-op) in plain
+    -- nvim, and true -- load everything -- inside vscode.
+    cond = not vim.g.vscode
   },
+  -- The update check is a network round-trip on startup; `:Lazy check` is
+  -- there when an update is actually wanted.
   checker = {
-    enabled = true,
-    notify = false
+    enabled = false
   },
   change_detection = {
     notify = false
   },
+  -- No plugin here resolves through luarocks, and the `dev` server is an
+  -- unpinned moving target.
   rocks = {
-    enabled = true,
-    server = 'https://luarocks.org/dev'
+    enabled = false
   },
-
 })
 
 require 'custom.configs'

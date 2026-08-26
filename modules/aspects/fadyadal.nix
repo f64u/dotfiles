@@ -15,14 +15,11 @@
 
       den.aspects.packages-base
       den.aspects.packages-development
-      den.aspects.packages-media
+      # packages-heavy is deliberately not here -- see packages/heavy.nix.
 
       den.aspects.programs-cli
-      den.aspects.alacritty
-      den.aspects.ghostty
       den.aspects.git
       den.aspects.neovim
-      den.aspects.rio
       den.aspects.starship
       den.aspects.tmux
       den.aspects.vscode

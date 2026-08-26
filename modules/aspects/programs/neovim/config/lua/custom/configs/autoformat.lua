@@ -44,7 +44,8 @@ M.setup = function()
 
       -- Tsserver usually works poorly. Sorry you work with bad languages
       -- You can remove this line if you know what you're doing :)
-      if client.name == 'tsserver' then
+      -- (renamed upstream: `tsserver` -> `ts_ls`, so the old check never fired)
+      if client.name == 'ts_ls' then
         return
       end
 

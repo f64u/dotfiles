@@ -11,16 +11,14 @@ return {
     styles = {
       comments = {},
     },
+    -- Only plugins this config actually installs. The list previously also
+    -- carried alpha, cmp, flash, illuminate, mason, mini, navic, neotest,
+    -- noice and notify, none of which are present.
     integrations = {
-      alpha = true,
-      cmp = true,
-      flash = true,
+      blink_cmp = true,
       gitsigns = true,
-      illuminate = true,
       indent_blankline = { enabled = true },
       lsp_trouble = true,
-      mason = true,
-      mini = true,
       native_lsp = {
         enabled = true,
         underlines = {
@@ -30,10 +28,6 @@ return {
           information = { 'undercurl' },
         },
       },
-      navic = { enabled = true, custom_bg = 'lualine' },
-      neotest = true,
-      noice = true,
-      notify = true,
       neotree = true,
       semantic_tokens = true,
       telescope = true,

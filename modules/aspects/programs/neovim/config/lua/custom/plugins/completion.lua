@@ -17,8 +17,8 @@ return {
     keymap = { preset = 'default' },
 
     appearance = {
-      -- deprecated upstream: drop once your theme ships blink.cmp highlights
-      use_nvim_cmp_as_default = true,
+      -- `use_nvim_cmp_as_default` is gone: catppuccin's `blink_cmp`
+      -- integration (see theme.lua) defines the highlights directly.
       nerd_font_variant = 'mono'
     },
 

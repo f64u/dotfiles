@@ -11,14 +11,14 @@
 
       nix.package = pkgs.nixVersions.stable;
 
+      # Weekly. The age bound lives in modules/defaults.nix.
+      nix.gc.dates = "weekly";
+
       services.openssh.enable = true;
 
-      # Basic system packages
-      environment.systemPackages = with pkgs; [
-        vim
-        git
-        curl
-        wget
-      ];
+      # Deliberately minimal: just enough to repair a system with no user
+      # profile activated. git/curl/wget come from the user's packages-base,
+      # and the editor from programs.neovim.
+      environment.systemPackages = [ pkgs.vim ];
     };
 }

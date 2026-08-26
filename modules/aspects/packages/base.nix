@@ -1,4 +1,9 @@
-# Base packages for all systems and users
+# Base packages for all systems and users.
+#
+# Everything here is something that should be on PATH in *every* shell. Tools
+# that are only wanted occasionally live in packages-heavy instead, which is
+# not included by default -- reach for them with `nix shell nixpkgs#<name>` or
+# `, <name>` (comma) rather than paying for them in every generation.
 {
   den.aspects.packages-base.homeManager =
     { pkgs, ... }:
@@ -16,15 +21,20 @@
     in
     {
       home.packages = with pkgs; [
-        # Core terminal and development tools
+        # Core terminal tools.
+        # NOTE: `git` is not listed here -- programs.git already installs it.
         comma
         curl
         dos2unix
         fastfetch
-        git
         jq
+        parallel
         wget
         uutils-coreutils-noprefix
+
+        # Wraps bare REPLs with readline. The `sml` / `idris2` shell aliases
+        # in the zsh aspect invoke this directly -- don't drop it.
+        rlwrap
 
         # Common libraries
         openssl

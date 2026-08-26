@@ -6,6 +6,9 @@ end
 
 local on_attach = require('custom.util.lspconfig').on_attach
 
+-- Every server listed here must be on PATH from the nix package set -- see
+-- modules/aspects/programs/neovim/default.nix. mason.nvim is gone, so adding
+-- a server means adding its package there too.
 local servers = {
   -- clangd = {},
   -- gopls = {},
@@ -52,17 +55,17 @@ local servers = {
   },
   -- Should be managed by rust-tools.nvim:
   -- rust_analyzer = {},
-  ts_ls = {},
+  -- html/cssls/jsonls come from vscode-langservers-extracted.
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
+  jsonls = {},
   ccls = {},
+  -- Provided by the opam switch, not nixpkgs -- the zsh aspect's
+  -- `eval $(opam env)` is what puts it on PATH.
   ocamllsp = {},
   -- Should be managed by lean.nvim:
   -- leanls = {},
   taplo = {},
-  jsonls = {},
-  wgsl_analyzer = {},
-  racket_langserver = {},
   texlab = {},
   tinymist = {},
 
@@ -83,23 +86,14 @@ local servers = {
     },
   },
 
-  hls = {},
-  omnisharp = {
-    -- was hardcoded to /Users/fadyadal/..., which cannot exist on nixos-desktop
-    cmd = { vim.fn.stdpath 'data' .. '/mason/bin/omnisharp' },
-    enable_roslyn_analyzers = true,
-    organize_imports_on_format = true,
-    enable_import_completion = true,
-  },
-
   millet = {},
-  ansiblels = {}
-}
 
--- For wgsl to work
-vim.filetype.add({
-  extension = { wgsl = 'wgsl' }
-})
+  -- REMOVED, all mason-only installs with no nix package behind them:
+  --   omnisharp, hls, ts_ls, ansiblels  (mason)
+  --   wgsl_analyzer, racket_langserver  (never installed at all)
+  -- Re-add one by putting its package in the neovim aspect and listing it
+  -- here; `basedpyright`/`ruff` above are the pattern to copy.
+}
 
 local capabilities = require('blink.cmp').get_lsp_capabilities()
 
