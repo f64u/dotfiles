@@ -1,7 +1,11 @@
 { den, ... }:
 {
   den.aspects.nixos-desktop = {
-    includes = [ den.aspects.nixos-base ];
+    includes = [
+      den.aspects.nixos-boot
+      den.aspects.nixos-networking
+      den.aspects.nixos-nix
+    ];
 
     # TODO: this host has never had a hardware configuration. Generate one on
     # the machine (`nixos-generate-config --show-hardware-config`), drop it in

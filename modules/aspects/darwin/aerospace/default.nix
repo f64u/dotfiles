@@ -188,7 +188,7 @@
           ];
 
           # Workspace to monitor assignment
-          # Aerospace: Monitor 1 = LC34G55T (external), Monitor 2 = Built-in (main)
+          # Aerospace: Monitor 1 = external, Monitor 2 = Built-in (main)
           # Sketchybar: Display 1 = main, Display 2 = external
           workspace-to-monitor-force-assignment = {
             "1" = 2; # Built-in display (main)
