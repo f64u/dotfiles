@@ -117,15 +117,31 @@ vim.diagnostic.config({
     current_line = true,
   },
   underline = true,
-  signs = true,
   virtual_text = false,
   severity_sort = true,
+
+  -- NOTE: these icons used to be four `vim.fn.sign_define` calls in
+  -- plugins/neotree.lua. That API was deprecated for diagnostics in 0.10 and
+  -- the legacy path is gone from vim.diagnostic, so with `signs = true` the
+  -- gutter fell back to rendering plain "E"/"W"/"I"/"H". Declaring them here
+  -- reaches both the gutter and neo-tree, which reads `signs.text`.
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = ' ',
+      [vim.diagnostic.severity.WARN] = ' ',
+      [vim.diagnostic.severity.INFO] = ' ',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
+
+  -- Show the diagnostic float when jumping with the built-in `[d` / `]d`.
+  jump = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float({ bufnr = bufnr, scope = 'cursor' })
+    end,
+  },
 })
 
--- Set diagnostic highlights to use undercurl
-vim.cmd([[
-  hi DiagnosticUnderlineError cterm=undercurl gui=undercurl
-  hi DiagnosticUnderlineWarn cterm=undercurl gui=undercurl
-  hi DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
-  hi DiagnosticUnderlineHint cterm=undercurl gui=undercurl
-]])
+-- NOTE: the undercurl highlight overrides that used to be here are supplied
+-- by catppuccin's native_lsp integration (see plugins/theme.lua), which also
+-- survives a later `:colorscheme` -- the raw `:hi` block did not.

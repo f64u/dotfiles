@@ -6,7 +6,7 @@ M.setup = function()
   local format_is_enabled = true
   vim.api.nvim_create_user_command('KickstartFormatToggle', function()
     format_is_enabled = not format_is_enabled
-    print('Setting autoformatting to: ' .. tostring(format_is_enabled))
+    vim.notify('Setting autoformatting to: ' .. tostring(format_is_enabled))
   end, {})
 
   -- Create an augroup that is used for managing our formatting autocmds.
@@ -15,7 +15,11 @@ M.setup = function()
   local _augroups = {}
   local get_augroup = function(client)
     if not _augroups[client.id] then
-      local group_name = 'kickstart-lsp-format-' .. client.name
+      -- Keyed *and named* by client.id: naming by client.name alone meant two
+      -- clients of the same name (two lua_ls in different roots, or
+      -- basedpyright + ruff in a monorepo) shared a group, and `clear = true`
+      -- silently wiped the first client's format-on-save autocmd.
+      local group_name = 'kickstart-lsp-format-' .. client.name .. '-' .. client.id
       local id = vim.api.nvim_create_augroup(group_name, { clear = true })
       _augroups[client.id] = id
     end
@@ -37,8 +41,10 @@ M.setup = function()
       end
       local bufnr = args.buf
 
-      -- Only attach to clients that support document formatting
-      if not client.server_capabilities.documentFormattingProvider then
+      -- Only attach to clients that support document formatting.
+      -- `supports_method` is the 0.11+ idiom and accounts for dynamic
+      -- registration, which the raw server_capabilities read missed.
+      if not client:supports_method('textDocument/formatting') then
         return
       end
 

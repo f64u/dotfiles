@@ -13,8 +13,10 @@
     };
     programs.direnv = {
       enable = true;
-      enableZshIntegration = true;
-      enableBashIntegration = true;
+      # Caches the flake evaluation, so `cd` into a project with a
+      # .envrc stops re-evaluating from scratch every time.
+      nix-direnv.enable = true;
+      # (zsh/bash integration is on by default via home.shell.)
     };
     programs.eza = {
       enable = true;

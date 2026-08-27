@@ -12,16 +12,17 @@ return {
       changedelete = { text = '~' },
     },
     on_attach = function(bufnr)
+      -- prev_hunk/next_hunk are @deprecated upstream in favour of nav_hunk.
       vim.keymap.set(
         'n',
         '<leader>gp',
-        require('gitsigns').prev_hunk,
+        function() require('gitsigns').nav_hunk('prev') end,
         { buffer = bufnr, desc = '[G]o to [P]revious Hunk' }
       )
       vim.keymap.set(
         'n',
         '<leader>gn',
-        require('gitsigns').next_hunk,
+        function() require('gitsigns').nav_hunk('next') end,
         { buffer = bufnr, desc = '[G]o to [N]ext Hunk' }
       )
       vim.keymap.set(

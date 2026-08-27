@@ -13,25 +13,15 @@ return {
     { '\\',    '<cmd> Neotree reveal <cr>', desc = 'Reveal neotree' }
   },
 
+  -- NOTE: this used to carry a `config` that called vim.fn.sign_define four
+  -- times to set the diagnostic icons. That API was deprecated for
+  -- diagnostics in 0.10 and no longer reaches the sign column at all, so the
+  -- icons now live in configs/lsp.lua's vim.diagnostic.config -- neo-tree
+  -- reads `signs.text` from there, and the gutter finally gets them too.
   opts = {
     close_if_last_window = true,
     window = {
       width = 30
     }
   },
-
-  config = function(_, opts)
-    -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-    vim.fn.sign_define('DiagnosticSignError',
-      { text = ' ', texthl = 'DiagnosticSignError' })
-    vim.fn.sign_define('DiagnosticSignWarn',
-      { text = ' ', texthl = 'DiagnosticSignWarn' })
-    vim.fn.sign_define('DiagnosticSignInfo',
-      { text = ' ', texthl = 'DiagnosticSignInfo' })
-    vim.fn.sign_define('DiagnosticSignHint',
-      { text = '󰌵', texthl = 'DiagnosticSignHint' })
-
-    require('neo-tree').setup(opts)
-  end
-
 }

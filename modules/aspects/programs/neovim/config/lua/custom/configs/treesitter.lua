@@ -6,6 +6,12 @@
 -- explicitly, and highlight/indent come from Neovim's built-in treesitter.
 -- The old `master` branch is locked to Neovim 0.11 and breaks on 0.12.
 
+-- Under vscode-neovim, lazy.nvim's `defaults.cond` skips every plugin, so
+-- nvim-treesitter is not loaded and the require below would throw.
+if vim.g.vscode then
+  return
+end
+
 -- Single source of truth: parser names. `latex` is deliberately absent, as it
 -- was in `highlight.disable`, so it keeps plain vim syntax.
 local languages = {
@@ -44,8 +50,11 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.treesitter.start()
     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-    -- was `additional_vim_regex_highlighting = { 'markdown' }`
-    if vim.bo.filetype == 'markdown' then vim.bo.syntax = 'on' end
+    -- was `additional_vim_regex_highlighting = { 'markdown' }`.
+    -- NOTE: must name the syntax, not 'on' -- synload.vim only special-cases
+    -- the literal uppercase "ON", so `syntax = 'on'` searched for a
+    -- syntax/on.vim that does not exist and silently loaded nothing.
+    if vim.bo.filetype == 'markdown' then vim.bo.syntax = 'markdown' end
   end,
 })
 

@@ -47,7 +47,9 @@ local function update_menus(env)
     menu_padding:set({ drawing = true })
     local id = 1
     for menu in string.gmatch(menus, '[^\r\n]+') do
-      if id < max_items then
+      -- `<=`: items menu.1 .. menu.15 exist, but `<` broke at id == 15 and
+      -- left the last one permanently unpopulated.
+      if id <= max_items then
         menu_items[id]:set( { label = menu, drawing = true } )
       else break end
       id = id + 1

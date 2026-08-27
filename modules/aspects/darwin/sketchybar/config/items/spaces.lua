@@ -139,8 +139,11 @@ local function refresh_space_icons()
     local seen = {}
 
     for line in string.gmatch(output, '[^\r\n]+') do
-      -- app names contain spaces, so only the workspace field is anchored
-      local workspace, app = string.match(line, '^%s*(%S+)%s*|%s*(.-)%s*$')
+      -- App names contain spaces, so only the workspace field is anchored.
+      -- `[^|%s]+` rather than `%S+`: the latter is greedy and backtracks to
+      -- the *last* pipe, so an app name containing `|` split in the wrong
+      -- place and the row was silently dropped by tonumber.
+      local workspace, app = string.match(line, '^%s*([^|%s]+)%s*|%s*(.-)%s*$')
       local index = tonumber(workspace)
 
       if index and app and app ~= '' and not seen[workspace .. '\0' .. app] then
@@ -160,17 +163,20 @@ local function refresh_space_icons()
 end
 
 -- `aerospace_workspace_change` comes from aerospace's exec-on-workspace-change
--- hook and its alt-shift-N bindings; `front_app_switched` catches apps being
--- launched or quit without a workspace switch. If a window closes while the
--- focused app stays put the strip can go briefly stale -- add a hidden item
--- with a slow `update_freq` (30+) triggering `windows_on_spaces` if that
--- bothers you, but not a two-second one.
+-- hook; `windows_on_spaces` from its alt-shift-N bindings; `front_app_switched`
+-- catches apps launched or quit without a workspace switch.
+--
+-- NOTE: the aerospace hook deliberately fires only `aerospace_workspace_change`
+-- now. Firing both from there meant every workspace switch ran this refresh
+-- twice, since both events land on the same handler.
+--
+-- If a window closes while the focused app stays put the strip can go briefly
+-- stale -- add a hidden item with a slow `update_freq` (30+) triggering
+-- `windows_on_spaces` if that bothers you, but not a two-second one.
 space_window_observer:subscribe(
-  { 'aerospace_workspace_change', 'front_app_switched' },
+  { 'aerospace_workspace_change', 'windows_on_spaces', 'front_app_switched' },
   refresh_space_icons
 )
-
-space_window_observer:subscribe('windows_on_spaces', refresh_space_icons)
 
 spaces_indicator:subscribe('swap_menus_and_spaces', function(env)
   local currently_on = spaces_indicator:query().icon.value == icons.switch.on

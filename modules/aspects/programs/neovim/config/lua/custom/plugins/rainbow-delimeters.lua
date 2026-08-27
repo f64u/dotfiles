@@ -1,7 +1,9 @@
 return {
   'HiPhish/rainbow-delimiters.nvim',
+  event = { 'BufReadPost', 'BufNewFile' },
 
-  config = function()
+  -- `init`, not `config`: this only assigns a vim.g the plugin reads lazily.
+  init = function()
     -- This module contains a number of default definitions
     local rainbow_delimiters = require 'rainbow-delimiters'
 

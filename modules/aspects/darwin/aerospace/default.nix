@@ -3,6 +3,9 @@
   den.aspects.aerospace.darwin =
     { ... }:
     let
+      # 1-9. There is no alt-10 key, and alt-shift-0 is already balance-sizes,
+      # so a tenth workspace has nowhere to bind -- the stale
+      # workspace-to-monitor entry for "10" is dropped below to match.
       workspaces = map toString (lib.range 1 9);
 
       # `alt-N` focuses workspace N.
@@ -25,9 +28,11 @@
       services.aerospace = {
         enable = true;
         settings = {
-          after-startup-command = [
-            "exec-and-forget sketchybar"
-          ];
+          # NOTE: no `after-startup-command = ["exec-and-forget sketchybar"]`.
+          # home-manager's programs.sketchybar already creates a launchd agent
+          # with RunAtLoad + KeepAlive, and aerospace's launchd PATH does not
+          # contain the nix profile anyway -- so that line either did nothing
+          # or started a second, unwrapped bar that cannot load the Lua config.
 
           enable-normalization-flatten-containers = true;
           enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -81,8 +86,10 @@
               "focus-monitor down"
             ];
 
-            # Rotate tree
-            alt-r = "layout tiles horizontal vertical";
+            # Flatten the workspace tree. (`alt-r` and `alt-e` were both bound
+            # to the same `layout tiles horizontal vertical` command; alt-e
+            # keeps that job below.)
+            alt-r = "flatten-workspace-tree";
 
             # Toggle fullscreen
             alt-f = "fullscreen";
@@ -180,11 +187,15 @@
             }
           ];
 
-          # Sketchybar integration callbacks
+          # Sketchybar integration callback.
+          #
+          # NOTE: only `aerospace_workspace_change` is fired. spaces.lua also
+          # subscribes to `windows_on_spaces` with the same handler, so firing
+          # both here made every workspace switch refresh the icon strip twice.
           exec-on-workspace-change = [
             "/bin/bash"
             "-c"
-            "/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE && /run/current-system/sw/bin/sketchybar --trigger windows_on_spaces"
+            "/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
           ];
 
           # Workspace to monitor assignment
@@ -200,7 +211,6 @@
             "7" = 2;
             "8" = 1; # External display
             "9" = 1;
-            "10" = 1;
           };
         };
       };

@@ -8,7 +8,7 @@
         enable = true;
         ignores = [
           "*.swp"
-          ".DS_STORE"
+          ".DS_Store" # was ".DS_STORE" -- matching is case-sensitive
         ];
         settings = {
           user = {
@@ -23,9 +23,7 @@
           pull.rebase = true;
           rebase.autoStash = true;
         };
-        lfs = {
-          enable = true;
-        };
+        lfs.enable = true;
       };
     };
 }

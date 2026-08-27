@@ -1,20 +1,24 @@
 return {
   -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  { 'tpope/vim-fugitive', cmd = { 'G', 'Git', 'Gdiffsplit', 'Gread', 'Gwrite', 'Gclog', 'Gvdiffsplit' } },
+  { 'tpope/vim-rhubarb',  dependencies = { 'tpope/vim-fugitive' }, cmd = 'GBrowse' },
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  { 'tpope/vim-sleuth',   event = { 'BufReadPost', 'BufNewFile' } },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {}, event = 'VeryLazy' },
+  { 'folke/which-key.nvim', opts = {}, event = 'VeryLazy' },
 
   -- <Ctrl-DIRECTION> and better tmux integration
-  'christoomey/vim-tmux-navigator',
+  {
+    'christoomey/vim-tmux-navigator',
+    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
+  },
 
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     opts = {
       options = {
         icons_enabled = true,
@@ -84,7 +88,7 @@ return {
   },
 
   -- Icons in nvim tabs
-  { 'alvarosevilla95/luatab.nvim', opts = {} },
+  { 'alvarosevilla95/luatab.nvim', event = 'VeryLazy', opts = {} },
 
   -- Highlight todo
   {

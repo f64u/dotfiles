@@ -32,16 +32,23 @@
       escapeTime = 0;
       historyLimit = 1000000;
       mouse = true;
-      shell = "$SHELL";
       keyMode = "vi";
+
+      # NOTE: was `shell = "$SHELL"`. tmux does not expand environment
+      # variables in default-shell, so that shipped the literal four
+      # characters and tmux fell back on its own. Spell the store path, as
+      # the wezterm aspect already does.
+      shell = "${pkgs.zsh}/bin/zsh";
+
+      # Both of these were being set in extraConfig, overriding the values
+      # this module had just written.
+      terminal = "tmux-256color";
+      focusEvents = true;
       extraConfig = ''
         set -g status-left ""
         set -g status-right "#{E:@catppuccin_status_directory}"
         set -agF status-right "#{E:@catppuccin_status_session}"
 
-
-
-        setw -g pane-base-index 1
         setw -g automatic-rename on
 
         set -g detach-on-destroy off  # don't exit from tmux when closing a session
@@ -50,15 +57,13 @@
         set -g status-interval 2      # update status every 2 seconds
         set -g status-left-length 200 # increase status line length
         set -g status-position top    # macOS / darwin style
-        set -g default-command /bin/zsh
 
         set -g prefix2 C-a
         bind C-a send-prefix -2
 
         # reload configuration
-        bind r source-file ~/.config/tmux/tmux.conf 
+        bind r source-file ~/.config/tmux/tmux.conf
 
-        set-option -g default-terminal 'tmux-256color'
         set-option -ag terminal-overrides ",wezterm*:RGB"
         set-option -ag terminal-overrides ",xterm-256color:RGB"
         set-option -ag terminal-overrides ",tmux-256color:RGB"
@@ -67,9 +72,7 @@
         set -as terminal-features ',*:usstyle'  # enable undercurl style support
         set -as terminal-features ',wezterm*:RGB'  # enable RGB colors for wezterm
 
-        set-option -g focus-events on
-
-        unbind v 
+        unbind v
         unbind %
         bind 'v' split-window -c '#{pane_current_path}' -h
         bind '"' split-window -c '#{pane_current_path}' -v

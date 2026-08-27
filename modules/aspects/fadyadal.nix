@@ -2,11 +2,8 @@
 # declares `users.fadyadal` (see modules/den.nix).
 { den, ... }:
 {
-  # Identity, readable from any aspect that takes `{ user, ... }`.
-  # (host/user schemas are freeform, so these are just extra attributes.)
-  den.schema.user.fullName = "Fady Adal";
-  den.schema.user.email = "2masadel@gmail.com";
-
+  # Identity lives on the user entity in modules/den.nix, not here -- see the
+  # note there for why `den.schema.user` is the wrong home for it.
   den.aspects.fadyadal = {
     includes = [
       # wheel/networkmanager on NixOS, system.primaryUser on Darwin.

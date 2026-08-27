@@ -3,21 +3,15 @@ return {
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
   opts = {
-    defaults = {
-      mappings = {
-        i = {
-          -- ['<C-u>'] = false,
-          -- ['<C-d>'] = false,
-        },
-      },
-    },
     extensions = {
       fzf = {}
     },
   },
   config = function(_, opts)
     require('telescope').setup(opts)
-    require('telescope').load_extension('fzf')
+    -- fzf-native is a compiled extension whose build is skipped when `make`
+    -- is unavailable, so loading it must not be fatal.
+    pcall(require('telescope').load_extension, 'fzf')
   end,
   dependencies = {
     'nvim-lua/plenary.nvim',

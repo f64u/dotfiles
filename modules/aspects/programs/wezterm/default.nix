@@ -1,22 +1,21 @@
 {
   den.aspects.wezterm.homeManager =
     { pkgs, ... }:
-    let
-      weztermConfig = builtins.readFile ./wezterm.lua;
-      # Remove the last line (return config) so we can add more configuration
-      configWithoutReturn = builtins.replaceStrings [ "return config" ] [ "" ] weztermConfig;
-    in
     {
-      programs.wezterm = {
-        enable = true;
-        extraConfig = ''
-          ${configWithoutReturn}
+      programs.wezterm.enable = true;
 
-          -- Auto-launch tmux
-          config.default_prog = { '${pkgs.zsh}/bin/zsh', '-l', '-c', 'tmux attach || tmux' }
-
-          return config
-        '';
+      # wezterm.lua stays a standalone, lintable Lua file that ends in
+      # `return config`; @zsh@ is substituted at build time.
+      #
+      # NOTE: this replaces a `builtins.replaceStrings [ "return config" ] [ "" ]`
+      # splice into programs.wezterm.extraConfig. That removed *every*
+      # occurrence of the substring (it is also a prefix of `return configs`,
+      # `return config_builder`, ...), and silently no-opped if the trailing
+      # line ever changed -- producing a Lua syntax error at runtime while
+      # `darwin-rebuild switch` still reported success. replaceVars uses
+      # --replace-fail, so a missing placeholder fails the build instead.
+      xdg.configFile."wezterm/wezterm.lua".source = pkgs.replaceVars ./wezterm.lua {
+        zsh = "${pkgs.zsh}/bin/zsh";
       };
     };
 }

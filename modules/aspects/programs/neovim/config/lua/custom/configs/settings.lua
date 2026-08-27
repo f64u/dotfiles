@@ -26,10 +26,16 @@ vim.opt.breakindent = true
 -- Primagean inspired [copied] undo stuff {{{
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
+vim.opt.undodir = vim.fn.stdpath 'state' .. '/undo'
 vim.opt.undofile = true
 vim.opt.scrolloff = 8
 -- }}}
+
+-- `zg`/`zw` write to 'spellfile'. Without this, nvim picks the first writable
+-- spell/ dir on runtimepath -- which is ~/.config/nvim/spell, a read-only nix
+-- store symlink -- and adding a word fails. Nvim still *reads* every
+-- spell/*.add.spl on runtimepath, so the committed word list keeps working.
+vim.opt.spellfile = vim.fn.stdpath 'state' .. '/spell/en.utf-8.add'
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.opt.ignorecase = true

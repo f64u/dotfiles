@@ -79,8 +79,8 @@ config.keys = {
   { key = '[', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'p') },
   -- Tab character
   { key = ']', mods = 'CMD', action = wezterm.action.SendString('\t') },
-  -- Next window
-  { key = ']', mods = 'CMD|SHIFT', action = wezterm.action.SendString('n') },
+  -- Tmux next window (was missing the prefix, so this typed a bare 'n')
+  { key = ']', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'n') },
   -- Tmux command prompt
   { key = ';', mods = 'CMD', action = wezterm.action.SendString(prefix .. ':') },
   -- Tmux window 1-9
@@ -97,7 +97,8 @@ config.keys = {
   { key = '0', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'P') },
 }
 
--- Auto-launch tmux (will be set by nix)
--- config.default_prog is configured in default.nix
+-- Auto-launch tmux. @zsh@ is substituted by pkgs.replaceVars in default.nix;
+-- the build fails if the placeholder is ever removed.
+config.default_prog = { '@zsh@', '-l', '-c', 'tmux attach || tmux' }
 
 return config

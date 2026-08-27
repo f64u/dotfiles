@@ -12,14 +12,11 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('t', '<C-x>', vim.api.nvim_replace_termcodes('<C-\\><C-N>', true, true, true),
   { desc = 'Escape terminal mode' })
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', function()
-  vim.diagnostic.jump { count = -1, float = true }
-end, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', function()
-  vim.diagnostic.jump { count = 1, float = true }
-end, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>f', vim.diagnostic.open_float, { desc = 'Open [f]loating diagnostic message' })
+-- NOTE: `[d` / `]d` are Neovim defaults and are deliberately not remapped
+-- here. The old versions hardcoded `count = ±1` (so `3]d` did not work) and
+-- passed `float`, which is deprecated in 0.12 and printed a warning on every
+-- jump. The float-on-jump behaviour is now set globally in configs/lsp.lua.
+-- `<C-W>d` is the built-in for showing the diagnostic under the cursor.
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- stolen from primagean
@@ -31,6 +28,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
-vim.keymap.set('n', 'bn', ':bn<cr>', { desc = 'Next buffer', silent = true })
-vim.keymap.set('n', 'bp', ':bp<cr>', { desc = 'Previous buffer', silent = true })
-vim.keymap.set('n', 'bd', ':bd<cr>', { desc = 'Delete buffer', silent = true })
+-- NOTE: `bn`/`bp`/`bd` used to be mapped here, which made every bare `b`
+-- (back-a-word) wait out 'timeoutlen'. `[b` / `]b` (and `[B` / `]B` for
+-- first/last) are Neovim defaults, so only the delete needs a map.
+vim.keymap.set('n', '<leader>bd', ':bd<cr>', { desc = '[B]uffer [D]elete', silent = true })

@@ -1,8 +1,7 @@
 return {
   'saghen/blink.cmp',
-  cond = function()
-    return not vim.g.vscode
-  end,
+  -- (no `cond` here: init.lua sets `defaults.cond = not vim.g.vscode` for
+  -- every spec.)
   dependencies = {
     'rafamadriz/friendly-snippets',
     -- v2 hard-errors at require time without this
