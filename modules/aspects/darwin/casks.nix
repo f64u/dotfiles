@@ -27,7 +27,6 @@
 
         # Browsers
         "firefox"
-        "zen"
 
         # Documents and screen capture
         "licecap"

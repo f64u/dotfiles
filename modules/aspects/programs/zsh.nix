@@ -21,7 +21,22 @@
       autocd = true;
       syntaxHighlighting.enable = true;
       autosuggestion.enable = true;
+
+      # This is the *only* compinit in the shell -- nix-darwin's is turned off
+      # in darwin/shells.nix.
+      #
+      # `-d <dump>` names the cache explicitly, and `-C` skips compaudit, the
+      # security check that walks every fpath entry looking for
+      # group/world-writable directories. It was 85% of function time at
+      # startup, and it is checking paths that are all read-only nix store
+      # symlinks -- there is nothing for it to find.
+      completionInit = ''
+        autoload -U compinit
+        compinit -C -d "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+      '';
       initContent = ''
+        mkdir -p "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+
         source ${inputs.catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
         # opam manages its switches outside the store, so this has to be a

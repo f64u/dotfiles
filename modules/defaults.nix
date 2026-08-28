@@ -53,11 +53,17 @@
         };
 
         # home-manager is evaluated with the host's nixpkgs, so `allowUnfree`
-        # above covers user packages too. `useUserPackages` puts home.packages
-        # into the system closure, so they roll back with the generation.
+        # above covers user packages too.
+        #
+        # NOTE: do NOT set `useUserPackages = true` here. That is a NixOS
+        # convention: it moves home.packages out of ~/.nix-profile and into
+        # /etc/profiles/per-user/$USER, which NixOS adds to
+        # `environment.profiles` but **nix-darwin does not**. On darwin the
+        # result is that every user package silently leaves PATH -- verified
+        # the hard way: `atuin`, `eza` and the rest vanished from the shell
+        # while sitting installed in /etc/profiles/per-user/fadyadal/bin.
         home-manager = {
           useGlobalPkgs = true;
-          useUserPackages = true;
           backupFileExtension = "bak";
         };
       };

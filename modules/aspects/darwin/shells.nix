@@ -24,6 +24,16 @@
       # environment. Without these, a login shell never sees the profile.
       zsh.enable = true;
       bash.enable = true;
+
+      # The completion system is initialised by home-manager's zsh module
+      # instead -- see programs/zsh.nix.
+      #
+      # Leaving both on meant /etc/zshrc:23 and ~/.zshrc:8 each ran a bare
+      # `compinit`, so the full compaudit + compdump happened twice on every
+      # single shell start. That was ~218k of the 220k lines in an `-x` trace
+      # and about 2 seconds of the 2.2s startup.
+      zsh.enableCompletion = false;
+      zsh.enableBashCompletion = false;
     };
   };
 }
