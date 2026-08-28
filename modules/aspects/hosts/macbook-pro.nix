@@ -10,8 +10,8 @@
       den.aspects.darwin-shells
       den.aspects.darwin-fonts
       den.aspects.darwin-desktop
-      den.aspects.darwin-homebrew
-      den.aspects.darwin-homebrew-personal
+      den.aspects.darwin-casks
+      den.aspects.darwin-casks-personal
     ];
 
     darwin = {

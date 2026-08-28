@@ -7,8 +7,8 @@
       den.aspects.darwin-shells
       den.aspects.darwin-fonts
       den.aspects.darwin-desktop
-      den.aspects.darwin-homebrew
-      # NOTE: darwin-homebrew-personal is deliberately absent -- that is where
+      den.aspects.darwin-casks
+      # NOTE: darwin-casks-personal is deliberately absent -- that is where
       # steam, minecraft, dolphin and friends live.
     ];
 

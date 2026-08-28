@@ -1,0 +1,29 @@
+{
+  "_comment": [
+    "Hashes for casks whose upstream metadata carries no checksum -- Homebrew",
+    "marks them `sha256 :no_check`, and brew-nix surfaces that as a",
+    "sha256-AAAA... placeholder that cannot build.",
+    "",
+    "Every URL here is version-less: the vendor overwrites the file in place,",
+    "so these pins go stale on the vendor's schedule, not ours. When a build",
+    "fails with a hash mismatch, that is the expected signal. Re-pin with:",
+    "",
+    "  ./scripts/refresh-cask-hashes.sh <cask>",
+    "",
+    "`url` is recorded so the overlay can assert it still matches what",
+    "brew-api reports -- if upstream changes the URL, the pin is invalid and",
+    "you get a clear error rather than a silently wrong artifact."
+  ],
+  "minecraft": {
+    "url": "https://launcher.mojang.com/download/Minecraft.dmg",
+    "hash": "sha256-gsWdmzKFAX4tbRsDX1OUFcH+tQ14daTwNMwprycye0g="
+  },
+  "steam": {
+    "url": "https://cdn.cloudflare.steamstatic.com/client/installer/steam.dmg",
+    "hash": "sha256-4av7qqe+Pg9IoODUwxMjPgWGGx0mrzKDDdyDi+iPJpE="
+  },
+  "nvidia-geforce-now": {
+    "url": "https://download.nvidia.com/gfnpc/GeForceNOW-release.dmg",
+    "hash": "sha256-bporPF2+A9k6AF9eVBNu4ZYgRuaqe8/Lq+k4HC6FsrM="
+  }
+}

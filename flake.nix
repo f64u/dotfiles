@@ -36,7 +36,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # Packages Homebrew casks as nix derivations, exposed as `pkgs.brewCasks.*`
+    # through an overlay. This replaces nix-homebrew and nix-darwin's homebrew
+    # module outright -- GUI apps are now real store paths that roll back with
+    # a generation, and no `brew` is installed or invoked.
+    #
+    # NOTE: `brew-api` is not optional. brew-nix pins a stale copy by default
+    # and its README says to override it -- it carries the cask metadata
+    # (versions and hashes), so this input is what actually gets updated by
+    # `nix flake update`.
+    brew-nix = {
+      url = "github:BatteredBunny/brew-nix";
+      inputs.brew-api.follows = "brew-api";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-darwin.follows = "darwin";
+    };
+
+    brew-api = {
+      url = "github:BatteredBunny/brew-api";
+      flake = false;
+    };
 
     # Catppuccin themes consumed as plain source trees. These were previously
     # `builtins.fetchGit` calls pinned by rev inside the aspects, which meant

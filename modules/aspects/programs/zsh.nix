@@ -5,16 +5,15 @@
     # so non-interactive shells get it too. This used to be an `export PATH=...`
     # in initContent, which only interactive shells read.
     #
-    # CAVEAT: these are prepended, so a shim in ~/.local/bin (uv and the claude
+    # CAVEAT: this is prepended, so a shim in ~/.local/bin (uv and the claude
     # installer both put things there) shadows a nix-provided binary of the
     # same name. Left as-is because reordering would change which `ruff` /
     # `python3` you get today; worth revisiting.
     #
-    # /usr/local/smlnj/bin is where the `smlnj` homebrew cask installs, and is
-    # what the `sml` alias below depends on.
+    # NOTE: /usr/local/smlnj/bin is gone -- smlnj comes from nixpkgs now, so
+    # the `sml` alias below resolves through the profile.
     home.sessionPath = [
       "$HOME/.local/bin"
-      "/usr/local/smlnj/bin"
     ];
 
     programs.zsh = {
@@ -40,7 +39,7 @@
         q = "exit";
         n = "nvim";
 
-        # rlwrap comes from packages-base; sml from the smlnj cask.
+        # rlwrap and smlnj both come from the nix package set.
         idris2 = "rlwrap idris2";
         sml = "rlwrap sml";
       }

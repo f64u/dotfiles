@@ -1,5 +1,5 @@
 # Settings applied to every host / user / home.
-{ den, ... }:
+{ den, inputs, ... }:
 {
   den.default = {
     # State versions — do not bump these casually.
@@ -10,6 +10,11 @@
       { host, ... }:
       {
         nixpkgs.config.allowUnfree = true;
+
+        # `pkgs.brewCasks.*`. Applied at the OS level rather than per-home
+        # because home-manager runs with useGlobalPkgs, so it shares this
+        # package set.
+        nixpkgs.overlays = [ inputs.brew-nix.overlays.default ];
 
         nix = {
           settings = {
