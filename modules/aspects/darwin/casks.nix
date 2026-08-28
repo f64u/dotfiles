@@ -1,9 +1,6 @@
 # macOS GUI apps as nix derivations, via brew-nix's `pkgs.brewCasks` overlay
-# (wired up in modules/defaults.nix). No Homebrew involved.
-#
-# These are real store paths: they roll back with a generation, are pinned by
-# flake.lock through the `brew-api` input, and land in ~/Applications as real
-# bundles via targets.darwin.copyApps (see darwin/desktop.nix).
+# (wired up in modules/defaults.nix). Versions come from the `brew-api` input,
+# so `nix flake update` is what moves them.
 #
 # `pin` handles casks with no upstream checksum -- see ./_cask-pin.nix.
 { lib, ... }:
@@ -34,9 +31,7 @@
         "shottr"
         "skim"
 
-        # NOTE: font-sf-mono / font-sf-pro are deliberately NOT here. brew-nix
-        # mis-unpacks them and a cask would put them in the wrong prefix
-        # anyway -- they are packaged for fonts.packages in ./_sf-fonts.nix.
+        # The SF fonts are not casks here -- see ./_sf-fonts.nix.
       ];
     };
 }

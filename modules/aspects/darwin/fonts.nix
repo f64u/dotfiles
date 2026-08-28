@@ -13,14 +13,7 @@
       fonts.packages = [
         pkgs.nerd-fonts.caskaydia-cove
         pkgs.nerd-fonts.recursive-mono
-
-        # The per-workspace app glyphs in sketchybar/config/items/spaces.lua
-        # ask for this by name. It was only ever hand-installed into
-        # ~/Library/Fonts, so a fresh machine rendered tofu for every icon.
-        pkgs.sketchybar-app-font
-
-        # Apple's own faces -- see ./_sf-fonts.nix for why these are packaged
-        # here rather than taken from brewCasks.
+        pkgs.sketchybar-app-font # per-workspace app glyphs in spaces.lua
         sf.sf-pro
         sf.sf-mono
       ];

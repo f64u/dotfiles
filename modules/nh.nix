@@ -8,8 +8,7 @@
     { pkgs, system, ... }:
     let
       # denPackages flattens every host regardless of the perSystem system,
-      # which put both MacBooks into packages.x86_64-linux. Keep only the
-      # hosts that actually belong to this system.
+      # so filter to the ones belonging to this one.
       mine = (den.hosts.${system} or { }) // (den.homes.${system} or { });
     in
     {

@@ -7,16 +7,12 @@
   den.aspects.darwin-nix.darwin =
     { pkgs, ... }:
     {
-      # Records the flake revision in `darwin-version`.
-      #
-      # NOTE: must be `inputs.self`, not the module `config`. nix-darwin
-      # declares no top-level `rev` option, so `config.rev or config.dirtyRev
-      # or null` silently resolved to null and recorded nothing.
+      # Records the flake revision in `darwin-version`. Must be `inputs.self`
+      # -- nix-darwin declares no top-level `rev`, so reading it off the
+      # module `config` silently yields null.
       system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
       nix = {
-        # `enable` defaults to true; the package and extra-platforms are the
-        # only things worth stating.
         package = pkgs.nixVersions.stable;
 
         # Lets these machines build and run x86_64 closures under Rosetta.

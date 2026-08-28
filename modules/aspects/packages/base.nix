@@ -1,9 +1,5 @@
-# Base packages for all systems and users.
-#
-# Everything here is something that should be on PATH in *every* shell. Tools
-# that are only wanted occasionally live in packages-heavy instead, which is
-# not included by default -- reach for them with `nix shell nixpkgs#<name>` or
-# `, <name>` (comma) rather than paying for them in every generation.
+# Things that should be on PATH in every shell. Occasional tools go in
+# packages-heavy instead.
 {
   den.aspects.packages-base.homeManager =
     { pkgs, ... }:

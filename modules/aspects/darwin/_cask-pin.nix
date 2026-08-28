@@ -1,16 +1,11 @@
-# Helper shared by darwin/casks.nix and darwin/casks-personal.nix.
+# Shared by darwin/casks.nix and darwin/casks-personal.nix. The leading
+# underscore keeps import-tree from auto-importing it as a module.
 #
-# NOTE the leading underscore: import-tree ignores any path containing `/_`,
-# so this is a plain library file rather than an auto-imported flake-parts
-# module.
-#
-# Some casks carry no upstream checksum -- Homebrew marks them
-# `sha256 :no_check` because the vendor serves them from a version-less URL
-# and overwrites the file in place. brew-nix surfaces that as a
-# `sha256-AAAA...` placeholder which cannot build. This substitutes a hash
-# recorded in ./cask-hashes.json, and asserts the recorded URL still matches
-# what brew-api reports so that an upstream URL change fails loudly instead of
-# silently pinning the wrong artifact.
+# Casks the vendor serves from a version-less URL carry no upstream checksum,
+# and brew-nix surfaces that as a `sha256-AAAA...` placeholder that cannot
+# build. Substitute a hash from ./cask-hashes.json, asserting the recorded URL
+# still matches so a URL change fails loudly rather than pinning the wrong
+# artifact.
 { lib, pkgs }:
 let
   pins = lib.filterAttrs (n: _: n != "_comment") (lib.importJSON ./cask-hashes.json);

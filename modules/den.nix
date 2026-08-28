@@ -5,14 +5,11 @@
 # (den.aspects.<userName>) are looked up by name — see modules/aspects/.
 { inputs, lib, ... }:
 let
-  # Identity attached to the user *entity*, so any aspect taking `{ user, ... }`
-  # can read it (see aspects/programs/git.nix).
+  # Identity lives on the user *entity*, readable by any aspect taking
+  # `{ user, ... }` (see aspects/programs/git.nix).
   #
-  # NOTE: this deliberately does not live in `den.schema.user`. That is a base
-  # module merged into every user on every host, so putting a name and email
-  # there installs one person's identity as the default for all of them -- and
-  # as a non-mkDefault definition, a second user setting their own email gets a
-  # merge conflict rather than an override.
+  # Not `den.schema.user`: that is merged into every user on every host, so
+  # a name and email there become everyone's default.
   fadyadal = {
     fullName = "Fady Adal";
     email = "2masadel@gmail.com";

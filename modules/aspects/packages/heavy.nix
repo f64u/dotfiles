@@ -1,17 +1,11 @@
-# Large, occasionally-used tooling.
+# Large, occasionally-used tooling. NOT included by any host or user aspect --
+# reach for these ad hoc instead:
 #
-# NOT included by any host or user aspect. These are multi-gigabyte closures
-# that were previously in packages-development, where they were rebuilt and
-# kept alive in every generation despite being reached for a few times a year.
+#   nix shell nixpkgs#qemu
+#   , gcloud
 #
-# Get one ad hoc instead:
-#
-#   nix shell nixpkgs#qemu          # a shell with it on PATH
-#   , gcloud                        # comma: run it once, don't install it
-#
-# Or, to have them permanently on a particular machine, add
-# `den.aspects.packages-heavy` to that host's `includes` (see
-# modules/aspects/hosts/) rather than to the shared user aspect.
+# To have them permanently on one machine, add `den.aspects.packages-heavy` to
+# that host's `includes` rather than to the shared user aspect.
 {
   den.aspects.packages-heavy.homeManager =
     { pkgs, ... }:

@@ -4,16 +4,10 @@
     {
       programs.wezterm.enable = true;
 
-      # wezterm.lua stays a standalone, lintable Lua file that ends in
-      # `return config`; @zsh@ is substituted at build time.
-      #
-      # NOTE: this replaces a `builtins.replaceStrings [ "return config" ] [ "" ]`
-      # splice into programs.wezterm.extraConfig. That removed *every*
-      # occurrence of the substring (it is also a prefix of `return configs`,
-      # `return config_builder`, ...), and silently no-opped if the trailing
-      # line ever changed -- producing a Lua syntax error at runtime while
-      # `darwin-rebuild switch` still reported success. replaceVars uses
-      # --replace-fail, so a missing placeholder fails the build instead.
+      # wezterm.lua stays a standalone, lintable Lua file ending in
+      # `return config`. replaceVars uses --replace-fail, so dropping the
+      # @zsh@ placeholder fails the build rather than silently shipping a
+      # broken config.
       xdg.configFile."wezterm/wezterm.lua".source = pkgs.replaceVars ./wezterm.lua {
         zsh = "${pkgs.zsh}/bin/zsh";
       };
