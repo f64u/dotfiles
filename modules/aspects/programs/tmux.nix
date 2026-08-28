@@ -1,5 +1,5 @@
 {
-  den.aspects.tmux.homeManager = { pkgs, ... }: {
+  den.aspects.programs-tmux.homeManager = { pkgs, ... }: {
     programs.tmux = {
       enable = true;
       plugins = with pkgs.tmuxPlugins; [

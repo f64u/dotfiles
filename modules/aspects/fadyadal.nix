@@ -15,13 +15,13 @@
       # packages-heavy is deliberately not here -- see packages/heavy.nix.
 
       den.aspects.programs-cli
-      den.aspects.git
-      den.aspects.neovim
-      den.aspects.starship
-      den.aspects.tmux
-      den.aspects.vscode
-      den.aspects.wezterm
-      den.aspects.zsh
+      den.aspects.programs-git
+      den.aspects.programs-neovim
+      den.aspects.programs-starship
+      den.aspects.programs-tmux
+      den.aspects.programs-vscode
+      den.aspects.programs-wezterm
+      den.aspects.programs-zsh
     ];
 
     darwin =

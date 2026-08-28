@@ -1,5 +1,5 @@
 {
-  den.aspects.neovim.homeManager =
+  den.aspects.programs-neovim.homeManager =
     {
       config,
       lib,

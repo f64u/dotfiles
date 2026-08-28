@@ -1,5 +1,5 @@
 {
-  den.aspects.wezterm.homeManager =
+  den.aspects.programs-wezterm.homeManager =
     { pkgs, ... }:
     {
       programs.wezterm.enable = true;

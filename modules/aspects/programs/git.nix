@@ -1,7 +1,7 @@
 # Parametric aspect: reads identity from the user entity instead of
 # home-manager extraSpecialArgs.
 {
-  den.aspects.git =
+  den.aspects.programs-git =
     { user, ... }:
     {
       homeManager.programs.git = {

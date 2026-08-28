@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 {
-  den.aspects.zsh.homeManager = {
+  den.aspects.programs-zsh.homeManager = {
     # `home.sessionPath` lands in hm-session-vars.sh, which ~/.zshenv sources,
     # so non-interactive shells get it too. This used to be an `export PATH=...`
     # in initContent, which only interactive shells read.

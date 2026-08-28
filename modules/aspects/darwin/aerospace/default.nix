@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  den.aspects.aerospace.darwin =
+  den.aspects.darwin-aerospace.darwin =
     { ... }:
     let
       # 1-9. There is no alt-10 key, and alt-shift-0 is already balance-sizes,

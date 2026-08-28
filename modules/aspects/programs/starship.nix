@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 {
-  den.aspects.starship.homeManager =
+  den.aspects.programs-starship.homeManager =
     let
       theme = "mocha";
     in

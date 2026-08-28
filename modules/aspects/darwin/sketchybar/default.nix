@@ -1,5 +1,5 @@
 {
-  den.aspects.sketchybar.provides.to-users.homeManager =
+  den.aspects.darwin-sketchybar.provides.to-users.homeManager =
     { pkgs, ... }:
     let
       sketchybarConfig = pkgs.stdenv.mkDerivation {

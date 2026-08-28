@@ -4,8 +4,8 @@
 {
   den.aspects.darwin-desktop = {
     includes = [
-      den.aspects.aerospace
-      den.aspects.sketchybar
+      den.aspects.darwin-aerospace
+      den.aspects.darwin-sketchybar
     ];
 
     darwin =
