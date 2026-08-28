@@ -55,10 +55,14 @@ let
         runHook postUnpack
       '';
 
+      # Both .otf and .ttf: the static OTFs carry the "SF Pro Text" /
+      # "SF Pro Display" families, but the plain "SF Pro" family lives only in
+      # the variable SF-Pro.ttf. Filtering to *.otf drops it.
       installPhase = ''
         runHook preInstall
-        mkdir -p "$out/share/fonts/opentype"
+        mkdir -p "$out/share/fonts/opentype" "$out/share/fonts/truetype"
         find Library/Fonts -name '*.otf' -exec cp {} "$out/share/fonts/opentype/" \;
+        find Library/Fonts -name '*.ttf' -exec cp {} "$out/share/fonts/truetype/" \;
         runHook postInstall
       '';
 
