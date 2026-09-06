@@ -14,7 +14,6 @@
 
         # Pinned in cask-hashes.json -- version-less upstream URLs.
         "minecraft"
-        "nvidia-geforce-now"
         "steam"
       ];
     };
