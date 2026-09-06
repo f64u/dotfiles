@@ -30,8 +30,6 @@
         "paintbrush"
         "shottr"
         "skim"
-
-        # The SF fonts are not casks here -- see ./_sf-fonts.nix.
       ];
     };
 }

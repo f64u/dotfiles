@@ -1,5 +1,7 @@
+# A module of den.aspects.editor.
+{ ... }:
 {
-  den.aspects.programs-neovim.homeManager =
+  homeManager =
     {
       config,
       lib,

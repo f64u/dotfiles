@@ -24,11 +24,5 @@
       };
     };
 
-    # Extra packages for this host's users.
-    provides.to-users.homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [ pkgs.tailscale ];
-      };
   };
 }

@@ -8,12 +8,10 @@
       den.aspects.darwin-fonts
       den.aspects.darwin-desktop
       den.aspects.darwin-casks
-      # NOTE: darwin-casks-personal is deliberately absent -- that is where
-      # steam, minecraft, dolphin and friends live.
     ];
 
     darwin = {
-      networking.computerName = "Fady's MacBook Air";
+      networking.computerName = "Fady's Work MacBook";
 
       system = {
         defaults.smb.NetBIOSName = "macbook-pro-work";

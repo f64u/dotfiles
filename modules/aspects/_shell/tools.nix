@@ -1,16 +1,17 @@
-# Small CLI tools that only need `enable` + a line or two of config.
+# Interactive shell tools that need `enable` plus a line or two.
+# A module of den.aspects.shell.
+#
+# `delta` and `lazygit` used to live here; they are git tooling and moved to
+# _vcs/tools.nix. `vim` moved to _editor/vim.nix.
+{ ... }:
 {
-  den.aspects.programs-cli.homeManager = {
+  homeManager = {
     programs.atuin = {
       enable = true;
       flags = [ "--disable-up-arrow" ];
     };
     programs.bat.enable = true;
     programs.btop.enable = true;
-    programs.delta = {
-      enable = true;
-      enableGitIntegration = true;
-    };
     programs.direnv = {
       enable = true;
       # Caches the flake evaluation, so `cd` into a project with a
@@ -30,10 +31,8 @@
       # Alt-C.
       historyWidget.command = "";
     };
-    programs.lazygit.enable = true;
     programs.nh.enable = true;
     programs.ripgrep.enable = true;
-    programs.vim.enable = true;
     programs.zoxide.enable = true;
   };
 }

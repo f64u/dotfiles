@@ -1,6 +1,7 @@
+# The shell itself. A module of den.aspects.shell, not an aspect.
 { inputs, lib, ... }:
 {
-  den.aspects.programs-zsh.homeManager = {
+  homeManager = {
     # sessionPath lands in hm-session-vars.sh, which ~/.zshenv sources, so
     # non-interactive shells get it too.
     #

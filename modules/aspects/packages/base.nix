@@ -18,11 +18,9 @@
     {
       home.packages = with pkgs; [
         # Core terminal tools.
-        # NOTE: `git` is not listed here -- programs.git already installs it.
         comma
         curl
         dos2unix
-        fastfetch
         jq
         parallel
         wget

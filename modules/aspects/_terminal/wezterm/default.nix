@@ -1,5 +1,7 @@
+# A module of den.aspects.terminal.
+{ ... }:
 {
-  den.aspects.programs-wezterm.homeManager =
+  homeManager =
     { pkgs, ... }:
     {
       programs.wezterm.enable = true;

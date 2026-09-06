@@ -14,14 +14,10 @@
       den.aspects.packages-development
       # packages-heavy is deliberately not here -- see packages/heavy.nix.
 
-      den.aspects.programs-cli
-      den.aspects.programs-git
-      den.aspects.programs-neovim
-      den.aspects.programs-starship
-      den.aspects.programs-tmux
-      den.aspects.programs-vscode
-      den.aspects.programs-wezterm
-      den.aspects.programs-zsh
+      den.aspects.shell
+      den.aspects.editor
+      den.aspects.vcs
+      den.aspects.terminal
     ];
 
     darwin =

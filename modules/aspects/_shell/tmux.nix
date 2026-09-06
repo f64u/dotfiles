@@ -1,5 +1,7 @@
+# Multiplexer. A module of den.aspects.shell.
+{ ... }:
 {
-  den.aspects.programs-tmux.homeManager = { pkgs, ... }: {
+  homeManager = { pkgs, ... }: {
     programs.tmux = {
       enable = true;
       plugins = with pkgs.tmuxPlugins; [
