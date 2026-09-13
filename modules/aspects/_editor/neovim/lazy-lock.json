@@ -140,8 +140,8 @@
     "commit": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2"
   },
   "telescope.nvim": {
-    "branch": "0.1.x",
-    "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026"
+    "branch": "master",
+    "commit": "40aedd8a68c78a656a10a8d62d80c54af59420fb"
   },
   "todo-comments.nvim": {
     "branch": "main",

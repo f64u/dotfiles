@@ -1,7 +1,12 @@
 -- Fuzzy Finder (files, lsp, etc)
 return {
   'nvim-telescope/telescope.nvim',
-  branch = '0.1.x',
+  -- `master`, not `0.1.x`: the stable branch was last touched in 2024 and its
+  -- previewer calls `require('nvim-treesitter.parsers').ft_to_lang()`, which
+  -- the treesitter `main` rewrite removed -- so previews errored on a nil
+  -- value. master drives Neovim's own vim.treesitter.language.get_lang() /
+  -- vim.treesitter.start() instead, with no nvim-treesitter dependency.
+  branch = 'master',
   opts = {
     extensions = {
       fzf = {}
