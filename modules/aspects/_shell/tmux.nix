@@ -47,6 +47,15 @@
       terminal = "tmux-256color";
       focusEvents = true;
       extraConfig = ''
+        # home-manager's hm-session-vars.sh (which carries home.sessionPath)
+        # opens with `if [ -n "$__HM_SESS_VARS_SOURCED" ]; then return; fi`.
+        # The server inherits that flag from whatever shell started it and
+        # hands it to every pane, so panes skip re-sourcing and silently lose
+        # the sessionPath entries -- while keeping whatever PATH the server
+        # was started with, which may be years stale. Drop it at server start
+        # so each pane evaluates the session vars itself.
+        set-environment -gu __HM_SESS_VARS_SOURCED
+
         set -g status-left ""
         set -g status-right "#{E:@catppuccin_status_directory}"
         set -agF status-right "#{E:@catppuccin_status_session}"

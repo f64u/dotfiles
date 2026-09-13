@@ -2,8 +2,14 @@
 { inputs, lib, ... }:
 {
   homeManager = {
-    # sessionPath lands in hm-session-vars.sh, which ~/.zshenv sources, so
-    # non-interactive shells get it too.
+    # The single owner of PATH additions -- do not also export PATH from
+    # initContent, or the entry lands twice with different precedence.
+    #
+    # This renders into hm-session-vars.sh, which ~/.zshenv sources for
+    # non-login shells and ~/.zprofile for login ones. That file guards itself
+    # with __HM_SESS_VARS_SOURCED, so anything long-lived that inherits the
+    # flag will hand it to its children and they will skip re-sourcing; see
+    # the matching `set-environment -gu` in ./tmux.nix.
     #
     # CAVEAT: prepended, so a uv- or claude-installed shim here shadows a
     # nix-provided binary of the same name.
@@ -41,19 +47,7 @@
         n = "nvim";
         idris2 = "rlwrap idris2";
         sml = "rlwrap sml";
-      }
-      # `s`-prefixed so none of them shadows a builtin -- `set` did.
-      // lib.genAttrs [
-        "sra"
-        "samun"
-        "sset"
-        "sanubis"
-        "sseshat"
-        "shathor"
-        "sthoth"
-        "smaat"
-        "ssekhmet"
-      ] (alias: "ssh fady@${lib.removePrefix "s" alias}.cs.uchicago.edu");
+      };
     };
   };
 }
