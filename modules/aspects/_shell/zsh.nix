@@ -35,6 +35,11 @@
 
         source ${inputs.catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
+        # fnm owns writable, per-version npm globals. Clear the old inherited
+        # prefix too, so shells opened from an existing session pick this up.
+        unset NPM_CONFIG_PREFIX
+        eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+
         # opam keeps its switches outside the store, so this must be a runtime
         # eval. Guarded so a machine without opam does not pay for it.
         if command -v opam >/dev/null; then

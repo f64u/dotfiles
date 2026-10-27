@@ -12,6 +12,7 @@
       den.aspects.darwin-desktop
       den.aspects.darwin-casks
       den.aspects.darwin-casks-personal
+      den.aspects.packages-personal
     ];
 
     darwin = {

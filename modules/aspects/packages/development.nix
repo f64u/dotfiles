@@ -29,8 +29,8 @@
         gh
         lua5_1
         lua51Packages.luarocks
-        opam # OCaml
         smlnj # was the `smlnj` homebrew cask in /usr/local/smlnj/bin
+        z3 # SMT solver
 
         # LaTeX. `texliveFull` is a 6.4 GiB closure -- it alone was ~46% of the
         # home profile, and dragged in asymptote plus a second Python env with
@@ -46,6 +46,7 @@
         cmake
         pkg-config
         tree-sitter
+        just
       ];
     };
 }

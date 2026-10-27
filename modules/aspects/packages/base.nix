@@ -23,6 +23,8 @@
         dos2unix
         jq
         parallel
+        # macOS ships no `watch`; this is the procps one.
+        watch
         wget
         uutils-coreutils-noprefix
 
@@ -40,7 +42,8 @@
         uv
 
         # Core development
-        nodejs
+        nodejs_24 # Fallback for tools launched outside an interactive fnm shell.
+        fnm
         rustup
       ];
     };
