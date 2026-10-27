@@ -18,7 +18,7 @@
   lib,
   stdenvNoCC,
   fetchurl,
-  undmg,
+  _7zz,
   xarMinimal,
   cpio,
   gzip,
@@ -37,18 +37,19 @@ let
       src = fetchurl { inherit url hash; };
 
       nativeBuildInputs = [
-        undmg
+        _7zz
         xarMinimal
         cpio
         gzip
       ];
 
-      # DMG -> outer flat pkg -> component pkg Payload (gzip cpio).
+      # DMG -> outer flat pkg -> component pkg Payload (gzip cpio). 7zz rather
+      # than undmg: Apple now ships APFS DMGs, and undmg only reads HFS.
       sourceRoot = ".";
       unpackPhase = ''
         runHook preUnpack
-        undmg "$src"
-        xar -xf *.pkg
+        7zz e -r "$src" "*.pkg" >/dev/null
+        xar -xf ./*.pkg
         for payload in */Payload; do
           zcat "$payload" | cpio -i --quiet
         done
@@ -80,7 +81,7 @@ in
   sf-pro = mkSfFont {
     pname = "sf-pro";
     url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-    hash = "sha256-qQlPDem3idc1RO5Q/FKgiE1Kn3/PYt5Sl04yBPOnSmI=";
+    hash = "sha256-loqzuLH5LC2K9h6waA9cIiTE541ZuYa/AEUCp/wBKRg=";
   };
 
   sf-mono = mkSfFont {
