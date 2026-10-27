@@ -18,8 +18,17 @@ in
 {
   imports = [ inputs.den.flakeModule ];
 
-  den.hosts.aarch64-darwin.macbook-pro.users = { inherit fadyadal; };
-  den.hosts.aarch64-darwin.macbook-pro-work.users = { inherit fadyadal; };
+  # `userName` is the macOS account; `uid` is read by aspects/fadyadal.nix.
+  # The aspect stays `fadyadal` on both hosts (den looks it up by the attr
+  # name), only the OS-level account differs.
+  den.hosts.aarch64-darwin.macbook-pro.users.fadyadal = fadyadal // {
+    uid = 501;
+  };
+  den.hosts.aarch64-darwin.macbook-pro-work.users.fadyadal = fadyadal // {
+    userName = "fady";
+    uid = 502;
+    email = "fady@preludelabs.ai";
+  };
 
   # Every user gets both the lightweight OS `user` class (users.users.<name>)
   # and a home-manager environment.
