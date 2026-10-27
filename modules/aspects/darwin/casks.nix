@@ -14,8 +14,6 @@
       home.packages = map pin [
         # Development
         "docker-desktop"
-        "ghostty"
-        "rstudio"
         "xquartz"
 
         # Communication / meetings
@@ -24,6 +22,7 @@
 
         # Browsers
         "firefox"
+        "thebrowsercompany-dia"
 
         # Documents and screen capture
         "licecap"

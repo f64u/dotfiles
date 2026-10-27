@@ -37,6 +37,12 @@
           enable-normalization-flatten-containers = true;
           enable-normalization-opposite-orientation-for-nested-containers = true;
 
+          # config-version 1 infers persistent-workspaces from the right-hand side
+          # of the key bindings, which upstream deprecated as error-prone and
+          # warns about on every reload. Version 2 wants the list spelled out.
+          config-version = 2;
+          persistent-workspaces = workspaces;
+
           accordion-padding = 30;
 
           default-root-container-layout = "tiles";
@@ -51,10 +57,15 @@
             inner.vertical = 10;
             outer.left = 10;
             outer.bottom = 10;
+            # sketchybar is 40pt tall and sits at the top of every display. On the
+            # built-in display it starts inside the ~35pt notch strip that macOS
+            # already reserves, so it overhangs the usable area by ~5pt; on an
+            # external monitor it takes the full 40pt. Both values leave the same
+            # 10pt between the bar and the first window as the other edges get.
             outer.top = [
-              { monitor.main = 10; }
-              { monitor.secondary = 48; }
-              10
+              { monitor.main = 15; }
+              { monitor.secondary = 50; }
+              15
             ];
             outer.right = 10;
           };
@@ -72,19 +83,22 @@
             alt-shift-k = "move up";
             alt-shift-l = "move right";
 
-            # Focus monitor
+            # Focus / move between monitors.
+            #
+            # h/l walk aerospace's monitor list, which is sorted left-to-right
+            # then top-to-bottom, so they mean "previous/next screen" for any
+            # single row or column of displays and for two displays in any
+            # arrangement. k/j are geometric: they only fire when a monitor is
+            # actually above/below, which is what you want in a 2D grid.
+            alt-ctrl-h = "focus-monitor --wrap-around prev";
+            alt-ctrl-l = "focus-monitor --wrap-around next";
             alt-ctrl-k = "focus-monitor up";
             alt-ctrl-j = "focus-monitor down";
 
-            # Move window to monitor
-            alt-ctrl-shift-k = [
-              "move-node-to-monitor up"
-              "focus-monitor up"
-            ];
-            alt-ctrl-shift-j = [
-              "move-node-to-monitor down"
-              "focus-monitor down"
-            ];
+            alt-ctrl-shift-h = "move-node-to-monitor --wrap-around --focus-follows-window prev";
+            alt-ctrl-shift-l = "move-node-to-monitor --wrap-around --focus-follows-window next";
+            alt-ctrl-shift-k = "move-node-to-monitor --focus-follows-window up";
+            alt-ctrl-shift-j = "move-node-to-monitor --focus-follows-window down";
 
             # Flatten the workspace tree. (`alt-r` and `alt-e` were both bound
             # to the same `layout tiles horizontal vertical` command; alt-e
@@ -131,7 +145,7 @@
           on-window-detected = [
             # App to workspace assignments
             {
-              "if".app-id = "company.thebrowser.Browser";
+              "if".app-id = "company.thebrowser.dia";
               run = "move-node-to-workspace 1";
             }
             {
