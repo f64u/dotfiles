@@ -25,6 +25,7 @@
         millet # SML
 
         # Toolchain managers / REPL support
+        awscli2
         elan # Lean
         gh
         lua5_1
