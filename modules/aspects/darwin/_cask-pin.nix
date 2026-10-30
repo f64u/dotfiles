@@ -6,13 +6,24 @@
 # build. Substitute a hash from ./cask-hashes.json, asserting the recorded URL
 # still matches so a URL change fails loudly rather than pinning the wrong
 # artifact.
+#
+# Every cask also gets its `name:attr` files stripped. Some vendor zips carry
+# extended attributes (Shottr's has `com.dropbox.attrs`), and brew-nix's
+# `unzip` path writes each one out as a stray `file:attr` file inside the
+# bundle. That breaks the code signature, and Gatekeeper SIGKILLs the app a
+# few seconds after launch. brew-nix already does this cleanup after 7zz.
 { lib, pkgs }:
 let
   pins = lib.filterAttrs (n: _: n != "_comment") (lib.importJSON ./cask-hashes.json);
 in
 name:
 let
-  cask = pkgs.brewCasks.${name};
+  cask = pkgs.brewCasks.${name}.overrideAttrs (old: {
+    installPhase = ''
+      find . -name '*:com.*' -print -delete
+    ''
+    + old.installPhase;
+  });
   spec = pins.${name};
 in
 if !(pins ? ${name}) then
