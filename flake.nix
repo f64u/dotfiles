@@ -57,6 +57,14 @@
       flake = false;
     };
 
+    # Prebuilt nix-index database, refreshed weekly. Running `nix-index`
+    # locally breaks whenever nixpkgs renames an attribute set it hardcodes
+    # (e.g. coqPackages -> rocqPackages), and takes ages besides.
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Catppuccin themes consumed as plain source trees. These were previously
     # `builtins.fetchGit` calls pinned by rev inside the aspects, which meant
     # full git clones on every evaluation and revisions that flake.lock knew

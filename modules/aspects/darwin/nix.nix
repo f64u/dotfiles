@@ -7,6 +7,8 @@
   den.aspects.darwin-nix.darwin =
     { pkgs, ... }:
     {
+      imports = [ inputs.nix-index-database.darwinModules.nix-index ];
+
       # Records the flake revision in `darwin-version`. Must be `inputs.self`
       # -- nix-darwin declares no top-level `rev`, so reading it off the
       # module `config` silently yields null.
@@ -21,6 +23,7 @@
         '';
       };
 
+      # The package comes from nix-index-database, with the index baked in.
       programs.nix-index.enable = true;
     };
 }
