@@ -108,6 +108,10 @@
             # Toggle fullscreen
             alt-f = "fullscreen";
 
+            # sketchybar sits above the auto-hiding menu bar so clicks on it
+            # land; this drops it behind (and back) to reach the menu bar.
+            alt-m = "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger toggle_menubar";
+
             # Float / unfloat window
             alt-t = "layout floating tiling";
 

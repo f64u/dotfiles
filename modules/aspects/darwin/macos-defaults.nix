@@ -22,6 +22,9 @@
           ShowPathbar = true;
           FXEnableExtensionChangeWarning = false;
         };
+        # Auto-hide the menu bar; sketchybar takes its place, drawn above it
+        # (alt-m reveals it -- see sketchybar's items/menubar.lua).
+        NSGlobalDomain._HIHideMenuBar = true;
       };
     };
 
