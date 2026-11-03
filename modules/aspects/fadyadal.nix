@@ -12,6 +12,7 @@
 
       den.aspects.packages-base
       den.aspects.packages-development
+      den.aspects.packages-gui
       # packages-heavy is deliberately not here -- see packages/heavy.nix.
 
       den.aspects.shell

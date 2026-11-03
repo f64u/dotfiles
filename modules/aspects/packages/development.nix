@@ -8,10 +8,6 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        # Kept here as a daily driver; its Electron runtime is shared with
-        # vscode, so the marginal cost is small.
-        discord
-
         # Language servers and tools
         bash-language-server
         ccls
