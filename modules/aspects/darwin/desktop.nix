@@ -32,6 +32,10 @@
           raycast # launcher
         ];
 
+        # copyApps would roll a self-update back, and the older build can't
+        # open databases the newer one migrated.
+        targets.darwin.defaults."com.raycast.macos".DisableAutomaticUpdates = true;
+
         # Spotlight does not index symlinks, so `linkApps` (the default at
         # stateVersion 23.11) leaves every GUI app unfindable -- including
         # Raycast. copyApps rsyncs real bundles instead, and asserts
