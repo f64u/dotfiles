@@ -23,6 +23,14 @@
       pull.rebase = true;
       rebase.autoStash = true;
     };
+    # The dotfiles repo is personal, so commit to it as the personal identity
+    # even on the work host.
+    includes = [
+      {
+        condition = "gitdir:~/dotfiles/";
+        contents.user.email = user.personalEmail;
+      }
+    ];
     lfs.enable = true;
   };
 }

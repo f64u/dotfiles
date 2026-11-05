@@ -10,9 +10,13 @@ let
   #
   # Not `den.schema.user`: that is merged into every user on every host, so
   # a name and email there become everyone's default.
-  fadyadal = {
+  #
+  # `personalEmail` survives the work host's `email` override, so git can
+  # still sign this repo's commits with it (see aspects/_vcs/git.nix).
+  fadyadal = rec {
     fullName = "Fady Adal";
-    email = "2masadel@gmail.com";
+    email = personalEmail;
+    personalEmail = "2masadel@gmail.com";
   };
 in
 {
