@@ -26,6 +26,7 @@
         # (alt-m reveals it -- see sketchybar's items/menubar.lua).
         NSGlobalDomain = {
           _HIHideMenuBar = true;
+          AppleInterfaceStyle = "Dark";
           # Shortest delay and fastest repeat that the System Settings sliders
           # allow (225ms and 30ms).
           InitialKeyRepeat = 15;
