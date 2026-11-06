@@ -31,6 +31,8 @@
           # allow (225ms and 30ms).
           InitialKeyRepeat = 15;
           KeyRepeat = 2;
+          # Holding a key repeats it instead of opening the accent picker.
+          ApplePressAndHoldEnabled = false;
         };
       };
     };
