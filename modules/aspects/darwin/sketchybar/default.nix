@@ -11,9 +11,12 @@
           make -C ./helpers
           runHook postBuild
         '';
+        # The app -> glyph map comes from the same font package that
+        # darwin/fonts.nix installs, so the two can't drift apart.
         installPhase = ''
           runHook preInstall
           cp -r . $out
+          cp ${pkgs.sketchybar-app-font}/lib/sketchybar-app-font/icon_map.lua $out/helpers/app_icons.lua
           runHook postInstall
         '';
       };
