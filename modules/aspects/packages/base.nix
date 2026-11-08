@@ -23,6 +23,7 @@
         dos2unix
         jq
         parallel
+        poppler-utils # pdftoppm, pdftotext, pdfinfo
         # macOS ships no `watch`; this is the procps one.
         watch
         wget
