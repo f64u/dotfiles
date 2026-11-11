@@ -10,12 +10,17 @@
     }:
     {
       # A running server keeps old plugin store paths until it re-reads its config.
-      home.activation.reloadTmux = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-        tmux=${config.programs.tmux.package}/bin/tmux
-        if $tmux list-sessions >/dev/null 2>&1; then
-          run $tmux source-file ${config.xdg.configHome}/tmux/tmux.conf || true
-        fi
-      '';
+      # </dev/null: on a tty, tmux rejects the switch's missing $TERM.
+      home.activation.reloadTmux =
+        let
+          tmux = "${config.programs.tmux.package}/bin/tmux";
+        in
+        lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+          if ${tmux} list-sessions </dev/null >/dev/null 2>&1; then
+            run ${tmux} source-file ${config.xdg.configHome}/tmux/tmux.conf </dev/null \
+              || warnEcho "Could not reload tmux"
+          fi
+        '';
 
       catppuccin.tmux = {
         enable = true;
