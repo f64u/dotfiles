@@ -58,6 +58,13 @@
       };
     in
     {
+      # The running bar keeps its old config until reloaded.
+      home.activation.reloadSketchybar = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+        if /usr/bin/pgrep -qx sketchybar; then
+          run ${config.programs.sketchybar.package}/bin/sketchybar --reload || true
+        fi
+      '';
+
       programs.sketchybar = {
         enable = true;
         config = {

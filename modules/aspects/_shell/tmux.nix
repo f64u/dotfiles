@@ -1,106 +1,121 @@
 # Multiplexer. A module of den.aspects.shell.
 { ... }:
 {
-  homeManager = { pkgs, ... }: {
-    catppuccin.tmux = {
-      enable = true;
-      extraConfig = ''
-        set -g @catppuccin_status_left_separator "█"
-        set -g @catppuccin_status_right_separator "█"
-        set -g @catppuccin_status_background "none"
-        set -g @catppuccin_directory_text " #{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
-
-        set -ogq @catppuccin_window_text " #W at #{b:pane_current_path}"
-        set -ogq @catppuccin_window_current_text " #W at #{b:pane_current_path}"
+  homeManager =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      # A running server keeps old plugin store paths until it re-reads its config.
+      home.activation.reloadTmux = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+        tmux=${config.programs.tmux.package}/bin/tmux
+        if $tmux list-sessions >/dev/null 2>&1; then
+          run $tmux source-file ${config.xdg.configHome}/tmux/tmux.conf || true
+        fi
       '';
+
+      catppuccin.tmux = {
+        enable = true;
+        extraConfig = ''
+          set -g @catppuccin_status_left_separator "█"
+          set -g @catppuccin_status_right_separator "█"
+          set -g @catppuccin_status_background "none"
+          set -g @catppuccin_directory_text " #{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
+
+          set -ogq @catppuccin_window_text " #W at #{b:pane_current_path}"
+          set -ogq @catppuccin_window_current_text " #W at #{b:pane_current_path}"
+        '';
+      };
+
+      programs.tmux = {
+        enable = true;
+        plugins = with pkgs.tmuxPlugins; [
+          vim-tmux-navigator
+          t-smart-tmux-session-manager
+          resurrect
+          {
+            plugin = continuum;
+            extraConfig = ''
+              set -g @continuum-restore 'on'
+              set -g @continuum-save-interval '15'
+            '';
+          }
+          # extrakto
+        ];
+        baseIndex = 1;
+        escapeTime = 0;
+        historyLimit = 1000000;
+        mouse = true;
+        keyMode = "vi";
+
+        # NOTE: was `shell = "$SHELL"`. tmux does not expand environment
+        # variables in default-shell, so that shipped the literal four
+        # characters and tmux fell back on its own. Spell the store path, as
+        # the wezterm aspect already does.
+        shell = "${pkgs.zsh}/bin/zsh";
+
+        # Both of these were being set in extraConfig, overriding the values
+        # this module had just written.
+        terminal = "tmux-256color";
+        focusEvents = true;
+        extraConfig = ''
+          # home-manager's hm-session-vars.sh (which carries home.sessionPath)
+          # opens with `if [ -n "$__HM_SESS_VARS_SOURCED" ]; then return; fi`.
+          # The server inherits that flag from whatever shell started it and
+          # hands it to every pane, so panes skip re-sourcing and silently lose
+          # the sessionPath entries -- while keeping whatever PATH the server
+          # was started with, which may be years stale. Drop it at server start
+          # so each pane evaluates the session vars itself.
+          set-environment -gu __HM_SESS_VARS_SOURCED
+
+          set -g status-left ""
+          set -g status-right "#{E:@catppuccin_status_directory}"
+          set -agF status-right "#{E:@catppuccin_status_session}"
+
+          setw -g automatic-rename on
+
+          set -g detach-on-destroy off  # don't exit from tmux when closing a session
+          set -g renumber-windows on    # renumber all windows when any window is closed
+          set -g set-clipboard on       # use system clipboard
+          set -g status-interval 2      # update status every 2 seconds
+          set -g status-left-length 200 # increase status line length
+          set -g status-position top    # macOS / darwin style
+
+          set -g prefix2 C-a
+          bind C-a send-prefix -2
+
+          # reload configuration
+          bind r source-file ~/.config/tmux/tmux.conf
+
+          set-option -ag terminal-overrides ",wezterm*:RGB"
+          set-option -ag terminal-overrides ",xterm-256color:RGB"
+          set-option -ag terminal-overrides ",tmux-256color:RGB"
+          set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+          set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+          set -as terminal-features ',*:usstyle'  # enable undercurl style support
+          set -as terminal-features ',wezterm*:RGB'  # enable RGB colors for wezterm
+
+          unbind v
+          unbind %
+          bind 'v' split-window -c '#{pane_current_path}' -h
+          bind '"' split-window -c '#{pane_current_path}' -v
+          bind 'h' split-window -c '#{pane_current_path}' -v
+          bind c new-window -c '#{pane_current_path}'
+          bind g new-window -n '' -c "#{pane_current_path}" lazygit
+
+          bind Enter copy-mode
+          bind -T copy-mode-vi v send -X begin-selection
+          bind -T copy-mode-vi C-v send -X rectangle-toggle
+          bind -T copy-mode-vi y send -X copy-selection-and-cancel
+          bind -T copy-mode-vi H send -X start-of-line
+          bind -T copy-mode-vi L send -X end-of-line
+
+
+          bind-key x kill-pane # skip "kill-pane 1? (y/n)" prompt (cmd+w)
+        '';
+      };
     };
-
-    programs.tmux = {
-      enable = true;
-      plugins = with pkgs.tmuxPlugins; [
-        vim-tmux-navigator
-        t-smart-tmux-session-manager
-        resurrect
-        {
-          plugin = continuum;
-          extraConfig = ''
-            set -g @continuum-restore 'on'
-            set -g @continuum-save-interval '15'
-          '';
-        }
-        # extrakto
-      ];
-      baseIndex = 1;
-      escapeTime = 0;
-      historyLimit = 1000000;
-      mouse = true;
-      keyMode = "vi";
-
-      # NOTE: was `shell = "$SHELL"`. tmux does not expand environment
-      # variables in default-shell, so that shipped the literal four
-      # characters and tmux fell back on its own. Spell the store path, as
-      # the wezterm aspect already does.
-      shell = "${pkgs.zsh}/bin/zsh";
-
-      # Both of these were being set in extraConfig, overriding the values
-      # this module had just written.
-      terminal = "tmux-256color";
-      focusEvents = true;
-      extraConfig = ''
-        # home-manager's hm-session-vars.sh (which carries home.sessionPath)
-        # opens with `if [ -n "$__HM_SESS_VARS_SOURCED" ]; then return; fi`.
-        # The server inherits that flag from whatever shell started it and
-        # hands it to every pane, so panes skip re-sourcing and silently lose
-        # the sessionPath entries -- while keeping whatever PATH the server
-        # was started with, which may be years stale. Drop it at server start
-        # so each pane evaluates the session vars itself.
-        set-environment -gu __HM_SESS_VARS_SOURCED
-
-        set -g status-left ""
-        set -g status-right "#{E:@catppuccin_status_directory}"
-        set -agF status-right "#{E:@catppuccin_status_session}"
-
-        setw -g automatic-rename on
-
-        set -g detach-on-destroy off  # don't exit from tmux when closing a session
-        set -g renumber-windows on    # renumber all windows when any window is closed
-        set -g set-clipboard on       # use system clipboard
-        set -g status-interval 2      # update status every 2 seconds
-        set -g status-left-length 200 # increase status line length
-        set -g status-position top    # macOS / darwin style
-
-        set -g prefix2 C-a
-        bind C-a send-prefix -2
-
-        # reload configuration
-        bind r source-file ~/.config/tmux/tmux.conf
-
-        set-option -ag terminal-overrides ",wezterm*:RGB"
-        set-option -ag terminal-overrides ",xterm-256color:RGB"
-        set-option -ag terminal-overrides ",tmux-256color:RGB"
-        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-        set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
-        set -as terminal-features ',*:usstyle'  # enable undercurl style support
-        set -as terminal-features ',wezterm*:RGB'  # enable RGB colors for wezterm
-
-        unbind v
-        unbind %
-        bind 'v' split-window -c '#{pane_current_path}' -h
-        bind '"' split-window -c '#{pane_current_path}' -v
-        bind 'h' split-window -c '#{pane_current_path}' -v
-        bind c new-window -c '#{pane_current_path}'
-        bind g new-window -n '' -c "#{pane_current_path}" lazygit
-
-        bind Enter copy-mode
-        bind -T copy-mode-vi v send -X begin-selection
-        bind -T copy-mode-vi C-v send -X rectangle-toggle
-        bind -T copy-mode-vi y send -X copy-selection-and-cancel
-        bind -T copy-mode-vi H send -X start-of-line
-        bind -T copy-mode-vi L send -X end-of-line
-
-
-        bind-key x kill-pane # skip "kill-pane 1? (y/n)" prompt (cmd+w)
-      '';
-    };
-  };
 }
