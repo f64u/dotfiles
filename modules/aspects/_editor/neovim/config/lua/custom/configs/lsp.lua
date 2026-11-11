@@ -7,7 +7,7 @@ end
 local on_attach = require('custom.util.lspconfig').on_attach
 
 -- Every server listed here must be on PATH from the nix package set -- see
--- modules/aspects/programs/neovim/default.nix. mason.nvim is gone, so adding
+-- modules/aspects/_editor/neovim/default.nix. mason.nvim is gone, so adding
 -- a server means adding its package there too.
 local servers = {
   -- clangd = {},

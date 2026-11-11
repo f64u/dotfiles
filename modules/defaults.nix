@@ -7,8 +7,22 @@
 }:
 {
   den.default = {
-    # State versions — do not bump these casually.
-    homeManager.home.stateVersion = "23.11";
+    homeManager = {
+      imports = [ inputs.catppuccin.homeModules.catppuccin ];
+
+      home = {
+        # Do not bump casually.
+        stateVersion = "23.11";
+        enableNixpkgsReleaseCheck = false;
+      };
+
+      # Programs opt in one by one, next to their own config.
+      catppuccin = {
+        enable = true;
+        autoEnable = false;
+        flavor = "mocha";
+      };
+    };
 
     # `os` forwards to both nixos and darwin; only darwin hosts exist today.
     os =
@@ -73,6 +87,8 @@
           Hour = 3;
           Minute = 0;
         };
+
+        system.defaults.smb.NetBIOSName = host.hostName;
 
         # nix-darwin only manages accounts it's told about.
         users.knownUsers = map (u: u.userName) accounts;

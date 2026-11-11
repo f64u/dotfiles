@@ -2,22 +2,22 @@
 { ... }:
 {
   homeManager = { pkgs, ... }: {
+    catppuccin.tmux = {
+      enable = true;
+      extraConfig = ''
+        set -g @catppuccin_status_left_separator "█"
+        set -g @catppuccin_status_right_separator "█"
+        set -g @catppuccin_status_background "none"
+        set -g @catppuccin_directory_text " #{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
+
+        set -ogq @catppuccin_window_text " #W at #{b:pane_current_path}"
+        set -ogq @catppuccin_window_current_text " #W at #{b:pane_current_path}"
+      '';
+    };
+
     programs.tmux = {
       enable = true;
       plugins = with pkgs.tmuxPlugins; [
-        {
-          plugin = catppuccin;
-          extraConfig = ''
-            set -g @catppuccin_flavor "mocha"
-            set -g @catppuccin_status_left_separator "█"
-            set -g @catppuccin_status_right_separator "█"
-            set -g @catppuccin_status_background "none"
-            set -g @catppuccin_directory_text " #{s|$HOME|~|;s|/.*/|/…/|:pane_current_path}"
-
-            set -ogq @catppuccin_window_text " #W at #{b:pane_current_path}"
-            set -ogq @catppuccin_window_current_text " #W at #{b:pane_current_path}"
-          '';
-        }
         vim-tmux-navigator
         t-smart-tmux-session-manager
         resurrect

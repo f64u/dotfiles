@@ -1,12 +1,12 @@
 # Entity declarations: which machines exist, and who lives on them.
 #
-# Each `den.hosts.<system>.<name>` becomes a darwinConfigurations/nixosConfigurations
+# Each `den.hosts.<system>.<name>` becomes a darwinConfigurations
 # output. The host aspect (den.aspects.<name>) and the user aspect
 # (den.aspects.<userName>) are looked up by name — see modules/aspects/.
 { inputs, lib, ... }:
 let
   # Identity lives on the user *entity*, readable by any aspect taking
-  # `{ user, ... }` (see aspects/programs/git.nix).
+  # `{ user, ... }` (see aspects/_vcs/git.nix).
   #
   # Not `den.schema.user`: that is merged into every user on every host, so
   # a name and email there become everyone's default.

@@ -42,35 +42,23 @@
         "type": "github"
       }
     },
-    "catppuccin-starship": {
-      "flake": false,
+    "catppuccin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1754058577,
-        "narHash": "sha256-FLHjbClpTqaK4n2qmepCPkb8rocaAo3qeV4Zp1hia0g=",
+        "lastModified": 1794001184,
+        "narHash": "sha256-i2+b4Rdp7/yIcVESrp0tzS97FkTuTJxIlqNOTjoswfk=",
         "owner": "catppuccin",
-        "repo": "starship",
-        "rev": "5906cc369dd8207e063c0e6e2d27bd0c0b567cb8",
+        "repo": "nix",
+        "rev": "5a735352cd3535d43109415bcbb512a72304226a",
         "type": "github"
       },
       "original": {
         "owner": "catppuccin",
-        "repo": "starship",
-        "type": "github"
-      }
-    },
-    "catppuccin-zsh-syntax-highlighting": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1721499242,
-        "narHash": "sha256-l6tztApzYpQ2/CiKuLBf8vI2imM6vPJuFdNDSEi7T/o=",
-        "owner": "catppuccin",
-        "repo": "zsh-syntax-highlighting",
-        "rev": "7926c3d3e17d26b3779851a2255b95ee650bd928",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "zsh-syntax-highlighting",
+        "repo": "nix",
         "type": "github"
       }
     },
@@ -205,8 +193,7 @@
       "inputs": {
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
-        "catppuccin-starship": "catppuccin-starship",
-        "catppuccin-zsh-syntax-highlighting": "catppuccin-zsh-syntax-highlighting",
+        "catppuccin": "catppuccin",
         "darwin": "darwin",
         "den": "den",
         "flake-parts": "flake-parts",

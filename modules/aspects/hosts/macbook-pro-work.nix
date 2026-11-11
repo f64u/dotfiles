@@ -14,7 +14,6 @@
       networking.computerName = "Fady's Work MacBook";
 
       system = {
-        defaults.smb.NetBIOSName = "macbook-pro-work";
         stateVersion = 5;
       };
     };

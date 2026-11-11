@@ -1,5 +1,5 @@
 # The shell itself. A module of den.aspects.shell, not an aspect.
-{ inputs, lib, ... }:
+{ ... }:
 {
   homeManager = {
     # The single owner of PATH additions -- do not also export PATH from
@@ -17,6 +17,8 @@
       "$HOME/.local/bin"
     ];
 
+    catppuccin.zsh-syntax-highlighting.enable = true;
+
     programs.zsh = {
       enable = true;
       autocd = true;
@@ -32,8 +34,6 @@
       '';
       initContent = ''
         mkdir -p "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-
-        source ${inputs.catppuccin-zsh-syntax-highlighting}/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
         # fnm owns writable, per-version npm globals. Clear the old inherited
         # prefix too, so shells opened from an existing session pick this up.

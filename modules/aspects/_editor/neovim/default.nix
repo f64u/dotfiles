@@ -21,7 +21,7 @@
       # store symlink -- seed it only when absent. After an update, copy the
       # new pins back into the repo:
       #   cp ~/.config/nvim/lazy-lock.json \
-      #      ~/.config/nix/modules/aspects/programs/neovim/lazy-lock.json
+      #      ~/dotfiles/modules/aspects/_editor/neovim/lazy-lock.json
       home.activation.seedLazyLock = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         lock="${config.home.homeDirectory}/.config/nvim/lazy-lock.json"
         if [ ! -e "$lock" ]; then

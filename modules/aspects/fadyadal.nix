@@ -20,12 +20,5 @@
       den.aspects.vcs
       den.aspects.terminal
     ];
-
-    homeManager =
-      { pkgs, ... }:
-      {
-        home.enableNixpkgsReleaseCheck = false;
-        home.packages = [ pkgs.nmap ];
-      };
   };
 }

@@ -22,6 +22,7 @@
         curl
         dos2unix
         jq
+        nmap
         parallel
         poppler-utils # pdftoppm, pdftotext, pdfinfo
         # macOS ships no `watch`; this is the procps one.

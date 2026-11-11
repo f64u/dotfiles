@@ -19,7 +19,6 @@
       networking.computerName = "Fady's MacBook Pro";
 
       system = {
-        defaults.smb.NetBIOSName = "macbook-pro";
         defaults.dock.tilesize = 48; # Larger dock on Pro
         stateVersion = 4;
       };

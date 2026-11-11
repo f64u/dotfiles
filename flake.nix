@@ -3,10 +3,9 @@
 
   # Everything lives in ./modules as flake-parts modules, auto-imported by
   # import-tree. Den (github:denful/den) turns `den.hosts` / `den.aspects`
-  # declarations into the usual darwinConfigurations / nixosConfigurations.
+  # declarations into darwinConfigurations.
   #
   #   darwin-rebuild switch --flake .#macbook-pro
-  #   nixos-rebuild  switch --flake .#nixos-desktop
   #
   # or via the nh wrappers den exposes:
   #
@@ -65,18 +64,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Catppuccin themes consumed as plain source trees. These were previously
-    # `builtins.fetchGit` calls pinned by rev inside the aspects, which meant
-    # full git clones on every evaluation and revisions that flake.lock knew
-    # nothing about -- `nix flake update` could not see them.
-    catppuccin-starship = {
-      url = "github:catppuccin/starship";
-      flake = false;
-    };
-
-    catppuccin-zsh-syntax-highlighting = {
-      url = "github:catppuccin/zsh-syntax-highlighting";
-      flake = false;
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 }
