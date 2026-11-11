@@ -4,6 +4,7 @@ local settings = require('settings')
 local app_icons = require('helpers.app_icons')
 
 local spaces = {}
+local focus_setters = {}
 
 for i = 1, 10, 1 do
   local display = (i >= 8) and 2 or 1
@@ -67,17 +68,20 @@ for i = 1, 10, 1 do
     }
   })
 
-  space:subscribe('aerospace_workspace_change', function(env)
-    local focused_workspace = env.FOCUSED_WORKSPACE
-    local selected = focused_workspace and tonumber(focused_workspace) == i
+  local function set_focused(workspace)
+    local selected = tonumber(workspace) == i
     space:set({
       icon = { highlight = selected, },
       label = { highlight = selected },
-      background = { border_color = selected and colors.black or colors.bg2 }
     })
     space_bracket:set({
       background = { border_color = selected and colors.grey or colors.bg2 }
     })
+  end
+  focus_setters[i] = set_focused
+
+  space:subscribe('aerospace_workspace_change', function(env)
+    set_focused(env.FOCUSED_WORKSPACE)
   end)
 
   space:subscribe('mouse.clicked', function(env)
@@ -177,6 +181,14 @@ space_window_observer:subscribe(
   { 'aerospace_workspace_change', 'windows_on_spaces', 'front_app_switched' },
   refresh_space_icons
 )
+
+-- Events only arrive on change, so seed the state on (re)load.
+refresh_space_icons()
+sbar.exec('aerospace list-workspaces --focused', function(focused)
+  for i = 1, 10 do
+    focus_setters[i](focused:match('%S+'))
+  end
+end)
 
 spaces_indicator:subscribe('swap_menus_and_spaces', function(env)
   local currently_on = spaces_indicator:query().icon.value == icons.switch.on
