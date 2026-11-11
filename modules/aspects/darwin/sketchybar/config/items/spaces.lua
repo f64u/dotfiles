@@ -33,7 +33,6 @@ for i = 1, count do
       height = 26,
       border_color = colors.black,
     },
-    popup = { background = { border_width = 5, border_color = colors.black } }
   })
 
   spaces[i] = space
@@ -54,19 +53,6 @@ for i = 1, count do
     width = settings.group_paddings,
   })
 
-  local space_popup = sbar.add('item', {
-    position = 'popup.' .. space.name,
-    padding_left = 5,
-    padding_right = 0,
-    background = {
-      drawing = true,
-      image = {
-        corner_radius = 9,
-        scale = 0.2
-      }
-    }
-  })
-
   local function set_focused(workspace)
     local selected = tonumber(workspace) == i
     space:set({
@@ -84,20 +70,9 @@ for i = 1, count do
   end)
 
   space:subscribe('mouse.clicked', function(env)
-    if env.BUTTON == 'other' then
-      space_popup:set({ background = { image = 'space.' .. i } })
-      space:set({ popup = { drawing = 'toggle' } })
-    else
-      if env.BUTTON == 'right' then
-        -- Aerospace doesn't have a destroy workspace command, skip this
-      else
-        sbar.exec('aerospace workspace ' .. i)
-      end
+    if env.BUTTON == 'left' then
+      sbar.exec('aerospace workspace ' .. i)
     end
-  end)
-
-  space:subscribe('mouse.exited', function(_)
-    space:set({ popup = { drawing = false } })
   end)
 end
 
