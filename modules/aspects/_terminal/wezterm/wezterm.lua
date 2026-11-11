@@ -3,7 +3,7 @@ local wezterm = require('wezterm')
 local config = wezterm.config_builder()
 
 -- Appearance
-config.color_scheme = 'Catppuccin Mocha'
+config.color_scheme = '@colorScheme@'
 config.font = wezterm.font('RecMonoLinear Nerd Font', { weight = 'Regular' })
 config.font_size = 19.0
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }

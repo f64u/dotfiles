@@ -2,7 +2,15 @@
 { ... }:
 {
   homeManager =
-    { pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      inherit (config.catppuccin) flavor;
+    in
     {
       programs.wezterm.enable = true;
 
@@ -12,6 +20,7 @@
       # broken config.
       xdg.configFile."wezterm/wezterm.lua".source = pkgs.replaceVars ./wezterm.lua {
         zsh = "${pkgs.zsh}/bin/zsh";
+        colorScheme = "Catppuccin ${lib.toUpper (lib.substring 0 1 flavor)}${lib.substring 1 (-1) flavor}";
       };
     };
 }
