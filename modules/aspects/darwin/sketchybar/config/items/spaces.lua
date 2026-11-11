@@ -3,13 +3,13 @@ local icons = require('icons')
 local settings = require('settings')
 local app_icons = require('helpers.app_icons')
 
+-- Matches aerospace's workspaces 1-9.
+local count = 9
 local spaces = {}
 local focus_setters = {}
 
-for i = 1, 10, 1 do
-  local display = (i >= 8) and 2 or 1
+for i = 1, count do
   local space = sbar.add('item', 'space.' .. i, {
-    display = display,
     icon = {
       font = { family = settings.font.numbers },
       string = i,
@@ -50,7 +50,6 @@ for i = 1, 10, 1 do
 
   -- Padding space
   sbar.add('item', 'space.padding.' .. i, {
-    display = display,
     script = '',
     width = settings.group_paddings,
   })
@@ -159,7 +158,7 @@ local function refresh_space_icons()
     end
 
     sbar.animate('tanh', 10, function()
-      for i = 1, 10 do
+      for i = 1, count do
         spaces[i]:set({ label = icon_lines[i] or '—' })
       end
     end)
@@ -182,10 +181,30 @@ space_window_observer:subscribe(
   refresh_space_icons
 )
 
+-- Put each space on whichever display aerospace has its workspace on; that
+-- moves when a monitor comes or goes. NSScreen ids match sketchybar's.
+local function assign_displays()
+  sbar.exec("aerospace list-workspaces --all --format '%{workspace}|%{monitor-appkit-nsscreen-screens-id}'", function(output)
+    for workspace, display in string.gmatch(output, '(%d+)|(%d+)') do
+      local i = tonumber(workspace)
+      if spaces[i] then
+        spaces[i]:set({ display = display })
+        sbar.set('space.padding.' .. i, { display = display })
+      end
+    end
+  end)
+end
+
+-- Give aerospace a moment to move its workspaces first.
+space_window_observer:subscribe('display_change', function()
+  sbar.delay(1, assign_displays)
+end)
+
 -- Events only arrive on change, so seed the state on (re)load.
+assign_displays()
 refresh_space_icons()
 sbar.exec('aerospace list-workspaces --focused', function(focused)
-  for i = 1, 10 do
+  for i = 1, count do
     focus_setters[i](focused:match('%S+'))
   end
 end)

@@ -78,7 +78,6 @@
         # derivation above builds the helpers instead, so it is not needed.
         extraPackages = with pkgs; [
           aerospace # items/spaces.lua queries workspaces
-          nowplaying-cli # items/media.lua transport controls
           switchaudio-osx # items/widgets/volume.lua device switcher
         ];
       };

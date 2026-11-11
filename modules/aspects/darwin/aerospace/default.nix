@@ -216,9 +216,7 @@
             "/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
           ];
 
-          # Workspace to monitor assignment
-          # Aerospace: Monitor 1 = external, Monitor 2 = Built-in (main)
-          # Sketchybar: Display 1 = main, Display 2 = external
+          # Monitor 1 = external, 2 = built-in. sketchybar follows this.
           workspace-to-monitor-force-assignment = {
             "1" = 2; # Built-in display (main)
             "2" = 2;
