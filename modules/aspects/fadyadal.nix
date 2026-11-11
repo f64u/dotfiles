@@ -19,22 +19,6 @@
       den.aspects.editor
       den.aspects.vcs
       den.aspects.terminal
-
-      # nix-darwin only manages users it is told about. The account name and
-      # uid come off the user entity (modules/den.nix) because they differ per
-      # host -- the work machine's account is `fady`, not `fadyadal`.
-      (
-        { user, ... }:
-        {
-          darwin = {
-            users.knownUsers = [ user.userName ];
-            users.users.${user.userName} = {
-              uid = user.uid;
-              isHidden = false;
-            };
-          };
-        }
-      )
     ];
 
     homeManager =

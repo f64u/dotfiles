@@ -22,7 +22,7 @@ in
 {
   imports = [ inputs.den.flakeModule ];
 
-  # `userName` is the macOS account; `uid` is read by aspects/fadyadal.nix.
+  # `userName` is the macOS account; `uid` is read by modules/defaults.nix.
   # The aspect stays `fadyadal` on both hosts (den looks it up by the attr
   # name), only the OS-level account differs.
   den.hosts.aarch64-darwin.macbook-pro.users.fadyadal = fadyadal // {

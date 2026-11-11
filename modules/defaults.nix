@@ -1,5 +1,10 @@
 # Settings applied to every host / user / home.
-{ den, inputs, ... }:
+{
+  den,
+  inputs,
+  lib,
+  ...
+}:
 {
   den.default = {
     # State versions — do not bump these casually.
@@ -55,13 +60,30 @@
         };
       };
 
-    # Sunday 03:00. If a NixOS host comes back, its counterpart is
-    # `nixos.nix.gc.dates = "Sun *-*-* 03:00:00";`.
-    darwin.nix.gc.interval = {
-      Weekday = 0;
-      Hour = 3;
-      Minute = 0;
-    };
+    darwin =
+      { host, ... }:
+      let
+        accounts = lib.filter (u: u ? uid) (lib.attrValues host.users);
+      in
+      {
+        # Sunday 03:00. If a NixOS host comes back, its counterpart is
+        # `nixos.nix.gc.dates = "Sun *-*-* 03:00:00";`.
+        nix.gc.interval = {
+          Weekday = 0;
+          Hour = 3;
+          Minute = 0;
+        };
+
+        # nix-darwin only manages accounts it's told about.
+        users.knownUsers = map (u: u.userName) accounts;
+        users.users = lib.genAttrs' accounts (
+          u:
+          lib.nameValuePair u.userName {
+            inherit (u) uid;
+            isHidden = false;
+          }
+        );
+      };
 
     includes = [
       # networking.hostName from den.hosts.<...>.hostName
