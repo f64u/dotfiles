@@ -7,6 +7,8 @@ return {
     vim.cmd.colorscheme 'catppuccin'
   end,
   opts = {
+    -- Dark follows catppuccin.flavor from Nix (set in init.lua).
+    background = { light = 'latte', dark = vim.g.catppuccin_flavour or 'mocha' },
     -- transparent_background = true,
     styles = {
       comments = {},

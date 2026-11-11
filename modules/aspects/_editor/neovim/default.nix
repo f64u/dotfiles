@@ -39,7 +39,11 @@
         enable = true;
         defaultEditor = true;
 
-        initLua = builtins.readFile ./config/init.lua;
+        # Read by plugins/theme.lua.
+        initLua = ''
+          vim.g.catppuccin_flavour = "${config.catppuccin.flavor}"
+        ''
+        + builtins.readFile ./config/init.lua;
 
         # Nothing here uses the pynvim or neovim-ruby remote-plugin providers;
         # nvim-dap-python runs debugpy through `uv`.
