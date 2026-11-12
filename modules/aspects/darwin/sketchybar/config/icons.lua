@@ -8,7 +8,6 @@ local icons = {
     gear = "􀍟",
     cpu = "􀫥",
     ram = "􀫦",
-    swap = "􀄬",
     disk = "􀪯",
     clipboard = "􀉄",
 
@@ -48,7 +47,6 @@ local icons = {
     gear = "",
     cpu = "",
     ram = "󰍛",
-    swap = "󰓡",
     disk = "󰋊",
     clipboard = "Missing Icon",
 

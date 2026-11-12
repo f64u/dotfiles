@@ -23,6 +23,7 @@
           orange = ${argb "ff" "peach"},
           magenta = ${argb "ff" "mauve"},
           grey = ${argb "ff" "overlay2"},
+          lavender = ${argb "ff" "lavender"},
           transparent = 0x00000000,
 
           bar = { bg = ${argb "ff" "base"}, border = ${argb "ff" "surface1"} },

@@ -36,16 +36,8 @@ cpu:subscribe("cpu_update", function(env)
   local load = tonumber(env.total_load)
   cpu:push({ load / 100. })
 
-  local color = colors.blue
-  if load > 30 then
-    if load < 60 then
-      color = colors.yellow
-    elseif load < 80 then
-      color = colors.orange
-    else
-      color = colors.red
-    end
-  end
+  -- Orange/red mean "look", as on ram and disk.
+  local color = (load >= 90 and colors.red) or (load >= 70 and colors.orange) or colors.blue
 
   cpu:set({
     graph = { color = color },

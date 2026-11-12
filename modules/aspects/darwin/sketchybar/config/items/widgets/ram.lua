@@ -9,38 +9,7 @@ sbar.exec("killall ram_load >/dev/null 2>&1; $CONFIG_DIR/helpers/event_providers
 -- (1 normal, 2 warning, 4 critical) rather than by the number itself.
 local level_colors = { ["1"] = colors.green, ["2"] = colors.orange, ["4"] = colors.red }
 
--- Swap rate, drawn over the graph's top-left while pages are moving; swap
--- size alone lingers long after the pressure that caused it. Added before
--- the graph so it anchors at the graph's right edge; zero net width
--- (padding_left = -padding_right) shifts it left without moving neighbours.
-local swap = sbar.add("item", "widgets.swap", {
-  position = "right",
-  drawing = false,
-  width = 0,
-  padding_left = -31,
-  padding_right = 31,
-  y_offset = 4,
-  icon = {
-    string = icons.swap,
-    font = { size = 9.0 },
-    padding_left = 0,
-    padding_right = 2,
-  },
-  label = {
-    font = {
-      family = settings.font.numbers,
-      style = settings.font.style_map["Bold"],
-      size = 9.0,
-    },
-    width = 26,
-    align = "left",
-    padding_left = 0,
-    padding_right = 0,
-  },
-})
-
--- Wider than cpu's so the swap rate and percentage both fit on top.
-local ram = sbar.add("graph", "widgets.ram", 64, {
+local ram = sbar.add("graph", "widgets.ram", 42, {
   position = "right",
   graph = { color = colors.green },
   background = {
@@ -74,20 +43,24 @@ local function human(bytes)
   end
 end
 
+-- While pages move, the module becomes a swap readout: the chip turns
+-- orange/red and the value becomes a rate. The graph keeps showing usage.
 ram:subscribe("ram_update", function(env)
   local used = tonumber(env.used_percent)
+  local rate = tonumber(env.swap_rate) or 0
   ram:push({ used / 100. })
+
+  local alarm = rate >= 10e6 and colors.red or colors.orange
+  local swapping = rate > 0
   ram:set({
     graph = { color = level_colors[env.pressure_level] or colors.green },
-    label = used .. "%",
-  })
-
-  local rate = tonumber(env.swap_rate) or 0
-  local color = rate >= 10e6 and colors.red or colors.orange
-  swap:set({
-    drawing = rate > 0,
-    icon = { color = color },
-    label = { string = human(rate), color = color },
+    icon = {
+      color = swapping and alarm or colors.white,
+    },
+    label = {
+      string = swapping and (human(rate) .. "/s") or (used .. "%"),
+      color = swapping and alarm or colors.white,
+    },
   })
 end)
 
