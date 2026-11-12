@@ -123,27 +123,9 @@
 
             # Focus workspace
             alt-tab = "workspace-back-and-forth";
-
-            # Service commands
-            alt-shift-semicolon = "mode service";
           }
           // focusBindings
           // moveBindings;
-
-          mode.service.binding = {
-            esc = [
-              "reload-config"
-              "mode main"
-            ];
-            r = [
-              "flatten-workspace-tree"
-              "mode main"
-            ];
-            backspace = [
-              "close-all-windows-but-current"
-              "mode main"
-            ];
-          };
 
           # App-specific rules
           on-window-detected = [
