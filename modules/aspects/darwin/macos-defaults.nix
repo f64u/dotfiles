@@ -46,7 +46,10 @@
       pmset -b displaysleep 5
     '';
 
-    # Authenticate `sudo` with Touch ID.
-    security.pam.services.sudo_local.touchIdAuth = true;
+    # Authenticate `sudo` with Touch ID, inside tmux too (pam_reattach).
+    security.pam.services.sudo_local = {
+      touchIdAuth = true;
+      reattach = true;
+    };
   };
 }
