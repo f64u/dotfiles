@@ -26,14 +26,41 @@
         $aerospace workspace "$1"
       '';
 
+      # Keyboard commands that may change monitor stamp the time first, so
+      # followMouse leaves them alone.
+      stamp = pkgs.writeShellScript "aerospace-stamp" ''
+        echo "''${EPOCHREALTIME/[.,]/}" > /tmp/aerospace-keyboard-$UID
+      '';
+      kb = cmds: [ "exec-and-forget ${stamp}" ] ++ lib.toList cmds;
+
+      # Cmd-Tab, the Dock or a link activate an app, and macOS keys its last
+      # window, maybe on the other monitor. The mouse marks the screen in
+      # use, so if the same app has a visible window there, focus that
+      # instead; otherwise bring the mouse along as before. Each aerospace
+      # call is ~10ms, so the usual paths make one.
+      followMouse = pkgs.writeShellScript "aerospace-follow-mouse" ''
+        aerospace=/run/current-system/sw/bin/aerospace
+        read -r at 2>/dev/null < /tmp/aerospace-keyboard-$UID
+        if (( ''${EPOCHREALTIME/[.,]/} - ''${at:-0} < 1000000 )); then
+          exec $aerospace move-mouse monitor-lazy-center
+        fi
+        # Empty unless the mouse is on the focused monitor.
+        [ -z "$($aerospace list-monitors --focused --mouse)" ] || exit 0
+        app=$($aerospace list-windows --focused --format '%{app-bundle-id}' 2>/dev/null)
+        id=$([ -n "$app" ] && $aerospace list-windows --monitor mouse --workspace visible \
+          --app-bundle-id "$app" --format '%{window-id}')
+        [ -n "$id" ] && exec $aerospace focus --window-id "''${id%%$'\n'*}"
+        exec $aerospace move-mouse monitor-lazy-center
+      '';
+
       # `alt-N` focuses workspace N.
       focusBindings = lib.listToAttrs (
         map (
           n:
-          lib.nameValuePair "alt-${n}" [
+          lib.nameValuePair "alt-${n}" (kb [
             "workspace ${n}"
             "exec-and-forget ${holdFocus} ${n}"
-          ]
+          ])
         ) workspaces
       );
 
@@ -42,11 +69,11 @@
       moveBindings = lib.listToAttrs (
         map (
           n:
-          lib.nameValuePair "alt-shift-${n}" [
+          lib.nameValuePair "alt-shift-${n}" (kb [
             "move-node-to-workspace ${n}"
             "workspace ${n}"
             "exec-and-forget sketchybar --trigger windows_on_spaces"
-          ]
+          ])
         ) workspaces
       );
     in
@@ -76,7 +103,7 @@
 
           key-mapping.preset = "qwerty";
 
-          on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+          on-focused-monitor-changed = [ "exec-and-forget ${followMouse}" ];
           # sketchybar's front_app: closing the last window changes no
           # workspace and no macOS front app.
           on-focus-changed = [ "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_focus_change" ];
@@ -119,15 +146,15 @@
             # single row or column of displays and for two displays in any
             # arrangement. k/j are geometric: they only fire when a monitor is
             # actually above/below, which is what you want in a 2D grid.
-            alt-ctrl-h = "focus-monitor --wrap-around prev";
-            alt-ctrl-l = "focus-monitor --wrap-around next";
-            alt-ctrl-k = "focus-monitor up";
-            alt-ctrl-j = "focus-monitor down";
+            alt-ctrl-h = kb "focus-monitor --wrap-around prev";
+            alt-ctrl-l = kb "focus-monitor --wrap-around next";
+            alt-ctrl-k = kb "focus-monitor up";
+            alt-ctrl-j = kb "focus-monitor down";
 
-            alt-ctrl-shift-h = "move-node-to-monitor --wrap-around --focus-follows-window prev";
-            alt-ctrl-shift-l = "move-node-to-monitor --wrap-around --focus-follows-window next";
-            alt-ctrl-shift-k = "move-node-to-monitor --focus-follows-window up";
-            alt-ctrl-shift-j = "move-node-to-monitor --focus-follows-window down";
+            alt-ctrl-shift-h = kb "move-node-to-monitor --wrap-around --focus-follows-window prev";
+            alt-ctrl-shift-l = kb "move-node-to-monitor --wrap-around --focus-follows-window next";
+            alt-ctrl-shift-k = kb "move-node-to-monitor --focus-follows-window up";
+            alt-ctrl-shift-j = kb "move-node-to-monitor --focus-follows-window down";
 
             # Flatten the workspace tree. (`alt-r` and `alt-e` were both bound
             # to the same `layout tiles horizontal vertical` command; alt-e
@@ -151,7 +178,7 @@
             alt-shift-0 = "balance-sizes";
 
             # Focus workspace
-            alt-tab = "workspace-back-and-forth";
+            alt-tab = kb "workspace-back-and-forth";
           }
           // focusBindings
           // moveBindings;
