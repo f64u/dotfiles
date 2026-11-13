@@ -20,7 +20,9 @@ local notch, edge, active, name = nil, nil, nil, ""
 local x, per_char = nil, 8
 
 local function rect()
-  local r = front_app:query().bounding_rects["display-" .. notch]
+  -- No rects while it's drawn nowhere (e.g. an empty label).
+  local rects = front_app:query().bounding_rects
+  local r = rects and rects["display-" .. notch]
   if r and r.origin[1] > -9999 then return r end
 end
 

@@ -74,6 +74,19 @@
         };
         configType = "lua";
 
+        # FelixKratz/SbarLua#67 (unmerged): pops failed callbacks' errors off
+        # the Lua stack (thousands of those and callbacks stop firing) and
+        # stops exec/delay callbacks, replaced subscriptions and query
+        # buffers leaking. Drop once nixpkgs' sbarlua includes it.
+        sbarLuaPackage = pkgs.sbarlua.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            (pkgs.fetchpatch {
+              url = "https://github.com/FelixKratz/SbarLua/compare/dba9cc421b868c918d5c23c408544a28aadf2f2f...a016d3380fb3e2ec4df1ffb2d858acbb2272d1c5.patch";
+              hash = "sha256-k9zniKIdiqpmVc/enxa8D+sL1u/rQODjlV+E1ieaFyc=";
+            })
+          ];
+        });
+
         # Runtime dependencies of the lua config. `gnumake` used to be here
         # because helpers/init.lua re-ran `make` on every launch -- the
         # derivation above builds the helpers instead, so it is not needed.
