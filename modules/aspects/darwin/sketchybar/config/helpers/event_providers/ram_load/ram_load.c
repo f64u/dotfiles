@@ -4,7 +4,8 @@
 #include "../sketchybar.h"
 
 // Fires <event> with
-//   used_percent    100 - kern.memorystatus_level (memory_pressure -Q's "free")
+//   used_percent    Activity Monitor's "Memory Used": app (anonymous minus
+//                   purgeable) + wired + compressed, over physical memory
 //   pressure_level  1 normal, 2 warning, 4 critical
 //   swap_rate       bytes/s swapped in + out since the last tick
 //   swap_used       bytes currently in swap
@@ -15,14 +16,15 @@ static int read_int(const char* name) {
   return value;
 }
 
-static uint64_t swap_pages(void) {
-  vm_statistics64_data_t vm;
+static int read_vm(vm_statistics64_data_t* vm) {
   mach_msg_type_number_t count = HOST_VM_INFO64_COUNT;
-  if (host_statistics64(mach_host_self(), HOST_VM_INFO64,
-                        (host_info64_t)&vm, &count) != KERN_SUCCESS) {
-    return 0;
-  }
-  return vm.swapins + vm.swapouts;
+  return host_statistics64(mach_host_self(), HOST_VM_INFO64,
+                           (host_info64_t)vm, &count) == KERN_SUCCESS;
+}
+
+static uint64_t used_pages(const vm_statistics64_data_t* vm) {
+  return vm->internal_page_count - vm->purgeable_count + vm->wire_count
+         + vm->compressor_page_count;
 }
 
 static uint64_t swap_used(void) {
@@ -44,22 +46,29 @@ int main(int argc, char** argv) {
   snprintf(message, 512, "--add event '%s'", argv[1]);
   sketchybar(message);
 
-  uint64_t prev_pages = swap_pages();
+  uint64_t total = 0;
+  size_t len = sizeof(total);
+  sysctlbyname("hw.memsize", &total, &len, NULL, 0);
+  uint64_t total_pages = total / vm_page_size;
+
+  vm_statistics64_data_t vm;
+  uint64_t prev_pages = read_vm(&vm) ? vm.swapins + vm.swapouts : 0;
   for (;;) {
     usleep(update_freq * 1000000);
+    if (!read_vm(&vm) || total_pages == 0) continue;
 
-    uint64_t pages = swap_pages();
+    uint64_t pages = vm.swapins + vm.swapouts;
     uint64_t rate = (pages - prev_pages) * vm_page_size / update_freq;
     prev_pages = pages;
 
-    int free = read_int("kern.memorystatus_level");
+    int used = (int)(used_pages(&vm) * 100 / total_pages);
     int level = read_int("kern.memorystatus_vm_pressure_level");
-    if (free < 0 || level < 0) continue;
+    if (level < 0) continue;
 
     snprintf(message, 512,
              "--trigger '%s' used_percent='%d' pressure_level='%d'"
              " swap_rate='%llu' swap_used='%llu'",
-             argv[1], 100 - free, level, rate, swap_used());
+             argv[1], used, level, rate, swap_used());
     sketchybar(message);
   }
   return 0;
