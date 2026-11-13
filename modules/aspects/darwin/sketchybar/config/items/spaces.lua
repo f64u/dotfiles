@@ -65,10 +65,6 @@ for i = 1, count do
   end
   focus_setters[i] = set_focused
 
-  space:subscribe('aerospace_workspace_change', function(env)
-    set_focused(env.FOCUSED_WORKSPACE)
-  end)
-
   space:subscribe('mouse.clicked', function(env)
     if env.BUTTON == 'left' then
       sbar.exec('aerospace workspace ' .. i)
@@ -175,14 +171,42 @@ space_window_observer:subscribe('display_change', function()
   sbar.delay(1, assign_displays)
 end)
 
+-- A switch can bounce: about 0.1s later aerospace briefly goes back to the
+-- workspace just left and returns, firing two more changes. So within 0.3s
+-- of a switch, a change back to the previous workspace is held, and once
+-- things are quiet aerospace is asked where it settled. Any other change
+-- shows at once.
+local function set_all(workspace)
+  for i = 1, count do focus_setters[i](workspace) end
+end
+local current, previous, burst, settling = nil, nil, 0, false
+local function show_focused()
+  sbar.exec('aerospace list-workspaces --focused', function(focused)
+    local ws = focused:match('%S+')
+    if ws ~= current then previous, current = current, ws end
+    set_all(ws)
+  end)
+end
+space_window_observer:subscribe('aerospace_workspace_change', function(env)
+  local ws = env.FOCUSED_WORKSPACE
+  burst = burst + 1
+  local mine = burst
+  if not (settling and ws == previous) and ws ~= current then
+    previous, current = current, ws
+    set_all(ws)
+  end
+  settling = true
+  sbar.delay(0.3, function()
+    if burst ~= mine then return end
+    settling = false
+    show_focused()
+  end)
+end)
+
 -- Events only arrive on change, so seed the state on (re)load.
 assign_displays()
 refresh_space_icons()
-sbar.exec('aerospace list-workspaces --focused', function(focused)
-  for i = 1, count do
-    focus_setters[i](focused:match('%S+'))
-  end
-end)
+show_focused()
 
 spaces_indicator:subscribe('swap_menus_and_spaces', function(env)
   local currently_on = spaces_indicator:query().icon.value == icons.switch.on

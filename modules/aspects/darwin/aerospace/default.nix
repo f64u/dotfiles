@@ -1,15 +1,41 @@
 { lib, ... }:
 {
   den.aspects.darwin-aerospace.darwin =
-    { ... }:
+    { pkgs, ... }:
     let
       # 1-9. There is no alt-10 key, and alt-shift-0 is already balance-sizes,
       # so a tenth workspace has nowhere to bind -- the stale
       # workspace-to-monitor entry for "10" is dropped below to match.
       workspaces = map toString (lib.range 1 9);
 
+      # Switching to a workspace activates its app, and macOS then keys that
+      # app's last window, which may be on the other monitor; aerospace
+      # follows it there. So half a second later, if focus left workspace $1
+      # for another window of an app that's on $1 (and no other alt-N came
+      # since), focus $1 again.
+      holdFocus = pkgs.writeShellScript "aerospace-hold-focus" ''
+        aerospace=/run/current-system/sw/bin/aerospace
+        target=/tmp/aerospace-target-$(id -u)
+        echo "$1" > "$target"
+        sleep 0.5
+        [ "$(cat "$target")" = "$1" ] || exit 0
+        [ "$($aerospace list-workspaces --focused)" != "$1" ] || exit 0
+        app=$($aerospace list-windows --focused --format '%{app-bundle-id}' 2>/dev/null)
+        [ -n "$app" ] || exit 0
+        $aerospace list-windows --workspace "$1" --format '%{app-bundle-id}' | grep -qxF "$app" || exit 0
+        $aerospace workspace "$1"
+      '';
+
       # `alt-N` focuses workspace N.
-      focusBindings = lib.listToAttrs (map (n: lib.nameValuePair "alt-${n}" "workspace ${n}") workspaces);
+      focusBindings = lib.listToAttrs (
+        map (
+          n:
+          lib.nameValuePair "alt-${n}" [
+            "workspace ${n}"
+            "exec-and-forget ${holdFocus} ${n}"
+          ]
+        ) workspaces
+      );
 
       # `alt-shift-N` moves the focused window to workspace N, follows it, and
       # nudges sketchybar to redraw its per-workspace app icons.
@@ -51,6 +77,9 @@
           key-mapping.preset = "qwerty";
 
           on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+          # sketchybar's front_app: closing the last window changes no
+          # workspace and no macOS front app.
+          on-focus-changed = [ "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_focus_change" ];
 
           gaps = {
             inner.horizontal = 10;

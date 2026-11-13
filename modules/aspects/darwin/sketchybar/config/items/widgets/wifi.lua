@@ -1,6 +1,7 @@
 local icons = require("icons")
 local colors = require("colors")
 local settings = require("settings")
+local popups = require("helpers.popups")
 
 -- Execute the event provider binary which provides the event "network_update"
 -- for the network interface "en0", which is fired every 2.0 seconds.
@@ -190,10 +191,14 @@ local function hide_details()
   wifi_bracket:set({ popup = { drawing = false } })
 end
 
+popups.register("wifi", hide_details)
+
 local function toggle_details()
   local should_draw = wifi_bracket:query().popup.drawing == "off"
   if should_draw then
-    wifi_bracket:set({ popup = { drawing = true }})
+    popups.open("wifi", function()
+      wifi_bracket:set({ popup = { drawing = true } })
+    end)
     sbar.exec("networksetup -getcomputername", function(result)
       hostname:set({ label = result })
     end)
@@ -216,7 +221,6 @@ end
 wifi_up:subscribe("mouse.clicked", toggle_details)
 wifi_down:subscribe("mouse.clicked", toggle_details)
 wifi:subscribe("mouse.clicked", toggle_details)
-wifi:subscribe("mouse.exited.global", hide_details)
 
 local function copy_label_to_clipboard(env)
   local label = sbar.query(env.NAME).label.value

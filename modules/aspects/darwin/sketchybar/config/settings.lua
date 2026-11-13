@@ -1,4 +1,5 @@
 return {
+  bar_height = 40,
   paddings = 3,
   group_paddings = 5,
 

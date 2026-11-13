@@ -1,6 +1,8 @@
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
+local popups = require("helpers.popups")
+local island = require("items.island")
 
 local popup_width = 250
 
@@ -68,6 +70,7 @@ local volume_slider = sbar.add("slider", popup_width, {
   click_script = 'osascript -e "set volume output volume $PERCENTAGE"'
 })
 
+local seen_volume = false
 volume_percent:subscribe("volume_change", function(env)
   local volume = tonumber(env.INFO)
   local icon = icons.volume._0
@@ -89,6 +92,10 @@ volume_percent:subscribe("volume_change", function(env)
   volume_icon:set({ label = icon })
   volume_percent:set({ label = lead .. volume .. "%" })
   volume_slider:set({ slider = { percentage = volume } })
+
+  -- The first event is just the initial value.
+  if seen_volume then island.volume(volume) end
+  seen_volume = true
 end)
 
 local function volume_collapse_details()
@@ -97,6 +104,8 @@ local function volume_collapse_details()
   volume_bracket:set({ popup = { drawing = false } })
   sbar.remove('/volume.device\\.*/')
 end
+
+popups.register("volume", volume_collapse_details)
 
 local current_audio_device = "None"
 local function volume_toggle_details(env)
@@ -107,10 +116,14 @@ local function volume_toggle_details(env)
 
   local should_draw = volume_bracket:query().popup.drawing == "off"
   if should_draw then
-    volume_bracket:set({ popup = { drawing = true } })
+    popups.open("volume", function()
+      volume_bracket:set({ popup = { drawing = true } })
+    end)
     sbar.exec("SwitchAudioSource -t output -c", function(result)
       current_audio_device = result:sub(1, -2)
       sbar.exec("SwitchAudioSource -a -t output", function(available)
+        -- A cancelled or repeated open leaves rows from last time.
+        sbar.remove('/volume.device\\.*/')
         local current = current_audio_device
         local counter = 0
 
@@ -150,6 +163,5 @@ end
 volume_icon:subscribe("mouse.clicked", volume_toggle_details)
 volume_icon:subscribe("mouse.scrolled", volume_scroll)
 volume_percent:subscribe("mouse.clicked", volume_toggle_details)
-volume_percent:subscribe("mouse.exited.global", volume_collapse_details)
 volume_percent:subscribe("mouse.scrolled", volume_scroll)
 
