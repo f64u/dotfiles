@@ -333,11 +333,34 @@ local function unread()
   return names
 end
 
+local function same(a, b)
+  if #a ~= #b then return false end
+  for i = 1, #a do if a[i] ~= b[i] then return false end end
+  return true
+end
+
+-- An open shelf drops apps whose badge cleared (or closes if none are
+-- left); while hovered it also picks up new ones.
+local function refresh()
+  if not shelf.shown then return end
+  local names = {}
+  if shelf.inside then
+    names = unread()
+  else
+    for _, n in ipairs(shelf.shown) do
+      if (shelf.badges[n] or "") ~= "" then names[#names + 1] = n end
+    end
+  end
+  if #names == 0 then shelf_close()
+  elseif not same(names, shelf.shown) then shelf_open(names) end
+end
+
 function island.badge(name, badge)
   local item = shelf.items[name]
   if item and shelf.badges[name] ~= badge then
     shelf.badges[name] = badge
     item:set({ label = badge })
+    refresh()
   end
 end
 
@@ -348,7 +371,7 @@ local function hover(inside)
   if inside then
     -- A peek shows one app; hovering shows them all.
     local names = unread()
-    if not shelf.shown or #shelf.shown < #names then shelf_open(names) end
+    if not shelf.shown or not same(shelf.shown, names) then shelf_open(names) end
     return
   end
   sbar.delay(0.3, function()
