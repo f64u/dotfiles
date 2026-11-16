@@ -20,7 +20,15 @@
       icons = "auto";
     };
     programs.fd.enable = true;
-    programs.fzf.enable = true;
+    programs.atuin = {
+      enable = true;
+      flags = [ "--disable-up-arrow" ];
+    };
+    programs.fzf = {
+      enable = true;
+      # Atuin owns Ctrl-R.
+      historyWidget.command = "";
+    };
     # Per-project tool versions (node, python, ...). Reads .node-version and
     # .nvmrc as well as mise.toml.
     programs.mise = {
