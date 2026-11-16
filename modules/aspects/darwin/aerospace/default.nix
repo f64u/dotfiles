@@ -72,7 +72,7 @@
           lib.nameValuePair "alt-shift-${n}" (kb [
             "move-node-to-workspace ${n}"
             "workspace ${n}"
-            "exec-and-forget sketchybar --trigger windows_on_spaces"
+            "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger windows_on_spaces"
           ])
         ) workspaces
       );
@@ -106,7 +106,9 @@
           on-focused-monitor-changed = [ "exec-and-forget ${followMouse}" ];
           # sketchybar's front_app: closing the last window changes no
           # workspace and no macOS front app.
-          on-focus-changed = [ "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_focus_change" ];
+          on-focus-changed = [
+            "exec-and-forget /run/current-system/sw/bin/sketchybar --trigger aerospace_focus_change"
+          ];
 
           gaps = {
             inner.horizontal = 10;
@@ -230,7 +232,7 @@
             {
               "if" = {
                 app-id = "com.apple.Safari";
-                window-title-regex-substring = "^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$";
+                window-title-regex-substring = "^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advanced)$";
               };
               run = "layout floating";
             }
@@ -245,9 +247,8 @@
 
           # Sketchybar integration callback.
           #
-          # NOTE: only `aerospace_workspace_change` is fired. spaces.lua also
-          # subscribes to `windows_on_spaces` with the same handler, so firing
-          # both here made every workspace switch refresh the icon strip twice.
+          # Only `aerospace_workspace_change` here; `windows_on_spaces` comes
+          # from the alt-shift-N bindings.
           exec-on-workspace-change = [
             "/bin/bash"
             "-c"
