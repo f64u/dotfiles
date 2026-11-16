@@ -26,14 +26,9 @@ M.on_attach = function(_, bufnr)
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-  -- Telescope pickers, which are a real gain over the built-in quickfix UI.
-  -- Wrapped in thunks so telescope is not force-loaded on every LspAttach.
-  nmap('<leader>ds', function()
-    require('telescope.builtin').lsp_document_symbols()
-  end, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', function()
-    require('telescope.builtin').lsp_dynamic_workspace_symbols()
-  end, '[W]orkspace [S]ymbols')
+  -- Pickers, a real gain over the built-in quickfix UI.
+  nmap('<leader>ds', function() Snacks.picker.lsp_symbols() end, '[D]ocument [S]ymbols')
+  nmap('<leader>ws', function() Snacks.picker.lsp_workspace_symbols() end, '[W]orkspace [S]ymbols')
 
   -- Lesser used LSP functionality
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')

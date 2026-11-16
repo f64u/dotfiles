@@ -10,8 +10,8 @@
       home.packages = with pkgs; [
         # Language servers and tools
         bash-language-server
-        ccls
-        nil
+        clang-tools # clangd
+        nixd
         nixfmt
         lua-language-server
         taplo # toml

@@ -12,17 +12,12 @@ local on_attach = require('custom.util.lspconfig').on_attach
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  nil_ls = {
+  nixd = {
     settings = {
-      ['nil'] = {
+      nixd = {
         formatting = {
           command = { 'nixfmt' }
         },
-        nix = {
-          flake = {
-            autoArchive = true
-          }
-        }
       }
     }
   },
@@ -61,7 +56,7 @@ local servers = {
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
   jsonls = {},
-  ccls = {},
+  clangd = {},
   -- Provided by the opam switch, not nixpkgs -- the zsh aspect's
   -- `eval $(opam env)` is what puts it on PATH.
   ocamllsp = {},
@@ -122,11 +117,7 @@ vim.diagnostic.config({
   virtual_text = false,
   severity_sort = true,
 
-  -- NOTE: these icons used to be four `vim.fn.sign_define` calls in
-  -- plugins/neotree.lua. That API was deprecated for diagnostics in 0.10 and
-  -- the legacy path is gone from vim.diagnostic, so with `signs = true` the
-  -- gutter fell back to rendering plain "E"/"W"/"I"/"H". Declaring them here
-  -- reaches both the gutter and neo-tree, which reads `signs.text`.
+  -- Declared here: `vim.fn.sign_define` no longer reaches diagnostics.
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = ' ',

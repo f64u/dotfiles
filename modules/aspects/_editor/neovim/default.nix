@@ -58,7 +58,7 @@
           vscode-langservers-extracted # html, cssls, jsonls
           lldb # lldb-dap, for the nvim-dap C/C++/Rust adapter
 
-          # telescope-fzf-native and nvim-treesitter compile at runtime.
+          # nvim-treesitter compiles parsers at runtime.
           gnumake
           stdenv.cc
         ];

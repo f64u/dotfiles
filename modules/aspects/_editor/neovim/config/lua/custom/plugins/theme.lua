@@ -19,7 +19,6 @@ return {
     integrations = {
       blink_cmp = true,
       gitsigns = true,
-      indent_blankline = { enabled = true },
       lsp_trouble = true,
       native_lsp = {
         enabled = true,
@@ -30,9 +29,8 @@ return {
           information = { 'undercurl' },
         },
       },
-      neotree = true,
       semantic_tokens = true,
-      telescope = true,
+      snacks = { enabled = true },
       treesitter = true,
       which_key = true,
     },

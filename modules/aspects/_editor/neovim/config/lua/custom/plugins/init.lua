@@ -44,7 +44,7 @@ return {
 
   {
     -- Auto pair text objects
-    'windwp/nvim-autopairs',
+    'nvim-mini/mini.pairs',
     event = 'InsertEnter',
     opts = {}
   },
@@ -70,17 +70,6 @@ return {
         callback = function() vim.opt_local.conceallevel = 2 end,
       })
     end
-  },
-
-  -- Better vim.ui.select. Replaces dressing.nvim (archived 2025-02), reusing
-  -- the telescope UI already configured rather than pulling in a new framework.
-  {
-    'nvim-telescope/telescope-ui-select.nvim',
-    dependencies = { 'nvim-telescope/telescope.nvim' },
-    event = 'VeryLazy',
-    config = function()
-      require('telescope').load_extension 'ui-select'
-    end,
   },
 
   {
