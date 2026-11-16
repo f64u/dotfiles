@@ -11,5 +11,6 @@
     (import ./_shell/starship.nix args)
     (import ./_shell/tmux.nix args)
     (import ./_shell/tools.nix args)
+    (import ./_shell/claude.nix args)
   ];
 }
