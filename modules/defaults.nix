@@ -42,8 +42,9 @@
             ];
 
             # trusted-user is root-equivalent, so derive it from the host's
-            # own user list rather than naming anyone here.
-            trusted-users = builtins.attrNames host.users;
+            # own user list rather than naming anyone here. Account names,
+            # not den's attribute names.
+            trusted-users = map (u: u.userName) (lib.attrValues host.users);
           };
 
           # `options` is load-bearing: it defaults to "", and bare
