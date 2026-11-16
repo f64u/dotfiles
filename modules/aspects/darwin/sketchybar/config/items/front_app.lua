@@ -51,7 +51,8 @@ local function fit()
     show(want())
   end
   sbar.delay(0.05, function()
-    local r = rect()
+    -- The notch display may have gone in the meantime.
+    local r = notch and edge and rect()
     if r then
       x = r.origin[1]
       local shown = cut == 0 and len or math.min(cut, len)

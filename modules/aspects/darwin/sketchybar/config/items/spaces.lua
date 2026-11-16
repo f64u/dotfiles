@@ -140,10 +140,6 @@ end
 -- hook; `windows_on_spaces` from its alt-shift-N bindings; `front_app_switched`
 -- catches apps launched or quit without a workspace switch.
 --
--- NOTE: the aerospace hook deliberately fires only `aerospace_workspace_change`
--- now. Firing both from there meant every workspace switch ran this refresh
--- twice, since both events land on the same handler.
---
 -- If a window closes while the focused app stays put the strip can go briefly
 -- stale -- add a hidden item with a slow `update_freq` (30+) triggering
 -- `windows_on_spaces` if that bothers you, but not a two-second one.
@@ -153,6 +149,7 @@ end
 -- One action fires several of these at once, hence the short coalescing.
 local icon_observer = sbar.add('item', { drawing = false, updates = true })
 sbar.add('event', 'aerospace_focus_change')
+sbar.add('event', 'windows_on_spaces')
 local pending = 0
 icon_observer:subscribe(
   { 'aerospace_workspace_change', 'aerospace_focus_change', 'windows_on_spaces', 'front_app_switched' },

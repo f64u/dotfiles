@@ -67,15 +67,19 @@ local watcher = sbar.add("item", {
   update_freq = 3,
 })
 
-local query = "for a in '" .. table.concat(apps, "' '") .. "'; do"
-    .. " printf '%s|%s\\n' \"$a\" \"$(lsappinfo info -only StatusLabel \"$a\""
-    .. " | sed -n 's/.*\"label\"=\"\\([^\"]*\\)\".*/\\1/p')\"; done"
+-- One lsappinfo per app and nothing else: it takes a single app, and the
+-- label is picked out below.
+local query = ""
+for _, app in ipairs(apps) do
+  query = query .. "printf '\\n" .. app .. "|'; lsappinfo info -only StatusLabel '" .. app .. "'; "
+end
 
 local seen = {}
 watcher:subscribe({ "forced", "routine", "system_woke", "front_app_switched" }, function()
   sbar.exec(query, function(out)
-    for app, badge in out:gmatch("([^|\n]+)|([^\n]*)") do
+    for app, info in out:gmatch("([^|\n]+)|([^\n]*)") do
       local item = items[app]
+      local badge = info:match('"label"="([^"]*)"') or ""
       if item then
         -- Slack's badge is a bare "•" for unreads without mentions.
         local count = (badge == "" or badge == "0") and 0 or tonumber(badge) or 0.5

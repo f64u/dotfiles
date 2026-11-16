@@ -79,10 +79,18 @@ void ax_print_menu_options(AXUIElementRef app) {
         CFTypeRef title = ax_get_title(item);
 
         if (title) {
-          uint32_t buffer_len = 2*CFStringGetLength(title);
-          char buffer[2*CFStringGetLength(title)];
-          CFStringGetCString(title, buffer, buffer_len, kCFStringEncodingUTF8);
-          printf("%s\n", buffer);
+          // Worst-case UTF-8 size, plus the NUL.
+          CFIndex buffer_len = CFStringGetMaximumSizeForEncoding(
+                                 CFStringGetLength(title),
+                                 kCFStringEncodingUTF8      ) + 1;
+          char* buffer = malloc(buffer_len);
+          if (buffer && CFStringGetCString(title,
+                                           buffer,
+                                           buffer_len,
+                                           kCFStringEncodingUTF8)) {
+            printf("%s\n", buffer);
+          } else printf("\n"); // Keeps the indices menus.lua counts by.
+          free(buffer);
           CFRelease(title);
         }
       }
