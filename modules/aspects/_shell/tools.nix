@@ -24,13 +24,9 @@
       icons = "auto";
     };
     programs.fd.enable = true;
-    programs.fzf = {
-      enable = true;
-      # Atuin is sourced after fzf and already owned Ctrl-R; say so explicitly
-      # so home-manager stops warning about the conflict. fzf keeps Ctrl-T and
-      # Alt-C.
-      historyWidget.command = "";
-    };
+    # Owns Ctrl-R while atuin is off; re-enabling atuin means setting
+    # `historyWidget.command = ""` here.
+    programs.fzf.enable = true;
     programs.nh.enable = true;
     programs.ripgrep.enable = true;
     programs.zoxide.enable = true;
