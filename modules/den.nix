@@ -32,6 +32,16 @@ in
     userName = "fady";
     uid = 502;
     email = "fady@preludelabs.ai";
+    # Commit signing, one SSH key per identity (see aspects/_vcs/git.nix).
+    # Each key is registered as a signing key on the matching GitHub account.
+    signing = {
+      key = "~/.ssh/id_ed25519.pub";
+      personalKey = "~/.ssh/id_ed25519_personal.pub";
+      allowedSigners = [
+        "fady@preludelabs.ai ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKz6u5q1NJekPIXsuKVczE60yrojskpOeoyWP3epHT8o"
+        "2masadel@gmail.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHxNOI4GpdAjA6ljk+SRzsuViuY5Csd1ElfE8r0iXY6"
+      ];
+    };
   };
 
   # Every user gets both the lightweight OS `user` class (users.users.<name>)
