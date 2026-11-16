@@ -24,8 +24,4 @@ return {
 
     { 'saghen/blink.cmp' },
   },
-
-  config = function()
-    require('custom.configs.autoformat').setup()
-  end
 }

@@ -1,5 +1,5 @@
--- Picker (files, grep, LSP symbols), vim.ui.select and indent guides.
--- Replaces telescope (+ fzf-native, ui-select) and indent-blankline.
+-- Picker (files, grep, LSP symbols), vim.ui.select, indent guides, and git
+-- (lazygit, open on GitHub, line blame).
 local function pick(name)
   return function() Snacks.picker[name]() end
 end
@@ -11,6 +11,8 @@ return {
   opts = {
     picker = { enabled = true },
     indent = { enabled = true, animate = { enabled = false } },
+    lazygit = { enabled = true },
+    gitbrowse = { enabled = true },
   },
   keys = {
     { '<leader>?',       pick('recent'),      desc = '[?] Find recently opened files' },
@@ -21,5 +23,10 @@ return {
     { '<leader>sw',      pick('grep_word'),   desc = '[S]earch current [W]ord', mode = { 'n', 'x' } },
     { '<leader>sg',      pick('grep'),        desc = '[S]earch by [G]rep' },
     { '<leader>sd',      pick('diagnostics'), desc = '[S]earch [D]iagnostics' },
+
+    { '<leader>gg', function() Snacks.lazygit() end,        desc = 'Lazy[g]it' },
+    { '<leader>gl', function() Snacks.picker.git_log() end, desc = '[G]it [L]og' },
+    { '<leader>gb', function() Snacks.git.blame_line() end, desc = '[G]it [B]lame line' },
+    { '<leader>go', function() Snacks.gitbrowse() end,      desc = '[G]it [O]pen on GitHub', mode = { 'n', 'x' } },
   },
 }

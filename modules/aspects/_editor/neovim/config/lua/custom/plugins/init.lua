@@ -1,7 +1,5 @@
 return {
-  -- Git related plugins
-  { 'tpope/vim-fugitive', cmd = { 'G', 'Git', 'Gdiffsplit', 'Gread', 'Gwrite', 'Gclog', 'Gvdiffsplit' } },
-  { 'tpope/vim-rhubarb',  dependencies = { 'tpope/vim-fugitive' }, cmd = 'GBrowse' },
+  -- Git: gitsigns (./gitsigns.lua) and snacks (./snacks.lua).
 
   -- Detect tabstop and shiftwidth automatically
   { 'tpope/vim-sleuth',   event = { 'BufReadPost', 'BufNewFile' } },
