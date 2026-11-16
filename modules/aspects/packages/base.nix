@@ -26,6 +26,8 @@
         watch
         wget
         uutils-coreutils-noprefix
+        hyperfine # benchmark commands
+        xh # friendlier curl for HTTP APIs
 
         # Wraps bare REPLs with readline. The `sml` / `idris2` shell aliases
         # in the zsh aspect invoke this directly -- don't drop it.
