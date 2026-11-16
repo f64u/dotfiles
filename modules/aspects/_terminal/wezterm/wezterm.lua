@@ -40,61 +40,12 @@ config.scrollback_lines = 10000
 -- Selection
 config.selection_word_boundary = " \t\n{}[]()\"'`"
 
--- Tmux prefix
-local prefix = '\x02'  -- Ctrl+B
-
--- Key bindings
+-- Key bindings. The tmux ones are generated from _shell/tmux-keys.nix: each
+-- sends a private escape sequence that tmux binds as a user key.
 config.keys = {
-  -- Tmux split horizontal
-  { key = 'e', mods = 'CMD', action = wezterm.action.SendString(prefix .. '"') },
-  -- Tmux split vertical
-  { key = 'e', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'v') },
-  -- Tmux search
-  { key = 'f', mods = 'CMD', action = wezterm.action.SendString(prefix .. '[/') },
-  -- Tmux scroll to top
-  { key = 'g', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'g') },
-  -- Tmux scroll to bottom
-  { key = 'g', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'G') },
-  -- Tmux resize mode
-  { key = 'j', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'T') },
-  -- Tmux choose session
-  { key = 'k', mods = 'CMD', action = wezterm.action.SendString(prefix .. 's') },
-  -- Tmux clear screen
-  { key = 'l', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'L') },
-  -- Tmux url hint
-  { key = 'o', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'u') },
-  -- Tmux new window
-  { key = 't', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'c') },
-  -- Tmux zoom pane
-  { key = 'z', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'z') },
-  -- Tmux next window
-  { key = 'Tab', mods = 'CTRL', action = wezterm.action.SendString(prefix .. 'n') },
-  -- Tmux previous window
-  { key = '`', mods = 'CTRL', action = wezterm.action.SendString(prefix .. 'p') },
-  -- Tmux rename window
-  { key = ',', mods = 'CMD', action = wezterm.action.SendString(prefix .. ',') },
-  -- Tmux fzf windows
-  { key = '[', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'F') },
-  -- Tmux previous window (alt)
-  { key = '[', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'p') },
   -- Tab character
   { key = ']', mods = 'CMD', action = wezterm.action.SendString('\t') },
-  -- Tmux next window (was missing the prefix, so this typed a bare 'n')
-  { key = ']', mods = 'CMD|SHIFT', action = wezterm.action.SendString(prefix .. 'n') },
-  -- Tmux command prompt
-  { key = ';', mods = 'CMD', action = wezterm.action.SendString(prefix .. ':') },
-  -- Tmux window 1-9
-  { key = '1', mods = 'CMD', action = wezterm.action.SendString(prefix .. '1') },
-  { key = '2', mods = 'CMD', action = wezterm.action.SendString(prefix .. '2') },
-  { key = '3', mods = 'CMD', action = wezterm.action.SendString(prefix .. '3') },
-  { key = '4', mods = 'CMD', action = wezterm.action.SendString(prefix .. '4') },
-  { key = '5', mods = 'CMD', action = wezterm.action.SendString(prefix .. '5') },
-  { key = '6', mods = 'CMD', action = wezterm.action.SendString(prefix .. '6') },
-  { key = '7', mods = 'CMD', action = wezterm.action.SendString(prefix .. '7') },
-  { key = '8', mods = 'CMD', action = wezterm.action.SendString(prefix .. '8') },
-  { key = '9', mods = 'CMD', action = wezterm.action.SendString(prefix .. '9') },
-  -- Tmux plugins menu
-  { key = '0', mods = 'CMD', action = wezterm.action.SendString(prefix .. 'P') },
+  --@tmuxKeys@
 }
 
 -- Auto-launch tmux. @zsh@ is substituted by pkgs.replaceVars in default.nix;

@@ -20,6 +20,11 @@
       # broken config.
       xdg.configFile."wezterm/wezterm.lua".source = pkgs.replaceVars ./wezterm.lua {
         zsh = "${pkgs.zsh}/bin/zsh";
+        # Lands after a `--` comment marker, hence the leading newline.
+        tmuxKeys = lib.concatMapStrings (
+          k:
+          "\n  { key = '${k.key}', mods = '${k.mods}', action = wezterm.action.SendString('\\x1b${k.seq}') },"
+        ) (import ../../_shell/tmux-keys.nix { });
         colorScheme = "Catppuccin ${lib.toUpper (lib.substring 0 1 flavor)}${lib.substring 1 (-1) flavor}";
       };
     };

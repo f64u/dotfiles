@@ -8,7 +8,46 @@
       pkgs,
       ...
     }:
+    let
+      # Session picker: tmux sessions, sesh configs and zoxide directories.
+      sessions = pkgs.writeShellScript "tmux-sessions" ''
+        export PATH=${
+          lib.makeBinPath [
+            config.programs.sesh.package
+            config.programs.tmux.package
+            pkgs.fzf
+            pkgs.fd
+            pkgs.zoxide
+          ]
+        }:$PATH
+        pick=$(sesh list --icons | fzf --tmux 80%,70% \
+          --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
+          --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+          --bind 'tab:down,btab:up' \
+          --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+          --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list --icons -t)' \
+          --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list --icons -c)' \
+          --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list --icons -z)' \
+          --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+          --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
+          --preview-window 'right:55%' \
+          --preview 'sesh preview {}') || exit 0
+        [ -z "$pick" ] || sesh connect "$pick"
+      '';
+
+      weztermKeys = import ./tmux-keys.nix {
+        sessions = "run-shell ${sessions}";
+        urls = "run-shell -b \"${pkgs.tmuxPlugins.fzf-tmux-url}/share/tmux-plugins/fzf-tmux-url/fzf-url.sh '' screen ''\"";
+      };
+    in
     {
+      # Successor to t-smart-tmux-session-manager; the picker above drives it.
+      programs.sesh = {
+        enable = true;
+        enableAlias = false;
+        enableTmuxIntegration = false;
+      };
+
       # A running server keeps old plugin store paths until it re-reads its config.
       # </dev/null: on a tty, tmux rejects the switch's missing $TERM.
       home.activation.reloadTmux =
@@ -39,16 +78,10 @@
         enable = true;
         plugins = with pkgs.tmuxPlugins; [
           vim-tmux-navigator
-          t-smart-tmux-session-manager
-          resurrect
-          {
-            plugin = continuum;
-            extraConfig = ''
-              set -g @continuum-restore 'on'
-              set -g @continuum-save-interval '15'
-            '';
-          }
-          # extrakto
+          # prefix-u: pick a URL from the pane (cmd-o in wezterm).
+          fzf-tmux-url
+          # prefix-F: hint-copy anything on screen.
+          fingers
         ];
         baseIndex = 1;
         escapeTime = 0;
@@ -78,9 +111,12 @@
 
           set -g status-left ""
           set -g status-right "#{E:@catppuccin_status_directory}"
-          set -agF status-right "#{E:@catppuccin_status_session}"
+          # No -F: that expands once at load and freezes the session name.
+          set -ag status-right "#{E:@catppuccin_status_session}"
 
           setw -g automatic-rename on
+          # tmux 3.8 underlines the current window by default.
+          setw -g window-status-current-style default
 
           set -g detach-on-destroy off  # don't exit from tmux when closing a session
           set -g renumber-windows on    # renumber all windows when any window is closed
@@ -95,6 +131,9 @@
           # reload configuration
           bind r source-file ~/.config/tmux/tmux.conf
 
+          # Back to defaults first, or every reload appends these again.
+          set -su terminal-overrides
+          set -su terminal-features
           set-option -ag terminal-overrides ",wezterm*:RGB"
           set-option -ag terminal-overrides ",xterm-256color:RGB"
           set-option -ag terminal-overrides ",tmux-256color:RGB"
@@ -109,7 +148,21 @@
           bind '"' split-window -c '#{pane_current_path}' -v
           bind 'h' split-window -c '#{pane_current_path}' -v
           bind c new-window -c '#{pane_current_path}'
-          bind g new-window -n '' -c "#{pane_current_path}" lazygit
+
+          # Popups: lazygit, a scratch shell, the session picker.
+          bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" lazygit
+          bind t display-popup -E -w 80% -h 80% -d "#{pane_current_path}"
+          bind T run-shell ${sessions}
+
+          # Modified keys (C-Enter, S-Enter, ...) reach apps that ask for
+          # them; images and other passthrough sequences reach the terminal.
+          set -s extended-keys on
+          set -g allow-passthrough on
+
+          # WezTerm's cmd-keys, see ./tmux-keys.nix.
+          ${lib.concatMapStringsSep "\n" (k: ''
+            set -s user-keys[${toString k.index}] "\e${k.seq}"
+            bind -n User${toString k.index} ${k.run}'') weztermKeys}
 
           bind Enter copy-mode
           bind -T copy-mode-vi v send -X begin-selection
