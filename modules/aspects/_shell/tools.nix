@@ -6,10 +6,6 @@
 { ... }:
 {
   homeManager = {
-    programs.atuin = {
-      enable = false;
-      flags = [ "--disable-up-arrow" ];
-    };
     programs.bat.enable = true;
     programs.btop.enable = true;
     programs.direnv = {
@@ -24,9 +20,16 @@
       icons = "auto";
     };
     programs.fd.enable = true;
-    # Owns Ctrl-R while atuin is off; re-enabling atuin means setting
-    # `historyWidget.command = ""` here.
     programs.fzf.enable = true;
+    # Per-project tool versions (node, python, ...). Reads .node-version and
+    # .nvmrc as well as mise.toml.
+    programs.mise = {
+      enable = true;
+      globalConfig = {
+        tools.node = "24";
+        settings.idiomatic_version_file_enable_tools = [ "node" ];
+      };
+    };
     programs.nh.enable = true;
     programs.ripgrep.enable = true;
     programs.zoxide.enable = true;

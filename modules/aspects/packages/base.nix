@@ -4,15 +4,12 @@
   den.aspects.packages-base.homeManager =
     { pkgs, ... }:
     let
+      # A REPL with the usual data libraries. Projects and packaging go
+      # through uv, so no pip / virtualenv / setuptools here.
       myPython = pkgs.python313.withPackages (ps: [
-        ps.distutils
-        ps.flit
         ps.ipython
         ps.numpy
         ps.pandas
-        ps.pip
-        ps.setuptools
-        ps.virtualenv
       ]);
     in
     {
@@ -44,8 +41,7 @@
         uv
 
         # Core development
-        nodejs_24 # Fallback for tools launched outside an interactive fnm shell.
-        fnm
+        nodejs_24 # Fallback for tools launched outside a mise-activated shell.
         rustup
       ];
     };

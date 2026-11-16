@@ -2,7 +2,12 @@
 { ... }:
 {
   homeManager =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       # `compinit -C` never rebuilds an existing dump, so drop it on every
       # switch; the next shell writes a fresh one.
@@ -40,13 +45,11 @@
           autoload -U compinit
           mkdir -p "${config.xdg.cacheHome}/zsh"
           compinit -C -d "${config.xdg.cacheHome}/zsh/zcompdump"
+          # Fuzzy tab completion. After compinit, before the widget-wrapping
+          # plugins (autosuggestions, syntax highlighting).
+          source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
         '';
         initContent = ''
-          # fnm owns writable, per-version npm globals. Clear the old inherited
-          # prefix too, so shells opened from an existing session pick this up.
-          unset NPM_CONFIG_PREFIX
-          eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
-
           # opam keeps its switches outside the store, so this must be a runtime
           # eval. Guarded so a machine without opam does not pay for it.
           if command -v opam >/dev/null; then
