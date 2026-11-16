@@ -63,8 +63,12 @@ return {
     -- not ft='latex' because the plugin itself offers the ft
     lazy = false,
     init = function()
-      vim.g.conceal_level = 2
       vim.g.vimtex_view_method = 'skim'
+      -- vimtex's conceal needs this; set per buffer, not globally.
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'tex',
+        callback = function() vim.opt_local.conceallevel = 2 end,
+      })
     end
   },
 

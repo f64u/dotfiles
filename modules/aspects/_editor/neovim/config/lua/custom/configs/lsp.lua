@@ -46,9 +46,11 @@ local servers = {
   ruff = {},
   basedpyright = {
     settings = {
-      analysis = {
-        inlayHints = {
-          callArgumentNames = false,
+      basedpyright = {
+        analysis = {
+          inlayHints = {
+            callArgumentNames = false,
+          }
         }
       }
     }
