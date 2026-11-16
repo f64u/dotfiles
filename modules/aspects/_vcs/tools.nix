@@ -7,5 +7,8 @@
       enableGitIntegration = true;
     };
     programs.lazygit.enable = true;
+    # Syntax-aware diffs: `git dft`, `jj diff --tool difft`.
+    programs.difftastic.enable = true;
+    programs.git.settings.alias.dft = "-c diff.external=difft diff";
   };
 }
