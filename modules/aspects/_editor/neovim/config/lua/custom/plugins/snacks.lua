@@ -24,7 +24,14 @@ return {
     { '<leader>sg',      pick('grep'),        desc = '[S]earch by [G]rep' },
     { '<leader>sd',      pick('diagnostics'), desc = '[S]earch [D]iagnostics' },
 
-    { '<leader>gg', function() Snacks.lazygit() end,        desc = 'Lazy[g]it' },
+    {
+      '<leader>gg',
+      function()
+        -- jjui in a jj repo (lazygit doesn't understand jj), lazygit otherwise.
+        if vim.fs.root(0, '.jj') then Snacks.terminal('jjui') else Snacks.lazygit() end
+      end,
+      desc = 'jjui / lazy[g]it',
+    },
     { '<leader>gl', function() Snacks.picker.git_log() end, desc = '[G]it [L]og' },
     { '<leader>gb', function() Snacks.git.blame_line() end, desc = '[G]it [B]lame line' },
     { '<leader>go', function() Snacks.gitbrowse() end,      desc = '[G]it [O]pen on GitHub', mode = { 'n', 'x' } },

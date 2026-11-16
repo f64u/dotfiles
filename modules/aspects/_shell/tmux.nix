@@ -149,8 +149,9 @@
           bind 'h' split-window -c '#{pane_current_path}' -v
           bind c new-window -c '#{pane_current_path}'
 
-          # Popups: lazygit, a scratch shell, the session picker.
-          bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" lazygit
+          # Popups: jjui in a jj repo or lazygit, a scratch shell, the session
+          # picker.
+          bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "jj root >/dev/null 2>&1 && exec jjui || exec lazygit"
           bind t display-popup -E -w 80% -h 80% -d "#{pane_current_path}"
           bind T run-shell ${sessions}
 
