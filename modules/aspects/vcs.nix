@@ -1,4 +1,4 @@
-# Version control: git, its pager and its TUI.
+# Version control: git, jj and their tools.
 { ... }@args:
 {
   den.aspects.vcs.includes = [

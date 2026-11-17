@@ -1,51 +1,57 @@
-# Entity declarations: which machines exist, and who lives on them.
-#
-# Each `den.hosts.<system>.<name>` becomes a darwinConfigurations
-# output. The host aspect (den.aspects.<name>) and the user aspect
-# (den.aspects.<userName>) are looked up by name — see modules/aspects/.
+# Entities: which machines exist and who lives on them. Host and user
+# aspects are looked up by name in modules/aspects/.
 { inputs, lib, ... }:
 let
-  # Identity lives on the user *entity*, readable by any aspect taking
-  # `{ user, ... }` (see aspects/_vcs/git.nix).
-  #
-  # Not `den.schema.user`: that is merged into every user on every host, so
-  # a name and email there become everyone's default.
-  #
-  # `personalEmail` survives the work host's `email` override, so git can
-  # still sign this repo's commits with it (see aspects/_vcs/git.nix).
-  fadyadal = rec {
+  # Identity lives on the user entity (read via aspects/_identities.nix),
+  # not `den.schema.user`, which is merged into every user on every host.
+  fadyadal = {
     fullName = "Fady Adal";
-    email = personalEmail;
-    personalEmail = "2masadel@gmail.com";
+    # A host's `identity` is its default; the others apply in their `repos`.
+    identities = {
+      personal = {
+        email = "2masadel@gmail.com";
+        repos = [ "~/dotfiles" ];
+      };
+      work.email = "fady@preludelabs.ai";
+    };
+    identity = "personal";
   };
 in
 {
   imports = [ inputs.den.flakeModule ];
 
-  # `userName` is the macOS account; `uid` is read by modules/defaults.nix.
-  # The aspect stays `fadyadal` on both hosts (den looks it up by the attr
-  # name), only the OS-level account differs.
+  # `userName` is the macOS account; the aspect is `fadyadal` on both hosts.
   den.hosts.aarch64-darwin.macbook-pro.users.fadyadal = fadyadal // {
     uid = 501;
   };
   den.hosts.aarch64-darwin.macbook-pro-work.users.fadyadal = fadyadal // {
     userName = "fady";
     uid = 502;
-    email = "fady@preludelabs.ai";
-    # Commit signing, one SSH key per identity (see aspects/_vcs/git.nix).
-    # Each key is registered as a signing key on the matching GitHub account.
-    signing = {
-      key = "~/.ssh/id_ed25519.pub";
-      personalKey = "~/.ssh/id_ed25519_personal.pub";
-      allowedSigners = [
-        "fady@preludelabs.ai ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKz6u5q1NJekPIXsuKVczE60yrojskpOeoyWP3epHT8o"
-        "2masadel@gmail.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHxNOI4GpdAjA6ljk+SRzsuViuY5Csd1ElfE8r0iXY6"
+    identity = "work";
+    # Public halves of this Mac's Secure Enclave keys (see darwin-secretive),
+    # for login and signing. Registered on the matching GitHub account.
+    keys = {
+      work = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGW1n/fXOvjWAXdwKT1lK3okyn899pxvt2DbotKZgpMLfgm3r1xoKrC6kp/IdzR/TYDuLRPxuGxX59mwDHuHnQM=";
+      personal = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKyYazef67Lv0mbXNAt9v/rd7dHDVQ8Z8t0fSvcIFyE4Y83DMnoZuWJaDFcncwJ6W+llARRUTnFYm5QG8qnfaTc=";
+    };
+    # Old file keys: verify commits before `until` (YYYYMMDD), nothing after.
+    retiredKeys = {
+      work = [
+        {
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKz6u5q1NJekPIXsuKVczE60yrojskpOeoyWP3epHT8o";
+          until = "20261118";
+        }
+      ];
+      personal = [
+        {
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHxNOI4GpdAjA6ljk+SRzsuViuY5Csd1ElfE8r0iXY6";
+          until = "20261118";
+        }
       ];
     };
   };
 
-  # Every user gets both the lightweight OS `user` class (users.users.<name>)
-  # and a home-manager environment.
+  # Every user gets an OS account and a home-manager environment.
   den.schema.user.classes = lib.mkDefault [
     "user"
     "homeManager"

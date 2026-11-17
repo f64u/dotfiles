@@ -1,9 +1,6 @@
-# The `fadyadal` user aspect. Included automatically on every host that
-# declares `users.fadyadal` (see modules/den.nix).
+# The `fadyadal` user aspect, included on every host that declares the user.
 { den, ... }:
 {
-  # Identity lives on the user entity in modules/den.nix, not here -- see the
-  # note there for why `den.schema.user` is the wrong home for it.
   den.aspects.fadyadal = {
     includes = [
       # wheel/networkmanager on NixOS, system.primaryUser on Darwin.
@@ -17,6 +14,7 @@
 
       den.aspects.shell
       den.aspects.editor
+      den.aspects.ssh
       den.aspects.vcs
       den.aspects.terminal
     ];

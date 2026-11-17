@@ -1,72 +1,94 @@
-# A module of den.aspects.vcs. Parametric: den applies it once per user and
-# passes the entity in, so identity comes from there rather than from
-# home-manager extraSpecialArgs.
+# A module of den.aspects.vcs. Parametric: den passes the user entity in.
 { lib, ... }:
 { user, ... }:
 let
-  # Only hosts that declare keys sign; elsewhere a missing key would make
-  # every commit fail.
-  signing = user.signing or null;
+  ids = import ../_identities.nix lib user;
+  signs = ids.keyed != [ ];
+  # Literal, not a path into ~/.ssh.
+  literal = id: "key::${id.key}";
+  signers =
+    map (id: "${id.email} ${id.key}") ids.keyed
+    ++ lib.concatMap (
+      id: map (old: ''${id.email} valid-before="${old.until}" ${old.key}'') id.retired
+    ) ids.all;
 in
 {
-  # For `git log --show-signature`.
-  homeManager.xdg.configFile."git/allowed_signers" = lib.mkIf (signing != null) {
-    text = lib.concatLines signing.allowedSigners;
-  };
+  homeManager =
+    { config, ... }:
+    {
+      imports = [ ../_ssh/agent.nix ];
 
-  homeManager.programs.git = {
-    signing = lib.mkIf (signing != null) {
-      format = "ssh";
-      inherit (signing) key;
-      signByDefault = true;
-    };
-    enable = true;
-    ignores = [
-      "*.swp"
-      ".DS_Store"
-    ];
-    settings = {
-      user = {
-        name = user.fullName;
-        email = user.email;
+      # For `git log --show-signature`; jj reads it too.
+      xdg.configFile."git/allowed_signers" = lib.mkIf (signers != [ ]) {
+        text = lib.concatLines signers;
       };
-      init.defaultBranch = "main";
-      core = {
-        editor = "nvim";
-        autocrlf = "input";
-      };
-      pull.rebase = true;
-      rebase = {
-        autoStash = true;
-        autoSquash = true;
-        # Moves stacked branches along with the one being rebased.
-        updateRefs = true;
-      };
-      push.autoSetupRemote = true;
-      fetch.prune = true;
-      branch.sort = "-committerdate";
-      # Conflicts show the common ancestor; diffs move whole blocks.
-      merge.conflictStyle = "zdiff3";
-      diff.algorithm = "histogram";
-      # Replays a conflict resolution it has seen before.
-      rerere.enabled = true;
-      commit.verbose = true;
-      help.autocorrect = "prompt";
-    }
-    // lib.optionalAttrs (signing != null) {
-      gpg.ssh.allowedSignersFile = "~/.config/git/allowed_signers";
-    };
-    # The dotfiles repo is personal, so commit to it as the personal identity
-    # even on the work host.
-    includes = [
-      {
-        condition = "gitdir:~/dotfiles/";
-        contents.user = {
-          email = user.personalEmail;
+
+      programs.git = {
+        # An identity signs only if it has a key on this host.
+        signing = lib.mkIf signs {
+          format = "ssh";
+          signer = config.sshAgent.keygen;
+          key = if ids.primary.key != null then literal ids.primary else null;
+          signByDefault = ids.primary.key != null;
+        };
+        enable = true;
+        ignores = [
+          "*.swp"
+          ".DS_Store"
+        ];
+        settings = {
+          user = {
+            name = user.fullName;
+            inherit (ids.primary) email;
+          };
+          init.defaultBranch = "main";
+          core = {
+            editor = "nvim";
+            autocrlf = "input";
+          };
+          pull.rebase = true;
+          rebase = {
+            autoStash = true;
+            autoSquash = true;
+            # Moves stacked branches along with the one being rebased.
+            updateRefs = true;
+          };
+          push.autoSetupRemote = true;
+          fetch.prune = true;
+          branch.sort = "-committerdate";
+          # Conflicts show the common ancestor; diffs move whole blocks.
+          merge.conflictStyle = "zdiff3";
+          diff.algorithm = "histogram";
+          # Replays a conflict resolution it has seen before.
+          rerere.enabled = true;
+          commit.verbose = true;
+          help.autocorrect = "prompt";
         }
-        // lib.optionalAttrs (signing != null) { signingKey = signing.personalKey; };
-      }
-    ];
-    lfs.enable = true;
-  };
+        // lib.optionalAttrs (signers != [ ]) {
+          gpg.ssh.allowedSignersFile = "~/.config/git/allowed_signers";
+        };
+        # The other identities, each inside its own repos.
+        includes = lib.concatMap (
+          id:
+          map (repo: {
+            condition = "gitdir:${repo}/";
+            contents = {
+              user = {
+                inherit (id) email;
+              }
+              // lib.optionalAttrs (id.key != null) { signingKey = literal id; };
+            }
+            // lib.optionalAttrs signs {
+              commit.gpgSign = id.key != null;
+              tag.gpgSign = id.key != null;
+            }
+            // lib.optionalAttrs (id.key != null) {
+              # github.com remotes log in as this identity.
+              url."git@${id.githubHost}:".insteadOf = "git@github.com:";
+            };
+          }) id.repos
+        ) ids.scoped;
+        lfs.enable = true;
+      };
+    };
 }
