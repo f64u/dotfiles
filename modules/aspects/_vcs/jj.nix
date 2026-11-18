@@ -2,10 +2,19 @@
 { lib, ... }:
 { user, ... }:
 let
-  ids = import ../_identities.nix lib user;
-  signs = ids.keyed != [ ];
-  # Sign every commit of mine as written; a keyless identity signs nothing.
-  behavior = id: if id.key != null then "own" else "drop";
+  signs = user.keyed != [ ];
+  # Who commits as `id`. A key signs every commit of mine as written.
+  as =
+    id:
+    {
+      user.email = id.email;
+    }
+    // lib.optionalAttrs signs {
+      signing = {
+        behavior = if id.hasKey then "own" else "drop";
+      }
+      // lib.optionalAttrs id.hasKey { inherit (id) key; };
+    };
 in
 {
   homeManager =
@@ -18,11 +27,9 @@ in
       programs.jujutsu = {
         enable = true;
         settings = lib.mkMerge [
+          (as user.primary)
           {
-            user = {
-              name = user.fullName;
-              inherit (ids.primary) email;
-            };
+            user.name = user.fullName;
             ui = {
               default-command = "log";
               pager = "delta";
@@ -54,31 +61,17 @@ in
             git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
           }
           # The other identities, each inside its own repos.
-          (lib.mkIf (ids.scoped != [ ]) {
-            "--scope" = map (
-              id:
-              {
-                "--when".repositories = id.repos;
-                user.email = id.email;
-              }
-              // lib.optionalAttrs signs {
-                signing = {
-                  behavior = behavior id;
-                }
-                // lib.optionalAttrs (id.key != null) { inherit (id) key; };
-              }
-            ) ids.scoped;
+          (lib.mkIf (user.scoped != [ ]) {
+            "--scope" = map (id: { "--when".repositories = id.repos; } // as id) user.scoped;
           })
           (lib.mkIf signs {
             signing = {
-              behavior = behavior ids.primary;
               backend = "ssh";
               backends.ssh = {
-                allowed-signers = "~/.config/git/allowed_signers";
+                allowed-signers = config.programs.git.settings.gpg.ssh.allowedSignersFile;
                 program = config.sshAgent.keygen;
               };
-            }
-            // lib.optionalAttrs (ids.primary.key != null) { inherit (ids.primary) key; };
+            };
           })
         ];
       };
