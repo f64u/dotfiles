@@ -1,12 +1,7 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
-    -- NOTE: no mason.nvim. Every server in custom/configs/lsp.lua now comes
-    -- from the nix package set (see ../../../default.nix), so servers are
-    -- declared in one place and work identically on darwin and NixOS --
-    -- mason's downloaded binaries would not run on the latter.
-    --
-    -- ~/.local/share/nvim/mason/ is now orphaned and can be deleted.
+    -- Servers come from nix (../../../default.nix), not mason.
 
     -- Useful status updates for LSP
     { 'j-hui/fidget.nvim', opts = {}, event = 'LspAttach' },

@@ -5,10 +5,8 @@
     programs.starship = {
       enable = true;
       settings = {
-        # One version-control segment through `vcs`, which shows jj's view
-        # of a colocated repo instead of git's detached HEAD. `$all` would
-        # add the git modules again, so they are off there; `vcs` still
-        # renders them in plain git repos.
+        # One `vcs` segment, which shows jj in a colocated repo. `$all` would
+        # add the git modules again, so they are off; `vcs` still renders them.
         format = "$username$hostname$localip$shlvl$singularity$kubernetes$nats$directory$vcsh$vcs$all";
         vcs.order = [
           "jj"

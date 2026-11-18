@@ -79,9 +79,8 @@ end)
 -- last window closes, so ask aerospace: no focused window means no name.
 -- Focus can also move to the other screen this way without macOS noticing.
 sbar.add("event", "aerospace_focus_change")
--- Asked once things settle: a switch can bounce through the workspace just
--- left (see spaces.lua). The macOS event above already names the app at
--- once; this catches empty workspaces and closed windows.
+-- Asked once things settle (a switch can bounce, see spaces.lua); catches
+-- empty workspaces and closed windows.
 local asked = 0
 front_app:subscribe({ "aerospace_workspace_change", "aerospace_focus_change" }, function()
   asked = asked + 1

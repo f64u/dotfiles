@@ -3,8 +3,7 @@ local colors = require("colors")
 local settings = require("settings")
 local popups = require("helpers.popups")
 
--- Execute the event provider binary which provides the event "network_update"
--- for the network interface "en0", which is fired every 2.0 seconds.
+-- network_load fires "network_update" for en0 every 2 seconds.
 sbar.exec("killall network_load >/dev/null 2>&1; $CONFIG_DIR/helpers/event_providers/network_load/bin/network_load en0 network_update 2.0")
 
 local popup_width = 250
@@ -224,8 +223,7 @@ wifi:subscribe("mouse.clicked", toggle_details)
 
 local function copy_label_to_clipboard(env)
   local label = sbar.query(env.NAME).label.value
-  -- Single-quote and escape: an SSID is attacker-controllable text, and the
-  -- previous `echo "` .. label .. `"` broke on a quote, backtick or $.
+  -- Quoted: an SSID is attacker-controllable text.
   local quoted = "'" .. tostring(label):gsub("'", [['\'']]) .. "'"
   sbar.exec("printf '%s' " .. quoted .. " | pbcopy")
   sbar.set(env.NAME, { label = { string = icons.clipboard, align="center" } })

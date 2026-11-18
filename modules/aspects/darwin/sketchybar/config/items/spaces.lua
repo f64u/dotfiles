@@ -77,11 +77,6 @@ local space_window_observer = sbar.add('item', {
   updates = true,
 })
 
--- NOTE: there used to be a hidden item here with `update_freq = 2` firing
--- `windows_on_spaces`, which fanned out into ten `aerospace list-windows`
--- subprocesses plus ten animations -- about eleven process spawns every two
--- seconds, forever, whether or not anything had changed. Updates are now
--- driven purely by events (see the subscriptions at the bottom of this file).
 
 local spaces_indicator = sbar.add('item', {
   padding_left = -3,
@@ -105,18 +100,14 @@ local spaces_indicator = sbar.add('item', {
   }
 })
 
--- A single `--all` query covers every workspace, replacing the previous
--- ten-subprocess fan-out.
+-- One `--all` query covers every workspace.
 local function refresh_space_icons()
   sbar.exec("aerospace list-windows --all --format '%{workspace}|%{app-name}'", function(output)
     local icon_lines = {}
     local seen = {}
 
     for line in string.gmatch(output, '[^\r\n]+') do
-      -- App names contain spaces, so only the workspace field is anchored.
-      -- `[^|%s]+` rather than `%S+`: the latter is greedy and backtracks to
-      -- the *last* pipe, so an app name containing `|` split in the wrong
-      -- place and the row was silently dropped by tonumber.
+      -- Only the workspace field is anchored: app names contain spaces and `|`.
       local workspace, app = string.match(line, '^%s*([^|%s]+)%s*|%s*(.-)%s*$')
       local index = tonumber(workspace)
 
@@ -136,17 +127,11 @@ local function refresh_space_icons()
   end)
 end
 
--- `aerospace_workspace_change` comes from aerospace's exec-on-workspace-change
--- hook; `windows_on_spaces` from its alt-shift-N bindings; `front_app_switched`
--- catches apps launched or quit without a workspace switch.
+-- `aerospace_workspace_change` and `windows_on_spaces` come from aerospace;
+-- `front_app_switched` catches apps launched or quit in place.
 --
--- If a window closes while the focused app stays put the strip can go briefly
--- stale -- add a hidden item with a slow `update_freq` (30+) triggering
--- `windows_on_spaces` if that bothers you, but not a two-second one.
---
--- Its own item: SbarLua keeps one callback per item and event, so the
--- focus handler below subscribing the same item would replace this one.
--- One action fires several of these at once, hence the short coalescing.
+-- Its own item: SbarLua keeps one callback per item and event. One action
+-- fires several events, hence the coalescing.
 local icon_observer = sbar.add('item', { drawing = false, updates = true })
 sbar.add('event', 'aerospace_focus_change')
 sbar.add('event', 'windows_on_spaces')
@@ -181,11 +166,8 @@ space_window_observer:subscribe('display_change', function()
   sbar.delay(1, assign_displays)
 end)
 
--- A switch can bounce: about 0.1s later aerospace briefly goes back to the
--- workspace just left and returns, firing two more changes. So within 0.3s
--- of a switch, a change back to the previous workspace is held, and once
--- things are quiet aerospace is asked where it settled. Any other change
--- shows at once.
+-- A switch can bounce back to the workspace just left for ~0.1s. Within
+-- 0.3s a change back is held, then aerospace is asked where it settled.
 local function set_all(workspace)
   for i = 1, count do focus_setters[i](workspace) end
 end

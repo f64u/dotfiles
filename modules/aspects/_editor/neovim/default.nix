@@ -9,19 +9,14 @@
       ...
     }:
     {
-      # init.lua is deliberately not linked here -- programs.neovim writes
-      # nvim/init.lua from `initLua` below, and two writers for that path
-      # resolve silently by ordering.
+      # Not init.lua: programs.neovim writes that from `initLua` below.
       xdg.configFile = {
         "nvim/lua".source = ./config/lua;
         "nvim/spell".source = ./config/spell;
       };
 
-      # lazy.nvim rewrites its lockfile on `:Lazy update`, so it cannot be a
-      # store symlink -- seed it only when absent. After an update, copy the
-      # new pins back into the repo:
-      #   cp ~/.config/nvim/lazy-lock.json \
-      #      ~/dotfiles/modules/aspects/_editor/neovim/lazy-lock.json
+      # lazy.nvim rewrites its lockfile, so it is seeded, not linked. After
+      # `:Lazy update`, copy ~/.config/nvim/lazy-lock.json back here.
       home.activation.seedLazyLock = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         lock="${config.home.homeDirectory}/.config/nvim/lazy-lock.json"
         if [ ! -e "$lock" ]; then
@@ -45,13 +40,11 @@
         ''
         + builtins.readFile ./config/init.lua;
 
-        # Nothing here uses the pynvim or neovim-ruby remote-plugin providers;
-        # nvim-dap-python runs debugpy through `uv`.
+        # No plugin uses the python or ruby providers.
         withPython3 = false;
         withRuby = false;
 
-        # Servers from custom/configs/lsp.lua that packages-development does
-        # not already provide, plus the toolchain plugins shell out to.
+        # Servers and tools that packages-development does not provide.
         extraPackages = with pkgs; [
           basedpyright
           ruff

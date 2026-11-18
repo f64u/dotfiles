@@ -14,10 +14,7 @@
     {
       programs.wezterm.enable = true;
 
-      # wezterm.lua stays a standalone, lintable Lua file ending in
-      # `return config`. replaceVars uses --replace-fail, so dropping the
-      # @zsh@ placeholder fails the build rather than silently shipping a
-      # broken config.
+      # replaceVars fails the build if a placeholder is missing from wezterm.lua.
       xdg.configFile."wezterm/wezterm.lua".source = pkgs.replaceVars ./wezterm.lua {
         zsh = "${pkgs.zsh}/bin/zsh";
         # Lands after a `--` comment marker, hence the leading newline.

@@ -12,9 +12,7 @@ vim.opt.relativenumber = true
 -- Enable mouse mode
 vim.opt.mouse = 'a'
 
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
+-- Share the OS clipboard.
 vim.opt.clipboard = 'unnamedplus'
 
 -- Highlights active cursor line
@@ -31,10 +29,7 @@ vim.opt.undofile = true
 vim.opt.scrolloff = 8
 -- }}}
 
--- `zg`/`zw` write to 'spellfile'. Without this, nvim picks the first writable
--- spell/ dir on runtimepath -- which is ~/.config/nvim/spell, a read-only nix
--- store symlink -- and adding a word fails. Nvim still *reads* every
--- spell/*.add.spl on runtimepath, so the committed word list keeps working.
+-- `zg`/`zw` write here; ~/.config/nvim/spell is a read-only store link.
 vim.opt.spellfile = vim.fn.stdpath 'state' .. '/spell/en.utf-8.add'
 
 -- Case-insensitive searching UNLESS \C or capital in search
@@ -80,9 +75,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
+-- Show some whitespace characters.
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 

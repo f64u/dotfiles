@@ -5,8 +5,7 @@
   homeManager = { pkgs, ... }: {
     programs.vim = {
       enable = true;
-      # Terminal-only. vim-full defaults to a GTK2 GUI on darwin, which 9.2.1164
-      # fails to compile (image.c reads `gui.scale`, absent from the GTK2 Gui).
+      # No GUI: vim-full's GTK2 build fails to compile on darwin (9.2.1164).
       packageConfigurable = pkgs.vim-full.override { guiSupport = false; };
     };
   };

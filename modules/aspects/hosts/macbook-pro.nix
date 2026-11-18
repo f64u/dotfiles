@@ -1,9 +1,7 @@
 { den, ... }:
 {
   den.aspects.macbook-pro = {
-    # Composed explicitly rather than through a `darwin-base` catch-all, so
-    # a host can drop one piece (say, darwin-desktop on a headless machine)
-    # without having to unpick an aggregate.
+    # Listed one by one, so a host can drop a piece.
     includes = [
       den.aspects.darwin-nix
       den.aspects.darwin-macos-defaults

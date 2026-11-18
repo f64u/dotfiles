@@ -40,16 +40,14 @@ config.scrollback_lines = 10000
 -- Selection
 config.selection_word_boundary = " \t\n{}[]()\"'`"
 
--- Key bindings. The tmux ones are generated from _shell/tmux-keys.nix: each
--- sends a private escape sequence that tmux binds as a user key.
+-- Key bindings. The tmux ones come from _shell/tmux-keys.nix.
 config.keys = {
   -- Tab character
   { key = ']', mods = 'CMD', action = wezterm.action.SendString('\t') },
   --@tmuxKeys@
 }
 
--- Auto-launch tmux. @zsh@ is substituted by pkgs.replaceVars in default.nix;
--- the build fails if the placeholder is ever removed.
+-- Auto-launch tmux; default.nix fills in the zsh path.
 config.default_prog = { '@zsh@', '-l', '-c', 'tmux attach || tmux' }
 
 return config

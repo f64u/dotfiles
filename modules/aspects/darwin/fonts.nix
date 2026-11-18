@@ -1,8 +1,5 @@
-# System fonts.
-#
-# CaskaydiaCove is what the terminals ask for by name; RecMonoLinear is
-# wezterm's face (see _terminal/wezterm/wezterm.lua); SF Pro / SF Mono are what
-# the sketchybar config asks for (sketchybar/config/helpers/default_font.lua).
+# System fonts: CaskaydiaCove for terminals, RecMonoLinear for wezterm,
+# SF Pro / SF Mono for sketchybar.
 {
   den.aspects.darwin-fonts.darwin =
     { pkgs, ... }:

@@ -1,5 +1,4 @@
-# macOS UI and input behaviour -- the settings you would otherwise click
-# through in System Settings.
+# macOS UI and input settings.
 {
   den.aspects.darwin-macos-defaults.darwin = {
     system = {
@@ -22,13 +21,11 @@
           ShowPathbar = true;
           FXEnableExtensionChangeWarning = false;
         };
-        # Auto-hide the menu bar; sketchybar takes its place, drawn above it
-        # (alt-m reveals it -- see sketchybar's items/menubar.lua).
+        # Auto-hide the menu bar; sketchybar sits above it (alt-m reveals it).
         NSGlobalDomain = {
           _HIHideMenuBar = true;
           AppleInterfaceStyle = "Dark";
-          # Shortest delay and fastest repeat that the System Settings sliders
-          # allow (225ms and 30ms).
+          # The fastest the System Settings sliders allow.
           InitialKeyRepeat = 15;
           KeyRepeat = 2;
           # Holding a key repeats it instead of opening the accent picker.
@@ -37,10 +34,9 @@
       };
     };
 
-    # Display never sleeps on the charger, 5 minutes on battery. nix-darwin's
-    # `power.sleep.display` is one value for both, so this goes through pmset
-    # directly. `-c sleep 0` keeps the machine itself awake on the charger
-    # too -- otherwise its 1-minute idle sleep can take the display with it.
+    # Display: never sleeps on the charger, 5 minutes on battery. pmset,
+    # because nix-darwin has one value for both. `-c sleep 0` stops the
+    # machine's idle sleep taking the display with it.
     system.activationScripts.postActivation.text = ''
       pmset -c displaysleep 0 sleep 0
       pmset -b displaysleep 5

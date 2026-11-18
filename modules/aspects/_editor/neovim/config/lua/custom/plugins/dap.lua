@@ -54,10 +54,7 @@ return {
         }
       },
 
-      -- NOTE: mason.nvim / mason-nvim-dap.nvim used to be here to fetch
-      -- debugpy. They are gone: debug adapters come from the nix package set
-      -- (see ../../../default.nix), which also means they work on NixOS,
-      -- where mason's downloaded binaries would not run.
+      -- Debug adapters come from nix (../../../default.nix).
       'theHamsta/nvim-dap-virtual-text',
 
       'nvim-neotest/nvim-nio',
@@ -72,10 +69,7 @@ return {
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
       dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-      -- C/C++/Rust debugging via lldb-dap. Resolved from PATH rather than
-      -- hardcoded: this was `/opt/homebrew/opt/llvm@12/bin/lldb-vscode`, a
-      -- path that is both Homebrew-only and named after a binary LLVM renamed
-      -- to `lldb-dap` in LLVM 18.
+      -- lldb-dap, from PATH.
       local lldb_dap = vim.fn.exepath('lldb-dap')
       if lldb_dap ~= '' then
         dap.adapters.lldb = {
@@ -105,8 +99,7 @@ return {
     end,
   },
   {
-    -- Owns the python adapter setup; nvim-dap's config above deliberately
-    -- does not also call dap_python.setup().
+    -- Owns the python adapter setup.
     'mfussenegger/nvim-dap-python',
     dependencies = {
       'mfussenegger/nvim-dap'

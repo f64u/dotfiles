@@ -1,8 +1,5 @@
-# Interactive shell tools that need `enable` plus a line or two.
-# A module of den.aspects.shell.
-#
-# `delta` and `lazygit` used to live here; they are git tooling and moved to
-# _vcs/tools.nix. `vim` moved to _editor/vim.nix.
+# Shell tools that need `enable` plus a line or two. A module of
+# den.aspects.shell.
 { ... }:
 {
   homeManager = {
@@ -10,10 +7,8 @@
     programs.btop.enable = true;
     programs.direnv = {
       enable = true;
-      # Caches the flake evaluation, so `cd` into a project with a
-      # .envrc stops re-evaluating from scratch every time.
+      # Caches the flake evaluation of a project's .envrc.
       nix-direnv.enable = true;
-      # (zsh/bash integration is on by default via home.shell.)
     };
     programs.eza = {
       enable = true;
@@ -29,8 +24,7 @@
       # Atuin owns Ctrl-R.
       historyWidget.command = "";
     };
-    # Per-project tool versions (node, python, ...). Reads .node-version and
-    # .nvmrc as well as mise.toml.
+    # Per-project tool versions; reads .node-version and .nvmrc too.
     programs.mise = {
       enable = true;
       globalConfig = {

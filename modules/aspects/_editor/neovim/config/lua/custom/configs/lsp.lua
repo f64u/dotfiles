@@ -6,9 +6,8 @@ end
 
 local on_attach = require('custom.util.lspconfig').on_attach
 
--- Every server listed here must be on PATH from the nix package set -- see
--- modules/aspects/_editor/neovim/default.nix. mason.nvim is gone, so adding
--- a server means adding its package there too.
+-- Each server must be on PATH from nix: add its package in
+-- modules/aspects/_editor/neovim/default.nix too.
 local servers = {
   -- clangd = {},
   -- gopls = {},
@@ -50,18 +49,15 @@ local servers = {
       }
     }
   },
-  -- Should be managed by rust-tools.nvim:
-  -- rust_analyzer = {},
+  -- rust_analyzer is managed by rust-tools.nvim.
   -- html/cssls/jsonls come from vscode-langservers-extracted.
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
   jsonls = {},
   clangd = {},
-  -- Provided by the opam switch, not nixpkgs -- the zsh aspect's
-  -- `eval $(opam env)` is what puts it on PATH.
+  -- From the opam switch, not nixpkgs.
   ocamllsp = {},
-  -- Should be managed by lean.nvim:
-  -- leanls = {},
+  -- leanls is managed by lean.nvim.
   taplo = {},
   texlab = {},
   tinymist = {},
@@ -85,17 +81,11 @@ local servers = {
 
   millet = {},
 
-  -- REMOVED, all mason-only installs with no nix package behind them:
-  --   omnisharp, hls, ts_ls, ansiblels  (mason)
-  --   wgsl_analyzer, racket_langserver  (never installed at all)
-  -- Re-add one by putting its package in the neovim aspect and listing it
-  -- here; `basedpyright`/`ruff` above are the pattern to copy.
 }
 
 local capabilities = require('blink.cmp').get_lsp_capabilities()
 
--- Each entry above is a plain `vim.lsp.config` table, so the shared defaults
--- just get merged underneath it.
+-- Merge the shared defaults under each entry.
 for server, opts in pairs(servers) do
   vim.lsp.config(
     server,
@@ -135,6 +125,3 @@ vim.diagnostic.config({
   },
 })
 
--- NOTE: the undercurl highlight overrides that used to be here are supplied
--- by catppuccin's native_lsp integration (see plugins/theme.lua), which also
--- survives a later `:colorscheme` -- the raw `:hi` block did not.

@@ -1,14 +1,11 @@
 return {
   'saghen/blink.cmp',
-  -- (no `cond` here: init.lua sets `defaults.cond = not vim.g.vscode` for
-  -- every spec.)
   dependencies = {
     'rafamadriz/friendly-snippets',
     -- v2 hard-errors at require time without this
     'saghen/blink.lib',
   },
-  -- v2 builds through the plugin rather than cargo directly; the rust
-  -- library now lands in lib/ instead of target/release/
+  -- v2 builds through the plugin.
   build = function()
     require('blink.cmp').build():pwait()
   end,
@@ -16,8 +13,6 @@ return {
     keymap = { preset = 'default' },
 
     appearance = {
-      -- `use_nvim_cmp_as_default` is gone: catppuccin's `blink_cmp`
-      -- integration (see theme.lua) defines the highlights directly.
       nerd_font_variant = 'mono'
     },
 

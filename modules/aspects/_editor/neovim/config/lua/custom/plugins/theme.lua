@@ -13,9 +13,7 @@ return {
     styles = {
       comments = {},
     },
-    -- Only plugins this config actually installs. The list previously also
-    -- carried alpha, cmp, flash, illuminate, mason, mini, navic, neotest,
-    -- noice and notify, none of which are present.
+    -- Only plugins this config installs.
     integrations = {
       blink_cmp = true,
       gitsigns = true,

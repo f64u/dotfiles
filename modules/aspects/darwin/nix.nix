@@ -1,7 +1,4 @@
-# The nix daemon itself on darwin.
-#
-# GC policy is deliberately not here -- it is shared with NixOS and lives in
-# modules/defaults.nix.
+# The nix daemon on darwin. GC policy is in modules/defaults.nix.
 { inputs, ... }:
 {
   den.aspects.darwin-nix.darwin =
@@ -9,9 +6,7 @@
     {
       imports = [ inputs.nix-index-database.darwinModules.nix-index ];
 
-      # Records the flake revision in `darwin-version`. Must be `inputs.self`
-      # -- nix-darwin declares no top-level `rev`, so reading it off the
-      # module `config` silently yields null.
+      # Must be `inputs.self`: nix-darwin has no top-level `rev`.
       system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
       nix = {

@@ -1,15 +1,10 @@
 {
   description = "System Configuration";
 
-  # Everything lives in ./modules as flake-parts modules, auto-imported by
-  # import-tree. Den (github:denful/den) turns `den.hosts` / `den.aspects`
-  # declarations into darwinConfigurations.
+  # ./modules holds flake-parts modules, auto-imported by import-tree; den
+  # turns `den.hosts` / `den.aspects` into darwinConfigurations.
   #
   #   darwin-rebuild switch --flake .#macbook-pro
-  #
-  # or via the nh wrappers den exposes:
-  #
-  #   nix run .#macbook-pro -- switch
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
@@ -28,22 +23,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # NOTE: den resolves the nix-darwin builder as `inputs.darwin.lib.darwinSystem`,
-    # so this input has to be named `darwin`.
+    # Must be named `darwin`: den looks up `inputs.darwin.lib.darwinSystem`.
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Packages Homebrew casks as nix derivations, exposed as `pkgs.brewCasks.*`
-    # through an overlay. This replaces nix-homebrew and nix-darwin's homebrew
-    # module outright -- GUI apps are now real store paths that roll back with
-    # a generation, and no `brew` is installed or invoked.
-    #
-    # NOTE: `brew-api` is not optional. brew-nix pins a stale copy by default
-    # and its README says to override it -- it carries the cask metadata
-    # (versions and hashes), so this input is what actually gets updated by
-    # `nix flake update`.
+    # Homebrew casks as nix derivations (`pkgs.brewCasks.*`); no `brew` involved.
+    # `brew-api` carries the cask versions and hashes, so it must be overridden:
+    # brew-nix pins a stale copy.
     brew-nix = {
       url = "github:BatteredBunny/brew-nix";
       inputs.brew-api.follows = "brew-api";
@@ -56,9 +44,8 @@
       flake = false;
     };
 
-    # Prebuilt nix-index database, refreshed weekly. Running `nix-index`
-    # locally breaks whenever nixpkgs renames an attribute set it hardcodes
-    # (e.g. coqPackages -> rocqPackages), and takes ages besides.
+    # Prebuilt nix-index database; running `nix-index` locally is slow and
+    # breaks on nixpkgs renames.
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";

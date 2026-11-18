@@ -5,7 +5,7 @@ return {
 
   icons = "sf-symbols", -- alternatively available: NerdFont
 
-  -- This is a font configuration for SF Pro and SF Mono (installed manually)
+  -- SF Pro and SF Mono (darwin/fonts.nix).
   font = require("helpers.default_font"),
 
   -- Alternatively, this is a font config for JetBrainsMono Nerd Font

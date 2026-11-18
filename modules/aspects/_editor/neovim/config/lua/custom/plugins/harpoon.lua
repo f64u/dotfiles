@@ -3,8 +3,7 @@ return {
   branch = 'harpoon2',
   dependencies = { 'nvim-lua/plenary.nvim' },
 
-  -- Registers the BufLeave/VimLeavePre autocmds that remember cursor position
-  -- per mark. Without it the list still persists, but jumps lose your row.
+  -- Remembers the cursor position per mark.
   config = function()
     require('harpoon'):setup()
   end,
@@ -20,10 +19,7 @@ return {
     {
       '<leader>hl',
       function()
-        -- NOTE: `harpoon.ui` is the *class*; the live instance is
-        -- `require('harpoon').ui`. Calling the class left state on the wrong
-        -- table, so harpoon's own in-menu keymaps saw a nil buffer and the
-        -- second invocation crashed on `self.settings`.
+        -- `require('harpoon').ui` is the instance; `harpoon.ui` is the class.
         local harpoon = require('harpoon')
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end,

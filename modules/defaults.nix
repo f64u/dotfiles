@@ -30,8 +30,7 @@
       {
         nixpkgs.config.allowUnfree = true;
 
-        # `pkgs.brewCasks.*`. At OS level because home-manager runs with
-        # useGlobalPkgs and shares this package set.
+        # `pkgs.brewCasks.*`; home-manager shares this package set.
         nixpkgs.overlays = [ inputs.brew-nix.overlays.default ];
 
         nix = {
@@ -41,19 +40,13 @@
               "flakes"
             ];
 
-            # trusted-user is root-equivalent, so derive it from the host's
-            # own user list rather than naming anyone here. Account names,
-            # not den's attribute names.
+            # Root-equivalent, so derived from the host's users. Account names, not
+            # den attribute names.
             trusted-users = map (u: u.userName) (lib.attrValues host.users);
           };
 
-          # `options` is load-bearing: it defaults to "", and bare
-          # `nix-collect-garbage` only removes unreachable paths -- it never
-          # deletes generations, and every retained generation roots its whole
-          # closure. Without the age bound, `automatic` collects nothing.
-          #
-          # Only the schedule is platform-specific (below), because launchd
-          # and systemd spell it differently.
+          # Without `options`, `automatic` deletes no generations and so frees
+          # nothing. The schedule is per platform, below.
           gc = {
             automatic = true;
             options = "--delete-older-than 30d";
@@ -62,13 +55,8 @@
           optimise.automatic = true;
         };
 
-        # home-manager is evaluated with the host's nixpkgs, so `allowUnfree`
-        # above covers user packages too.
-        #
-        # Do NOT add `useUserPackages = true`. It moves home.packages into
-        # /etc/profiles/per-user/$USER, which NixOS puts on PATH via
-        # environment.profiles and nix-darwin does not -- so on darwin every
-        # user package silently disappears from the shell.
+        # Do NOT add `useUserPackages = true`: nix-darwin does not put
+        # /etc/profiles/per-user on PATH, so every user package disappears.
         home-manager = {
           useGlobalPkgs = true;
           backupFileExtension = "bak";
@@ -81,8 +69,7 @@
         accounts = lib.filter (u: u ? uid) (lib.attrValues host.users);
       in
       {
-        # Sunday 03:00. If a NixOS host comes back, its counterpart is
-        # `nixos.nix.gc.dates = "Sun *-*-* 03:00:00";`.
+        # Sunday 03:00.
         nix.gc.interval = {
           Weekday = 0;
           Hour = 3;

@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # Re-pin a cask in modules/aspects/darwin/cask-hashes.json.
 #
-# Those casks ship without an upstream checksum (Homebrew: `sha256 :no_check`)
-# because the vendor serves them from a version-less URL and overwrites the
-# file in place. A build failing with a hash mismatch is the expected signal
-# that upstream reissued the file -- run this to record the new hash.
+# Those casks have no upstream checksum (version-less URLs), so a hash
+# mismatch at build time means upstream reissued the file.
 #
 #   ./scripts/refresh-cask-hashes.sh            # refresh every pinned cask
 #   ./scripts/refresh-cask-hashes.sh steam ...  # refresh only these

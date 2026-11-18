@@ -1,5 +1,4 @@
-# The graphical desktop: tiling window manager, status bar, and the menu-bar
-# utilities that go with them.
+# The graphical desktop: window manager, status bar, menu-bar utilities.
 { den, ... }:
 {
   den.aspects.darwin-desktop = {
@@ -11,18 +10,13 @@
     darwin =
       { pkgs, ... }:
       {
-        # aerospace's exec-on-workspace-change hook reaches sketchybar through
-        # /run/current-system/sw/bin, so it needs a system copy. This one is
-        # unwrapped -- home-manager installs a wrapper carrying LUA_PATH, and
-        # that is the one that must handle anything loading the Lua config.
-        #
-        # aerospace itself is absent on purpose: services.aerospace already
-        # adds its own cfg.package.
+        # aerospace calls sketchybar from /run/current-system/sw/bin. Unwrapped;
+        # the home-manager one carries LUA_PATH and loads the config. aerospace
+        # itself comes from services.aerospace.
         environment.systemPackages = [ pkgs.sketchybar ];
       };
 
-    # Host-scope `homeManager` is inert in den; home content for this host's
-    # users goes through provides.to-users.
+    # Host-scope `homeManager` is inert in den; use provides.to-users.
     provides.to-users.homeManager =
       { pkgs, ... }:
       {
@@ -36,10 +30,8 @@
         # open databases the newer one migrated.
         targets.darwin.defaults."com.raycast.macos".DisableAutomaticUpdates = true;
 
-        # Spotlight does not index symlinks, so `linkApps` (the default at
-        # stateVersion 23.11) leaves every GUI app unfindable -- including
-        # Raycast. copyApps rsyncs real bundles instead, and asserts
-        # !linkApps.enable, so both lines are required.
+        # Spotlight does not index symlinks, so copy the apps. copyApps asserts
+        # !linkApps.enable; both lines are required.
         targets.darwin.linkApps.enable = false;
         targets.darwin.copyApps.enable = true;
       };

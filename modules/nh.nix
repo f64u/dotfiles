@@ -7,8 +7,7 @@
   perSystem =
     { pkgs, system, ... }:
     let
-      # denPackages flattens every host regardless of the perSystem system,
-      # so filter to the ones belonging to this one.
+      # denPackages lists every host; keep this system's.
       mine = (den.hosts.${system} or { }) // (den.homes.${system} or { });
     in
     {

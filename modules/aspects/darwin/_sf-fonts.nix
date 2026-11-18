@@ -1,17 +1,7 @@
-# Apple's SF Pro / SF Mono, packaged for `fonts.packages`.
+# Apple's SF Pro / SF Mono for `fonts.packages`. Not casks: brew-nix
+# unpacks them wrongly and installs to the wrong directory.
 #
-# NOTE the leading underscore: import-tree ignores any path containing `/_`,
-# so this is a library file rather than an auto-imported flake-parts module.
-#
-# These were Homebrew casks. brew-nix does expose them, but badly: it picks
-# the `pkg` unpack path (`xar -xf $src`) while Apple actually ships a DMG
-# *containing* a pkg, so the build dies with "Error opening xar archive". And
-# a cask lands its payload in $out/Library/Fonts, which is not where
-# fonts.packages looks. Packaging them directly is both simpler and correct.
-#
-# Apple serves these from version-less URLs and overwrites in place, so the
-# hashes below go stale on Apple's schedule. A hash mismatch is the expected
-# signal; refresh with:
+# The URLs are version-less, so a hash mismatch means Apple updated them:
 #
 #   nix store prefetch-file --json <url> | python3 -c 'import json,sys;print(json.load(sys.stdin)["hash"])'
 {
@@ -43,8 +33,7 @@ let
         gzip
       ];
 
-      # DMG -> outer flat pkg -> component pkg Payload (gzip cpio). 7zz rather
-      # than undmg: Apple now ships APFS DMGs, and undmg only reads HFS.
+      # DMG -> flat pkg -> Payload (gzip cpio). 7zz because undmg can't read APFS.
       sourceRoot = ".";
       unpackPhase = ''
         runHook preUnpack
@@ -56,9 +45,7 @@ let
         runHook postUnpack
       '';
 
-      # Both .otf and .ttf: the static OTFs carry the "SF Pro Text" /
-      # "SF Pro Display" families, but the plain "SF Pro" family lives only in
-      # the variable SF-Pro.ttf. Filtering to *.otf drops it.
+      # .ttf too: the plain "SF Pro" family exists only in the variable SF-Pro.ttf.
       installPhase = ''
         runHook preInstall
         mkdir -p "$out/share/fonts/opentype" "$out/share/fonts/truetype"
@@ -70,8 +57,7 @@ let
       meta = {
         description = "Apple ${pname} typeface";
         homepage = "https://developer.apple.com/fonts/";
-        # Apple's own license; redistribution is restricted, which is why
-        # nixpkgs does not carry these.
+        # Apple's license restricts redistribution.
         license = lib.licenses.unfree;
         platforms = lib.platforms.darwin;
       };

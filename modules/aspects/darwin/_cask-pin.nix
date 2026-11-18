@@ -1,17 +1,10 @@
-# Shared by darwin/casks.nix and darwin/casks-personal.nix. The leading
-# underscore keeps import-tree from auto-importing it as a module.
+# Shared by darwin/casks.nix and darwin/casks-personal.nix.
 #
-# Casks the vendor serves from a version-less URL carry no upstream checksum,
-# and brew-nix surfaces that as a `sha256-AAAA...` placeholder that cannot
-# build. Substitute a hash from ./cask-hashes.json, asserting the recorded URL
-# still matches so a URL change fails loudly rather than pinning the wrong
-# artifact.
+# Casks served from a version-less URL have no upstream checksum; take the
+# hash from ./cask-hashes.json, asserting the URL still matches.
 #
-# Every cask also gets its `name:attr` files stripped. Some vendor zips carry
-# extended attributes (Shottr's has `com.dropbox.attrs`), and brew-nix's
-# `unzip` path writes each one out as a stray `file:attr` file inside the
-# bundle. That breaks the code signature, and Gatekeeper SIGKILLs the app a
-# few seconds after launch. brew-nix already does this cleanup after 7zz.
+# Also strips `name:attr` files that unzip writes for extended attributes:
+# they break the code signature and Gatekeeper kills the app.
 { lib, pkgs }:
 let
   pins = lib.filterAttrs (n: _: n != "_comment") (lib.importJSON ./cask-hashes.json);

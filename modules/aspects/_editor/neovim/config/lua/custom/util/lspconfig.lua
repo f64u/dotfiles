@@ -1,19 +1,7 @@
 local M = {}
 
---  This function gets run when an LSP connects to a particular buffer. Needs
---  to be passed to some plugins.
---
---  NOTE: most of what used to live here is now redundant. Neovim 0.11+ sets
---  these unconditionally (see `:h lsp-defaults`):
---
---    grn  rename          gra  code action     grr  references
---    gri  implementation  grt  type definition grx  run codelens
---    gO   document symbol <C-S> signature help (insert/select)
---    K    hover           gq   format (via 'formatexpr')
---
---  A bare `gr` map used to sit here, which made every one of the `gr*`
---  defaults ambiguous -- each waited out 'timeoutlen' (300ms) before firing.
---  Only the maps that genuinely add something are kept.
+--  Runs when an LSP attaches to a buffer. Neovim sets most maps itself
+--  (`:h lsp-defaults`); a bare `gr` map would delay every `gr*` default.
 M.on_attach = function(_, bufnr)
   local nmap = function(keys, func, desc)
     if desc then

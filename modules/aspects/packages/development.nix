@@ -1,8 +1,5 @@
-# Development packages.
-#
-# Language servers, formatters and build tools -- things editors and shells
-# expect to find on PATH. Large, occasionally-used SDKs and emulators are in
-# packages-heavy instead.
+# Language servers, formatters and build tools that editors and shells
+# expect on PATH. Large SDKs are in packages-heavy.
 {
   den.aspects.packages-development.homeManager =
     { pkgs, ... }:
@@ -20,21 +17,16 @@
         tinymist # typst
         millet # SML
 
-        # Toolchain managers / REPL support
+        # CLIs, toolchains and solvers
         awscli2
         elan # Lean
         gh
         lua5_1
         lua51Packages.luarocks
-        smlnj # was the `smlnj` homebrew cask in /usr/local/smlnj/bin
+        smlnj
         z3 # SMT solver
 
-        # LaTeX. `texliveFull` is a 6.4 GiB closure -- it alone was ~46% of the
-        # home profile, and dragged in asymptote plus a second Python env with
-        # pyqt5. `texliveMedium` covers latexmk, biber and the usual article /
-        # beamer / AMS stack. If a build reports a missing .sty, add just that
-        # package here rather than going back to Full:
-        #
+        # Not `texliveFull` (6.4 GiB). For a missing .sty, add that package:
         #   (texliveMedium.withPackages (ps: [ ps.tikz-cd ps.mathpartir ]))
         texliveMedium
 

@@ -132,9 +132,7 @@ local function volume_toggle_details(env)
           if current == device then
             color = colors.white
           end
-          -- Single-quote and escape the device name: it is arbitrary text
-          -- from the system, and the previous double-quoted interpolation
-          -- broke on a quote, backtick or $.
+          -- Quoted: the device name is arbitrary text.
           local quoted = "'" .. device:gsub("'", [['\'']]) .. "'"
           sbar.add("item", "volume.device." .. counter, {
             position = "popup." .. volume_bracket.name,

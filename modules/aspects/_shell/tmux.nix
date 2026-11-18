@@ -41,14 +41,14 @@
       };
     in
     {
-      # Successor to t-smart-tmux-session-manager; the picker above drives it.
+      # The picker above drives it.
       programs.sesh = {
         enable = true;
         enableAlias = false;
         enableTmuxIntegration = false;
       };
 
-      # A running server keeps old plugin store paths until it re-reads its config.
+      # A running server keeps old plugin paths until it re-reads its config.
       # </dev/null: on a tty, tmux rejects the switch's missing $TERM.
       home.activation.reloadTmux =
         let
@@ -89,24 +89,14 @@
         mouse = true;
         keyMode = "vi";
 
-        # NOTE: was `shell = "$SHELL"`. tmux does not expand environment
-        # variables in default-shell, so that shipped the literal four
-        # characters and tmux fell back on its own. Spell the store path, as
-        # the wezterm aspect already does.
+        # A store path: tmux does not expand $SHELL here.
         shell = "${pkgs.zsh}/bin/zsh";
 
-        # Both of these were being set in extraConfig, overriding the values
-        # this module had just written.
         terminal = "tmux-256color";
         focusEvents = true;
         extraConfig = ''
-          # home-manager's hm-session-vars.sh (which carries home.sessionPath)
-          # opens with `if [ -n "$__HM_SESS_VARS_SOURCED" ]; then return; fi`.
-          # The server inherits that flag from whatever shell started it and
-          # hands it to every pane, so panes skip re-sourcing and silently lose
-          # the sessionPath entries -- while keeping whatever PATH the server
-          # was started with, which may be years stale. Drop it at server start
-          # so each pane evaluates the session vars itself.
+          # Panes inherit __HM_SESS_VARS_SOURCED from the server and would skip
+          # hm-session-vars.sh, losing home.sessionPath. Drop the flag.
           set-environment -gu __HM_SESS_VARS_SOURCED
 
           set -g status-left ""

@@ -1,11 +1,6 @@
--- The macOS menu bar auto-hides and slides down over this bar whenever the
--- cursor touches the top edge, so a click on a space only landed if it beat
--- the slide. bar.lua makes the bar `topmost` to stop that, which also hides
--- the menu bar for good -- `toggle_menubar` (alt-m in aerospace) drops the
--- bar behind it on demand, and back again.
---
--- A hover delay was tried instead: flipping `topmost` redraws the bar, the
--- redraw fires fresh mouse.entered/exited events, and the bar flapped.
+-- The auto-hiding macOS menu bar slides over this bar at the top edge and
+-- eats clicks, so bar.lua makes the bar `topmost`. `toggle_menubar` (alt-m)
+-- drops it behind the menu bar and back. Flipping `topmost` on hover flaps.
 
 local watcher = sbar.add("item", {
   drawing = false,

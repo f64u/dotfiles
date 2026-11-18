@@ -47,8 +47,7 @@
           make -C ./helpers
           runHook postBuild
         '';
-        # The app -> glyph map comes from the same font package that
-        # darwin/fonts.nix installs, so the two can't drift apart.
+        # The glyph map comes from the font package darwin/fonts.nix installs.
         installPhase = ''
           runHook preInstall
           cp -r . $out
@@ -74,10 +73,8 @@
         };
         configType = "lua";
 
-        # FelixKratz/SbarLua#67 (unmerged): pops failed callbacks' errors off
-        # the Lua stack (thousands of those and callbacks stop firing) and
-        # stops exec/delay callbacks, replaced subscriptions and query
-        # buffers leaking. Drop once nixpkgs' sbarlua includes it.
+        # FelixKratz/SbarLua#67 (unmerged): fixes callbacks stopping after many
+        # errors, and several leaks. Drop once nixpkgs' sbarlua includes it.
         sbarLuaPackage = pkgs.sbarlua.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [
             (pkgs.fetchpatch {
@@ -87,9 +84,7 @@
           ];
         });
 
-        # Runtime dependencies of the lua config. `gnumake` used to be here
-        # because helpers/init.lua re-ran `make` on every launch -- the
-        # derivation above builds the helpers instead, so it is not needed.
+        # Runtime dependencies of the lua config.
         extraPackages = with pkgs; [
           aerospace # items/spaces.lua queries workspaces
           switchaudio-osx # items/widgets/volume.lua device switcher

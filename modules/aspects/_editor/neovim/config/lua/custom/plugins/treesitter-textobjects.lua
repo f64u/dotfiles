@@ -1,6 +1,4 @@
--- Syntax-aware text objects. The `main` branch is a rewrite: there is no
--- `textobjects = { select = { keymaps = ... } }` block any more, so the
--- keymaps are set explicitly against the new API.
+-- Syntax-aware text objects (`main` branch: keymaps are set explicitly).
 return {
   'nvim-treesitter/nvim-treesitter-textobjects',
   branch = 'main',

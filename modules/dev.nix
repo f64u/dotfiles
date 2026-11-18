@@ -1,7 +1,4 @@
-# Developer-facing flake surface: `nix fmt` and `nix flake check`.
-#
-# All three were empty before, so `nix fmt` did nothing despite nixfmt being
-# installed, and `nix flake check` verified nothing.
+# `nix fmt` and `nix flake check`.
 { inputs, lib, ... }:
 {
   perSystem =
@@ -12,7 +9,7 @@
     {
       formatter = pkgs.nixfmt-tree;
 
-      # Actually build every configuration for this system.
+      # Builds every configuration for this system.
       checks = lib.mapAttrs' (n: c: lib.nameValuePair "darwin-${n}" c.config.system.build.toplevel) (
         onThisSystem inputs.self.darwinConfigurations
       );

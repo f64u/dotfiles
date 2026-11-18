@@ -1,11 +1,9 @@
-# Things that should be on PATH in every shell. Occasional tools go in
-# packages-heavy instead.
+# On PATH in every shell. Occasional tools go in packages-heavy.
 {
   den.aspects.packages-base.homeManager =
     { pkgs, ... }:
     let
-      # A REPL with the usual data libraries. Projects and packaging go
-      # through uv, so no pip / virtualenv / setuptools here.
+      # A REPL with the data libraries. Projects go through uv.
       myPython = pkgs.python313.withPackages (ps: [
         ps.ipython
         ps.numpy
@@ -29,8 +27,7 @@
         hyperfine # benchmark commands
         xh # friendlier curl for HTTP APIs
 
-        # Wraps bare REPLs with readline. The `sml` / `idris2` shell aliases
-        # in the zsh aspect invoke this directly -- don't drop it.
+        # The `sml` / `idris2` aliases in zsh call this -- don't drop it.
         rlwrap
 
         # Common libraries

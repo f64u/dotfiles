@@ -1,8 +1,5 @@
-# macOS GUI apps as nix derivations, via brew-nix's `pkgs.brewCasks` overlay
-# (wired up in modules/defaults.nix). Versions come from the `brew-api` input,
-# so `nix flake update` is what moves them.
-#
-# `pin` handles casks with no upstream checksum -- see ./_cask-pin.nix.
+# macOS GUI apps via brew-nix's `pkgs.brewCasks`. `nix flake update` moves
+# their versions (the `brew-api` input). `pin`: see ./_cask-pin.nix.
 { lib, ... }:
 {
   den.aspects.darwin-casks.provides.to-users.homeManager =

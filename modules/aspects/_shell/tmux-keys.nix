@@ -1,6 +1,5 @@
-# WezTerm shortcuts that drive tmux. Plain data, imported by ./tmux.nix and
-# ../_terminal/wezterm: WezTerm sends each key as the private escape
-# sequence `seq`, and tmux binds that as a user key. No prefix involved.
+# WezTerm shortcuts that drive tmux, imported by ./tmux.nix and
+# ../_terminal/wezterm: WezTerm sends `seq`, tmux binds it as a user key.
 {
   sessions ? "",
   urls ? "",

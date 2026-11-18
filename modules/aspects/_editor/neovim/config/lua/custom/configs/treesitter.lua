@@ -1,19 +1,13 @@
 -- [[ Configure Treesitter ]]
--- See `:help nvim-treesitter`
---
--- NOTE: targets nvim-treesitter's `main` branch, which is a full rewrite:
--- `require('nvim-treesitter.configs').setup{}` is gone. Parsers are installed
--- explicitly, and highlight/indent come from Neovim's built-in treesitter.
--- The old `master` branch is locked to Neovim 0.11 and breaks on 0.12.
+-- nvim-treesitter `main`: parsers are installed explicitly; highlight and
+-- indent come from Neovim itself.
 
--- Under vscode-neovim, lazy.nvim's `defaults.cond` skips every plugin, so
--- nvim-treesitter is not loaded and the require below would throw.
+-- Under vscode-neovim no plugin is loaded.
 if vim.g.vscode then
   return
 end
 
--- Single source of truth: parser names. `latex` is deliberately absent, as it
--- was in `highlight.disable`, so it keeps plain vim syntax.
+-- Parser names. No `latex`: it keeps vim syntax.
 local languages = {
   'c',
   'cpp',
@@ -50,17 +44,11 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.treesitter.start()
     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-    -- was `additional_vim_regex_highlighting = { 'markdown' }`.
-    -- NOTE: must name the syntax, not 'on' -- synload.vim only special-cases
-    -- the literal uppercase "ON", so `syntax = 'on'` searched for a
-    -- syntax/on.vim that does not exist and silently loaded nothing.
+    -- Must name the syntax; 'on' loads nothing.
     if vim.bo.filetype == 'markdown' then vim.bo.syntax = 'markdown' end
   end,
 })
 
--- NOTE: `incremental_selection` is gone from nvim-treesitter because Nvim 0.12
--- ships it: `an`/`in` select the parent/child node, `]n`/`[n` the next/previous,
--- `]N`/`[N` expand the selection. See `:h treesitter-incremental-selection`.
--- The old <c-space>/<c-bs>/<M-space> maps no longer exist.
+-- Incremental selection is built into Nvim 0.12: `an`/`in`, `]n`/`[n`.
 
 -- vim: ts=2 sts=2 sw=2 et

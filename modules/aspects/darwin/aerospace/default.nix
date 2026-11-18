@@ -3,16 +3,12 @@
   den.aspects.darwin-aerospace.darwin =
     { pkgs, ... }:
     let
-      # 1-9. There is no alt-10 key, and alt-shift-0 is already balance-sizes,
-      # so a tenth workspace has nowhere to bind -- the stale
-      # workspace-to-monitor entry for "10" is dropped below to match.
+      # 1-9: there is no alt-10 key.
       workspaces = map toString (lib.range 1 9);
 
-      # Switching to a workspace activates its app, and macOS then keys that
-      # app's last window, which may be on the other monitor; aerospace
-      # follows it there. So half a second later, if focus left workspace $1
-      # for another window of an app that's on $1 (and no other alt-N came
-      # since), focus $1 again.
+      # Switching workspace can key an app's window on the other monitor, and
+      # aerospace follows. Half a second later, if focus left workspace $1
+      # that way (and no other alt-N came since), focus $1 again.
       holdFocus = pkgs.writeShellScript "aerospace-hold-focus" ''
         aerospace=/run/current-system/sw/bin/aerospace
         target=/tmp/aerospace-target-$(id -u)
@@ -33,11 +29,9 @@
       '';
       kb = cmds: [ "exec-and-forget ${stamp}" ] ++ lib.toList cmds;
 
-      # Cmd-Tab, the Dock or a link activate an app, and macOS keys its last
-      # window, maybe on the other monitor. The mouse marks the screen in
-      # use, so if the same app has a visible window there, focus that
-      # instead; otherwise bring the mouse along as before. Each aerospace
-      # call is ~10ms, so the usual paths make one.
+      # Cmd-Tab, the Dock or a link may key an app's window on the other
+      # monitor. If the app has a visible window on the mouse's screen, focus
+      # that; otherwise bring the mouse along.
       followMouse = pkgs.writeShellScript "aerospace-follow-mouse" ''
         aerospace=/run/current-system/sw/bin/aerospace
         read -r at 2>/dev/null < /tmp/aerospace-keyboard-$UID
@@ -64,8 +58,8 @@
         ) workspaces
       );
 
-      # `alt-shift-N` moves the focused window to workspace N, follows it, and
-      # nudges sketchybar to redraw its per-workspace app icons.
+      # `alt-shift-N` moves the window to workspace N, follows it, and tells
+      # sketchybar.
       moveBindings = lib.listToAttrs (
         map (
           n:
@@ -81,18 +75,13 @@
       services.aerospace = {
         enable = true;
         settings = {
-          # NOTE: no `after-startup-command = ["exec-and-forget sketchybar"]`.
-          # home-manager's programs.sketchybar already creates a launchd agent
-          # with RunAtLoad + KeepAlive, and aerospace's launchd PATH does not
-          # contain the nix profile anyway -- so that line either did nothing
-          # or started a second, unwrapped bar that cannot load the Lua config.
+          # No `after-startup-command` for sketchybar: home-manager runs it under
+          # launchd.
 
           enable-normalization-flatten-containers = true;
           enable-normalization-opposite-orientation-for-nested-containers = true;
 
-          # config-version 1 infers persistent-workspaces from the right-hand side
-          # of the key bindings, which upstream deprecated as error-prone and
-          # warns about on every reload. Version 2 wants the list spelled out.
+          # Version 2 wants persistent workspaces listed; 1 infers them and warns.
           config-version = 2;
           persistent-workspaces = workspaces;
 
@@ -115,11 +104,8 @@
             inner.vertical = 10;
             outer.left = 10;
             outer.bottom = 10;
-            # sketchybar is 40pt tall and sits at the top of every display. On the
-            # built-in display it starts inside the ~35pt notch strip that macOS
-            # already reserves, so it overhangs the usable area by ~5pt; on an
-            # external monitor it takes the full 40pt. Both values leave the same
-            # 10pt between the bar and the first window as the other edges get.
+            # Leaves 10pt below sketchybar (40pt), which on the built-in display
+            # starts inside the ~35pt notch strip.
             outer.top = [
               { monitor.main = 15; }
               { monitor.secondary = 50; }
@@ -141,13 +127,8 @@
             alt-shift-k = "move up";
             alt-shift-l = "move right";
 
-            # Focus / move between monitors.
-            #
-            # h/l walk aerospace's monitor list, which is sorted left-to-right
-            # then top-to-bottom, so they mean "previous/next screen" for any
-            # single row or column of displays and for two displays in any
-            # arrangement. k/j are geometric: they only fire when a monitor is
-            # actually above/below, which is what you want in a 2D grid.
+            # Monitors. h/l walk aerospace's list (left-to-right, top-to-bottom);
+            # k/j only fire when a monitor is actually above/below.
             alt-ctrl-h = kb "focus-monitor --wrap-around prev";
             alt-ctrl-l = kb "focus-monitor --wrap-around next";
             alt-ctrl-k = kb "focus-monitor up";
@@ -158,9 +139,7 @@
             alt-ctrl-shift-k = kb "move-node-to-monitor --focus-follows-window up";
             alt-ctrl-shift-j = kb "move-node-to-monitor --focus-follows-window down";
 
-            # Flatten the workspace tree. (`alt-r` and `alt-e` were both bound
-            # to the same `layout tiles horizontal vertical` command; alt-e
-            # keeps that job below.)
+            # Flatten the workspace tree.
             alt-r = "flatten-workspace-tree";
 
             # Toggle fullscreen
@@ -245,10 +224,7 @@
             }
           ];
 
-          # Sketchybar integration callback.
-          #
-          # Only `aerospace_workspace_change` here; `windows_on_spaces` comes
-          # from the alt-shift-N bindings.
+          # Tells sketchybar. `windows_on_spaces` comes from the alt-shift-N bindings.
           exec-on-workspace-change = [
             "/bin/bash"
             "-c"

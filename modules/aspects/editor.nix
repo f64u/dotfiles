@@ -1,5 +1,4 @@
-# Editors: neovim as the daily driver, vim as the rescue fallback, vscode for
-# the things that only work there.
+# Editors: neovim daily, vim as the fallback, vscode where needed.
 { ... }@args:
 {
   den.aspects.editor.includes = [
