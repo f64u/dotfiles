@@ -27,8 +27,8 @@ assert lib.assertMsg (
   all = lib.attrValues all;
   # The host's default identity.
   primary = all.${user.identity};
-  # The rest, each used only inside its `repos`.
-  scoped = lib.attrValues (removeAttrs all [ user.identity ]);
+  # The rest that name `repos`, each used only inside them.
+  scoped = lib.filter (id: id.repos != [ ]) (lib.attrValues (removeAttrs all [ user.identity ]));
   # Those with a key on this host.
   keyed = lib.filter (id: id.key != null) (lib.attrValues all);
 }
