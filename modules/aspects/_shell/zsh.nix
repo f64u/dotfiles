@@ -37,13 +37,6 @@
           # After compinit, before autosuggestions and syntax highlighting.
           source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
         '';
-        initContent = ''
-          # A runtime eval: opam keeps its switches outside the store.
-          if command -v opam >/dev/null; then
-            eval "$(opam env)"
-          fi
-        '';
-
         shellAliases = {
           q = "exit";
           n = "nvim";
