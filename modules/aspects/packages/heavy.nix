@@ -1,11 +1,6 @@
-# Large, occasionally-used tooling. NOT included by any host or user aspect --
-# reach for these ad hoc instead:
-#
-#   nix shell nixpkgs#qemu
-#   , gcloud
-#
-# To have them permanently on one machine, add `den.aspects.packages-heavy` to
-# that host's `includes` rather than to the shared user aspect.
+# Large, occasional tooling, in no host or user aspect. Use ad hoc
+# (`nix shell nixpkgs#qemu`, `, gcloud`), or add `den.aspects.packages-heavy`
+# to one host's `includes`.
 {
   den.aspects.packages-heavy.homeManager =
     { pkgs, ... }:
@@ -14,7 +9,6 @@
         android-tools # 1.4 GiB
         google-cloud-sdk # 1.9 GiB
         ollama
-        postman
         qemu # 2.3 GiB
       ];
     };

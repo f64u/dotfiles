@@ -29,8 +29,6 @@ return {
     },
   },
 
-  -- NOTE: "gc" to comment visual regions/lines is built into Neovim now
-  -- (:h commenting), so Comment.nvim was dropped.
 
   {
     -- Highlight, edit, and navigate code
@@ -77,9 +75,6 @@ return {
       { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Toggle undotree' },
     }
   },
-
-  -- Icons in nvim tabs
-  { 'alvarosevilla95/luatab.nvim', event = 'VeryLazy', opts = {} },
 
   -- Highlight todo
   {
