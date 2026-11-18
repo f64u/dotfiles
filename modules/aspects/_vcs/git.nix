@@ -56,8 +56,6 @@ in
           push.autoSetupRemote = true;
           fetch.prune = true;
           branch.sort = "-committerdate";
-          # Conflicts show the common ancestor; diffs move whole blocks.
-          merge.conflictStyle = "zdiff3";
           diff.algorithm = "histogram";
           # Replays a conflict resolution it has seen before.
           rerere.enabled = true;
