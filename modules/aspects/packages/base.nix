@@ -2,14 +2,6 @@
 {
   den.aspects.packages-base.homeManager =
     { pkgs, ... }:
-    let
-      # A REPL with the data libraries. Projects go through uv.
-      myPython = pkgs.python313.withPackages (ps: [
-        ps.ipython
-        ps.numpy
-        ps.pandas
-      ]);
-    in
     {
       home.packages = with pkgs; [
         # Core terminal tools.
@@ -22,7 +14,6 @@
         poppler-utils # pdftoppm, pdftotext, pdfinfo
         # macOS ships no `watch`; this is the procps one.
         watch
-        wget
         uutils-coreutils-noprefix
         hyperfine # benchmark commands
         xh # friendlier curl for HTTP APIs
@@ -35,9 +26,8 @@
         readline
         ncurses
 
-        # Python
-        myPython
-        uv
+        python313
+        uv # Projects, and `uvx ipython` for a REPL.
 
         # Core development
         nodejs_24 # Fallback for tools launched outside a mise-activated shell.
