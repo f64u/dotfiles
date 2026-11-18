@@ -10,11 +10,11 @@ local battery = sbar.add("item", "widgets.battery", {
     font = {
       style = settings.font.style_map["Regular"],
       size = 19.0,
-    }
+    },
   },
   label = { font = { family = settings.font.numbers } },
   update_freq = 180,
-  popup = { align = "center" }
+  popup = { align = "center" },
 })
 
 local remaining_time = sbar.add("item", {
@@ -22,18 +22,17 @@ local remaining_time = sbar.add("item", {
   icon = {
     string = "Time remaining:",
     width = 100,
-    align = "left"
+    align = "left",
   },
   label = {
     string = "??:??h",
     width = 100,
-    align = "right"
+    align = "right",
   },
 })
 
-
 local was_charging = nil
-battery:subscribe({"routine", "power_source_change", "system_woke"}, function()
+battery:subscribe({ "routine", "power_source_change", "system_woke" }, function()
   sbar.exec("pmset -g batt", function(batt_info)
     local icon = "!"
     local label = "?"
@@ -77,7 +76,7 @@ battery:subscribe({"routine", "power_source_change", "system_woke"}, function()
     battery:set({
       icon = {
         string = icon,
-        color = color
+        color = color,
       },
       label = { string = lead .. label },
     })
@@ -110,10 +109,10 @@ end
 popups.register("battery", hide_details)
 
 sbar.add("bracket", "widgets.battery.bracket", { battery.name }, {
-  background = { color = colors.bg1 }
+  background = { color = colors.bg1 },
 })
 
 sbar.add("item", "widgets.battery.padding", {
   position = "right",
-  width = settings.group_paddings
+  width = settings.group_paddings,
 })

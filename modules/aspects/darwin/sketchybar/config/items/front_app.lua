@@ -23,7 +23,9 @@ local function rect()
   -- No rects while it's drawn nowhere (e.g. an empty label).
   local rects = front_app:query().bounding_rects
   local r = rects and rects["display-" .. notch]
-  if r and r.origin[1] > -9999 then return r end
+  if r and r.origin[1] > -9999 then
+    return r
+  end
 end
 
 -- Shows at most `chars` characters (0 is all of them).
@@ -38,7 +40,9 @@ end
 local color = front_app:query().label.color
 local function fit()
   local len = utf8.len(name) or #name
-  if not notch or active ~= notch then return show(0) end
+  if not notch or active ~= notch then
+    return show(0)
+  end
   local function want()
     local chars = math.floor((edge - 8 - x) / per_char)
     return len <= chars and 0 or math.max(1, chars)
@@ -56,10 +60,16 @@ local function fit()
     if r then
       x = r.origin[1]
       local shown = cut == 0 and len or math.min(cut, len)
-      if r.size[1] > 0 and shown > 0 then per_char = r.size[1] / shown end
-      if want() ~= cut then show(want()) end
+      if r.size[1] > 0 and shown > 0 then
+        per_char = r.size[1] / shown
+      end
+      if want() ~= cut then
+        show(want())
+      end
     end
-    if blind then front_app:set({ label = { color = color } }) end
+    if blind then
+      front_app:set({ label = { color = color } })
+    end
   end)
 end
 
@@ -86,14 +96,21 @@ front_app:subscribe({ "aerospace_workspace_change", "aerospace_focus_change" }, 
   asked = asked + 1
   local mine = asked
   sbar.delay(0.12, function()
-  if mine ~= asked then return end
-  sbar.exec("aerospace list-windows --focused --format '%{app-name}';"
-    .. " aerospace list-monitors --focused --format '%{monitor-appkit-nsscreen-screens-id}'", function(out)
-    local app, monitor = out:match("^(.-)\n?(%d+)%s*$")
-    if not monitor then return end
-    name, active = app, tonumber(monitor)
-    fit()
-  end)
+    if mine ~= asked then
+      return
+    end
+    sbar.exec(
+      "aerospace list-windows --focused --format '%{app-name}';"
+        .. " aerospace list-monitors --focused --format '%{monitor-appkit-nsscreen-screens-id}'",
+      function(out)
+        local app, monitor = out:match("^(.-)\n?(%d+)%s*$")
+        if not monitor then
+          return
+        end
+        name, active = app, tonumber(monitor)
+        fit()
+      end
+    )
   end)
 end)
 -- INFO is the newly active display.

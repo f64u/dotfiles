@@ -27,11 +27,17 @@ for cask in "${casks[@]}"; do
   # up here instead of tripping the assertion in _cask-pin.nix.
   url=$(nix eval --raw \
     ".#darwinConfigurations.${host}.pkgs.brewCasks.\"${cask}\".src.urls" \
-    --apply 'builtins.head' 2>/dev/null) || { echo "cannot resolve in brew-nix"; continue; }
+    --apply 'builtins.head' 2>/dev/null) || {
+    echo "cannot resolve in brew-nix"
+    continue
+  }
 
-  hash=$(nix store prefetch-file --json "$url" 2>/dev/null \
-    | python3 -c 'import json,sys; print(json.load(sys.stdin)["hash"])') \
-    || { echo "download failed"; continue; }
+  hash=$(nix store prefetch-file --json "$url" 2>/dev/null |
+    python3 -c 'import json,sys; print(json.load(sys.stdin)["hash"])') ||
+    {
+      echo "download failed"
+      continue
+    }
 
   python3 - "$json" "$cask" "$url" "$hash" <<'PY'
 import json, sys

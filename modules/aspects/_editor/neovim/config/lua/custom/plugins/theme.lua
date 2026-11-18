@@ -1,14 +1,14 @@
 return {
-  'catppuccin/nvim',
-  name = 'catppuccin',
+  "catppuccin/nvim",
+  name = "catppuccin",
   priority = 1000,
   config = function(_, opts)
-    require('catppuccin').setup(opts)
-    vim.cmd.colorscheme 'catppuccin'
+    require("catppuccin").setup(opts)
+    vim.cmd.colorscheme("catppuccin")
   end,
   opts = {
     -- Dark follows catppuccin.flavor from Nix (set in init.lua).
-    background = { light = 'latte', dark = vim.g.catppuccin_flavour or 'mocha' },
+    background = { light = "latte", dark = vim.g.catppuccin_flavour or "mocha" },
     -- transparent_background = true,
     styles = {
       comments = {},
@@ -21,10 +21,10 @@ return {
       native_lsp = {
         enabled = true,
         underlines = {
-          errors = { 'undercurl' },
-          hints = { 'undercurl' },
-          warnings = { 'undercurl' },
-          information = { 'undercurl' },
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
         },
       },
       semantic_tokens = true,
@@ -32,5 +32,5 @@ return {
       treesitter = true,
       which_key = true,
     },
-  }
+  },
 }

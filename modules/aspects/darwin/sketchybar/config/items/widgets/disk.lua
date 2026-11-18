@@ -26,7 +26,7 @@ local disk = sbar.add("graph", "widgets.disk", width, {
     align = "right",
     padding_right = 0,
     width = 0,
-    y_offset = 4
+    y_offset = 4,
   },
   padding_right = settings.paddings + 6,
   update_freq = 300,
@@ -36,11 +36,15 @@ disk:subscribe({ "forced", "routine", "system_woke" }, function()
   sbar.exec("df -H /System/Volumes/Data | awk 'NR==2 {print $4, $5}'", function(out)
     local free, used = out:match("(%S+)%s+(%d+)%%")
     used = tonumber(used)
-    if not used then return end
+    if not used then
+      return
+    end
 
     -- Refill every column so the level is flat from the first sample.
     local samples = {}
-    for i = 1, width do samples[i] = used / 100. end
+    for i = 1, width do
+      samples[i] = used / 100.
+    end
     disk:push(samples)
     disk:set({
       graph = {

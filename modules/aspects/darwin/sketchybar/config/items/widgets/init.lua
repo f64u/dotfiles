@@ -10,11 +10,11 @@ require("items.widgets.cpu")
 require("items.widgets.ram")
 require("items.widgets.disk")
 sbar.add("bracket", "widgets.system.bracket", { "widgets.cpu", "widgets.ram", "widgets.disk" }, {
-  background = { color = colors.bg1 }
+  background = { color = colors.bg1 },
 })
 sbar.add("item", "widgets.system.padding", {
   position = "right",
-  width = settings.group_paddings
+  width = settings.group_paddings,
 })
 
 require("items.widgets.messages")

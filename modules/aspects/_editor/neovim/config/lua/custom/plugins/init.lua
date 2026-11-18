@@ -2,89 +2,89 @@ return {
   -- Git: gitsigns (./gitsigns.lua) and snacks (./snacks.lua).
 
   -- Detect tabstop and shiftwidth automatically
-  { 'tpope/vim-sleuth',   event = { 'BufReadPost', 'BufNewFile' } },
+  { "tpope/vim-sleuth", event = { "BufReadPost", "BufNewFile" } },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {}, event = 'VeryLazy' },
+  { "folke/which-key.nvim", opts = {}, event = "VeryLazy" },
 
   -- <Ctrl-DIRECTION> and better tmux integration
   {
-    'christoomey/vim-tmux-navigator',
-    keys = { '<C-h>', '<C-j>', '<C-k>', '<C-l>' },
+    "christoomey/vim-tmux-navigator",
+    keys = { "<C-h>", "<C-j>", "<C-k>", "<C-l>" },
   },
 
   {
     -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    event = 'VeryLazy',
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'auto',
-        component_separators = '|',
-        section_separators = '',
+        theme = "auto",
+        component_separators = "|",
+        section_separators = "",
         globalstatus = true,
       },
-
     },
   },
 
-
   {
     -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    branch = 'main', -- `master` is locked to Nvim 0.11 and breaks on 0.12
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main", -- `master` is locked to Nvim 0.11 and breaks on 0.12
     lazy = false, -- the rewrite does not support lazy-loading
-    build = ':TSUpdate',
+    build = ":TSUpdate",
   },
 
   {
     -- Auto pair text objects
-    'nvim-mini/mini.pairs',
-    event = 'InsertEnter',
-    opts = {}
+    "nvim-mini/mini.pairs",
+    event = "InsertEnter",
+    opts = {},
   },
 
   {
     -- Easier mainpulation (add/remove/change) of pairs
-    'kylechui/nvim-surround',
-    version = '*',
-    event = 'VeryLazy',
-    opts = {}
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
   },
 
   -- Latex
   {
-    'lervag/vimtex',
+    "lervag/vimtex",
     -- not ft='latex' because the plugin itself offers the ft
     lazy = false,
     init = function()
-      vim.g.vimtex_view_method = 'skim'
+      vim.g.vimtex_view_method = "skim"
       -- vimtex's conceal needs this; set per buffer, not globally.
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'tex',
-        callback = function() vim.opt_local.conceallevel = 2 end,
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "tex",
+        callback = function()
+          vim.opt_local.conceallevel = 2
+        end,
       })
-    end
+    end,
   },
 
   {
     -- Better undoing experience
-    'mbbill/undotree',
+    "mbbill/undotree",
     keys = {
-      { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Toggle undotree' },
-    }
+      { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Toggle undotree" },
+    },
   },
 
   -- Highlight todo
   {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    event = 'VeryLazy',
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "VeryLazy",
     opts = {
       search = {
         pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
-      }
-    }
-  }
+      },
+    },
+  },
 }

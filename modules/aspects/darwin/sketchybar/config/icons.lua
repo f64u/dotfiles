@@ -16,11 +16,11 @@ local icons = {
       off = "􁏯",
     },
     volume = {
-      _100="􀊩",
-      _66="􀊧",
-      _33="􀊥",
-      _10="􀊡",
-      _0="􀊣",
+      _100 = "􀊩",
+      _66 = "􀊧",
+      _33 = "􀊥",
+      _10 = "􀊡",
+      _0 = "􀊣",
     },
     battery = {
       _100 = "􀛨",
@@ -28,7 +28,7 @@ local icons = {
       _50 = "􀺶",
       _25 = "􀛩",
       _0 = "􀛪",
-      charging = "􀢋"
+      charging = "􀢋",
     },
     wifi = {
       upload = "􀄨",
@@ -55,11 +55,11 @@ local icons = {
       off = "󱨦",
     },
     volume = {
-      _100="",
-      _66="",
-      _33="",
-      _10="",
-      _0="",
+      _100 = "",
+      _66 = "",
+      _33 = "",
+      _10 = "",
+      _0 = "",
     },
     battery = {
       _100 = "",
@@ -67,14 +67,14 @@ local icons = {
       _50 = "",
       _25 = "",
       _0 = "",
-      charging = ""
+      charging = "",
     },
     wifi = {
       upload = "",
       download = "",
       connected = "󰖩",
       disconnected = "󰖪",
-      router = "Missing Icon"
+      router = "Missing Icon",
     },
   },
 }

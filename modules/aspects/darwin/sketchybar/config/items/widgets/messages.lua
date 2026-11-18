@@ -6,17 +6,25 @@ local island = require("items.island")
 -- Dock badges, read with lsappinfo. Each app shows only while it has one.
 local apps = { "Slack", "Discord", "WhatsApp", "Messages", "Mail" }
 local bundles = {
-  Slack = "com.tinyspeck.slackmacgap", Discord = "com.hnc.Discord", WhatsApp = "net.whatsapp.WhatsApp",
-  Messages = "com.apple.MobileSMS", Mail = "com.apple.mail",
+  Slack = "com.tinyspeck.slackmacgap",
+  Discord = "com.hnc.Discord",
+  WhatsApp = "net.whatsapp.WhatsApp",
+  Messages = "com.apple.MobileSMS",
+  Mail = "com.apple.mail",
 }
 -- Each app's beat on the island.
 local tints = {
-  Slack = colors.magenta, Discord = colors.lavender, WhatsApp = colors.green,
-  Messages = colors.green, Mail = colors.blue,
+  Slack = colors.magenta,
+  Discord = colors.lavender,
+  WhatsApp = colors.green,
+  Messages = colors.green,
+  Mail = colors.blue,
 }
 
 local shelf = {}
-for _, app in ipairs(apps) do shelf[#shelf + 1] = { app, bundles[app], tints[app] } end
+for _, app in ipairs(apps) do
+  shelf[#shelf + 1] = { app, bundles[app], tints[app] }
+end
 island.shelf(shelf)
 island.watch_hover()
 
@@ -38,12 +46,12 @@ for _, app in ipairs(apps) do
 end
 
 sbar.add("bracket", "widgets.messages.bracket", { "/widgets\\.messages\\..*/" }, {
-  background = { color = colors.bg1 }
+  background = { color = colors.bg1 },
 })
 
 local padding = sbar.add("item", "widgets.messages.padding", {
   position = "right",
-  width = settings.group_paddings
+  width = settings.group_paddings,
 })
 
 -- The badges would run into the notch, and the shelf shows them there.
@@ -52,11 +60,15 @@ island.on_notch(function(notch)
   if notch then
     local others = {}
     for d = 1, 16 do
-      if d ~= notch then others[#others + 1] = d end
+      if d ~= notch then
+        others[#others + 1] = d
+      end
     end
     display = table.concat(others, ",")
   end
-  for _, item in pairs(items) do item:set({ display = display }) end
+  for _, item in pairs(items) do
+    item:set({ display = display })
+  end
   padding:set({ display = display })
 end)
 
@@ -86,7 +98,9 @@ watcher:subscribe({ "forced", "routine", "system_woke", "front_app_switched" }, 
         item:set({ drawing = count > 0, label = badge })
         -- Badge first: an open shelf re-reads them for the new app.
         island.badge(app, count > 0 and badge or "")
-        if seen[app] and count > seen[app] then island.message(tints[app], app) end
+        if seen[app] and count > seen[app] then
+          island.message(tints[app], app)
+        end
         seen[app] = count
       end
     end

@@ -42,8 +42,8 @@ local hug = sbar.add("item", "island.hug", {
 local fill = { color = colors.bar.bg, border_width = 0, corner_radius = 0, height = bar_height }
 local function mask(name, position, fill_first)
   local spacer = { string = "", width = 0, padding_left = 0, padding_right = 0, color = colors.transparent }
-  local filled = { string = "", width = 0, padding_left = 0, padding_right = 0, color = colors.transparent,
-    background = fill }
+  local filled =
+    { string = "", width = 0, padding_left = 0, padding_right = 0, color = colors.transparent, background = fill }
   return sbar.add("item", name, {
     position = position,
     drawing = false,
@@ -138,12 +138,16 @@ end
 
 local token = 0
 local function all(props)
-  for _, item in ipairs({ hug, left, right }) do item:set(props) end
+  for _, item in ipairs({ hug, left, right }) do
+    item:set(props)
+  end
 end
 
 -- Returns nil when there's no notch to hug.
 local function show(color)
-  if not g then return nil end
+  if not g then
+    return nil
+  end
   token = token + 1
   hug:set({ background = { border_color = color } })
   return token
@@ -156,9 +160,15 @@ local function sweep(mine, to, seconds, done)
   local from, target = progress * total, to * total
   local stops = {}
   for _, b in ipairs(g.legs) do
-    if (b - from) * (b - target) < 0 then stops[#stops + 1] = b end
+    if (b - from) * (b - target) < 0 then
+      stops[#stops + 1] = b
+    end
   end
-  if target < from then table.sort(stops, function(m, n) return m > n end) end
+  if target < from then
+    table.sort(stops, function(m, n)
+      return m > n
+    end)
+  end
   stops[#stops + 1] = target
 
   local t, at = 0, from
@@ -166,25 +176,35 @@ local function sweep(mine, to, seconds, done)
     local share = math.abs(stop - at) / math.max(1e-9, math.abs(target - from))
     local frames = math.max(1, math.floor(seconds * share * 60 + 0.5))
     sbar.delay(t, function()
-      if token ~= mine then return end
+      if token ~= mine then
+        return
+      end
       progress = stop / total
-      sbar.animate("linear", frames, function() place(stop) end)
+      sbar.animate("linear", frames, function()
+        place(stop)
+      end)
     end)
     t, at = t + frames / 60, stop
   end
   sbar.delay(t, function()
-    if token == mine and done then done() end
+    if token == mine and done then
+      done()
+    end
   end)
 end
 
 local function fade(mine, after)
   sbar.delay(after, function()
-    if token ~= mine then return end
+    if token ~= mine then
+      return
+    end
     sbar.animate("sin", 30, function()
       hug:set({ background = { border_color = colors.transparent } })
     end)
     sbar.delay(0.6, function()
-      if token == mine then reveal(0) end
+      if token == mine then
+        reveal(0)
+      end
     end)
   end)
 end
@@ -200,7 +220,9 @@ local shelf = { apps = {}, items = {}, badges = {}, tints = {}, shown = nil, ins
 
 -- `t` of `color` over the bar, opaque: the popup sits over the bar.
 local function tint(color, t)
-  local function ch(c, s) return (c >> s) & 0xff end
+  local function ch(c, s)
+    return (c >> s) & 0xff
+  end
   local out = 0xff000000
   for _, s in ipairs({ 16, 8, 0 }) do
     out = out | (math.floor(ch(colors.bar.bg, s) * (1 - t) + ch(color, s) * t + 0.5) << s)
@@ -263,31 +285,43 @@ local function shelf_offset(open)
 end
 
 local function shelf_close()
-  if not shelf.shown then return end
+  if not shelf.shown then
+    return
+  end
   shelf.shown = nil
   sbar.animate("sin", 12, function()
     hug:set({ popup = { y_offset = shelf_offset(false) } })
   end)
   local mine = shelf.token
   sbar.delay(0.25, function()
-    if not shelf.shown then hug:set({ popup = { drawing = false } }) end
+    if not shelf.shown then
+      hug:set({ popup = { drawing = false } })
+    end
   end)
-  if mine and token == mine then fade(mine, 0.1) end
+  if mine and token == mine then
+    fade(mine, 0.1)
+  end
 end
 
 -- Shows `names` (those with a badge) in the first one's colour.
 -- sketchybar draws popups only on the display with keyboard focus, so
 -- elsewhere it calls `skipped` instead.
 local function shelf_open(names, skipped)
-  if not g or #names == 0 then return end
+  if not g or #names == 0 then
+    return
+  end
   sbar.exec("aerospace list-monitors --focused --format '%{monitor-appkit-nsscreen-screens-id}'", function(out)
     if not g or tonumber(out) ~= g.display then
-      if skipped then skipped() end
+      if skipped then
+        skipped()
+      end
       return
     end
     local color = shelf.tints[names[1]] or colors.white
     local show_ = {}
-    for _, n in ipairs(names) do show_[n] = true end
+    for _, n in ipairs(names) do
+      show_[n] = true
+    end
     for _, n in ipairs(shelf.apps) do
       shelf.items[n]:set({ drawing = show_[n] == true, y_offset = -(g.notch_height // 2) })
     end
@@ -317,7 +351,9 @@ local function shelf_open(names, skipped)
       hug:set({ popup = { y_offset = shelf_offset(false), drawing = true } })
     end
     sbar.delay(was_open and 0 or 0.15, function()
-      if shelf.shown ~= names then return end
+      if shelf.shown ~= names then
+        return
+      end
       sbar.animate("sin", 15, function()
         hug:set({ popup = { y_offset = shelf_offset(true) } })
       end)
@@ -328,31 +364,46 @@ end
 local function unread()
   local names = {}
   for _, n in ipairs(shelf.apps) do
-    if (shelf.badges[n] or "") ~= "" then names[#names + 1] = n end
+    if (shelf.badges[n] or "") ~= "" then
+      names[#names + 1] = n
+    end
   end
   return names
 end
 
 local function same(a, b)
-  if #a ~= #b then return false end
-  for i = 1, #a do if a[i] ~= b[i] then return false end end
+  if #a ~= #b then
+    return false
+  end
+  for i = 1, #a do
+    if a[i] ~= b[i] then
+      return false
+    end
+  end
   return true
 end
 
 -- An open shelf drops apps whose badge cleared (or closes if none are
 -- left); while hovered it also picks up new ones.
 local function refresh()
-  if not shelf.shown then return end
+  if not shelf.shown then
+    return
+  end
   local names = {}
   if shelf.inside then
     names = unread()
   else
     for _, n in ipairs(shelf.shown) do
-      if (shelf.badges[n] or "") ~= "" then names[#names + 1] = n end
+      if (shelf.badges[n] or "") ~= "" then
+        names[#names + 1] = n
+      end
     end
   end
-  if #names == 0 then shelf_close()
-  elseif not same(names, shelf.shown) then shelf_open(names) end
+  if #names == 0 then
+    shelf_close()
+  elseif not same(names, shelf.shown) then
+    shelf_open(names)
+  end
 end
 
 function island.badge(name, badge)
@@ -371,46 +422,68 @@ local function hover(inside)
   if inside then
     -- A peek shows one app; hovering shows them all.
     local names = unread()
-    if not shelf.shown or not same(shelf.shown, names) then shelf_open(names) end
+    if not shelf.shown or not same(shelf.shown, names) then
+      shelf_open(names)
+    end
     return
   end
   sbar.delay(0.3, function()
-    if not shelf.inside then shelf_close() end
+    if not shelf.inside then
+      shelf_close()
+    end
   end)
 end
 
 -- Length is the level.
 function island.volume(percent)
   local mine = show(colors.white)
-  if not mine then return end
-  sweep(mine, percent / 100, 0.15, function() fade(mine, 1.0) end)
+  if not mine then
+    return
+  end
+  sweep(mine, percent / 100, 0.15, function()
+    fade(mine, 1.0)
+  end)
 end
 
 -- Plugging in wraps the notch in green; unplugging unwinds it in grey.
 function island.power(charging)
   if charging then
     local mine = show(colors.green)
-    if not mine then return end
+    if not mine then
+      return
+    end
     reveal(0)
-    sweep(mine, 1, 0.7, function() fade(mine, 0.5) end)
+    sweep(mine, 1, 0.7, function()
+      fade(mine, 0.5)
+    end)
   else
     local mine = show(colors.grey)
-    if not mine then return end
+    if not mine then
+      return
+    end
     reveal(1)
-    sweep(mine, 0, 0.7, function() fade(mine, 0) end)
+    sweep(mine, 0, 0.7, function()
+      fade(mine, 0)
+    end)
   end
 end
 
 -- Two beats of `color` along the bottom edge.
 local function beats(color)
   local mine = show(colors.with_alpha(color, 0.25))
-  if not mine then return end
+  if not mine then
+    return
+  end
   reveal(g.bottom / g.legs[3])
   local steps = { { color, 0 }, { colors.with_alpha(color, 0.25), 0.3 }, { color, 0.55 } }
   for _, b in ipairs(steps) do
     sbar.delay(b[2], function()
-      if token ~= mine then return end
-      sbar.animate("tanh", 12, function() hug:set({ background = { border_color = b[1] } }) end)
+      if token ~= mine then
+        return
+      end
+      sbar.animate("tanh", 12, function()
+        hug:set({ background = { border_color = b[1] } })
+      end)
     end)
   end
   fade(mine, 1.3)
@@ -419,34 +492,56 @@ end
 -- A peek at the app on the shelf, outlined in its colour; beats when the
 -- shelf can't show.
 function island.message(color, name)
-  if not name or not g then return beats(color) end
+  if not name or not g then
+    return beats(color)
+  end
   -- Already open: just take in the new app.
-  if shelf.shown then return shelf_open(unread()) end
+  if shelf.shown then
+    return shelf_open(unread())
+  end
   shelf.peek = shelf.peek + 1
   local peek = shelf.peek
-  shelf_open({ name }, function() beats(color) end)
+  shelf_open({ name }, function()
+    beats(color)
+  end)
   sbar.delay(2.5, function()
-    if shelf.peek == peek and not shelf.inside then shelf_close() end
+    if shelf.peek == peek and not shelf.inside then
+      shelf_close()
+    end
   end)
 end
 
 function island.watch_hover()
-  hug:subscribe("mouse.entered", function() hover(true) end)
-  hug:subscribe("mouse.exited", function() hover(false) end)
+  hug:subscribe("mouse.entered", function()
+    hover(true)
+  end)
+  hug:subscribe("mouse.exited", function()
+    hover(false)
+  end)
   for _, item in pairs(shelf.items) do
-    item:subscribe("mouse.entered", function() hover(true) end)
-    item:subscribe("mouse.exited", function() hover(false) end)
+    item:subscribe("mouse.entered", function()
+      hover(true)
+    end)
+    item:subscribe("mouse.exited", function()
+      hover(false)
+    end)
   end
   for _, item in ipairs({ pad_left, pad_right }) do
-    item:subscribe("mouse.entered", function() hover(true) end)
-    item:subscribe("mouse.exited", function() hover(false) end)
+    item:subscribe("mouse.entered", function()
+      hover(true)
+    end)
+    item:subscribe("mouse.exited", function()
+      hover(false)
+    end)
   end
 end
 
 -- Called with the notched display and the island's left edge in global
 -- coordinates, as bounding_rects reports them (or nil), whenever they change.
 local listeners = {}
-function island.on_notch(fn) listeners[#listeners + 1] = fn end
+function island.on_notch(fn)
+  listeners[#listeners + 1] = fn
+end
 
 -- Only a notched display has an island; the first one wins.
 -- display_change also fires when focus moves between displays, so only an
@@ -456,7 +551,9 @@ local function find_notch()
   sbar.exec("$CONFIG_DIR/helpers/notch/bin/notch", function(out)
     local d, o, w, l, r, h = out:match("(%d+) (-?[%d.]+) ([%d.]+) ([%d.]+) ([%d.]+) ([%d.]+)")
     local key = d and table.concat({ d, o, w, l, r, h }, " ") or ""
-    if key == last then return end
+    if key == last then
+      return
+    end
     last = key
     token = token + 1
     if d then
@@ -470,12 +567,16 @@ local function find_notch()
       g = nil
       all({ drawing = false })
     end
-    for _, fn in ipairs(listeners) do fn(g and g.display, g and g.origin + g.outer_left) end
+    for _, fn in ipairs(listeners) do
+      fn(g and g.display, g and g.origin + g.outer_left)
+    end
   end)
 end
 
 local watcher = sbar.add("item", { drawing = false, updates = true })
-watcher:subscribe("display_change", function() sbar.delay(1, find_notch) end)
+watcher:subscribe("display_change", function()
+  sbar.delay(1, find_notch)
+end)
 find_notch()
 
 return island

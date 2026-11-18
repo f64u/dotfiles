@@ -1,93 +1,123 @@
 return {
   {
-    'mfussenegger/nvim-dap',
+    "mfussenegger/nvim-dap",
     keys = {
-      { '<leader>dc',  function() require('dap').continue() end,  desc = '[D]ebug: Start/[C]ontinue' },
       {
-        '<leader>dq',
+        "<leader>dc",
         function()
-          require('dap').close()
-          require('dapui').close() -- sometimes the event doesn't fire??
+          require("dap").continue()
         end,
-        desc = '[D]ebug: [Q]uit'
-      },
-      { '<leader>dsi', function() require('dap').step_into() end, desc = '[D]ebug: [S]tep [I]nto' },
-      { '<leader>dso', function() require('dap').step_over() end, desc = '[D]ebug: [S]tep [o]ver' },
-      { '<leader>dsO', function() require('dap').step_out() end,  desc = '[D]ebug: [S]tep [O]ut' },
-      {
-        '<leader>db',
-        function() require('dap').toggle_breakpoint() end,
-        desc =
-        '[D]ebug: Toggle [b]reakpoint'
+        desc = "[D]ebug: Start/[C]ontinue",
       },
       {
-        '<leader>dB',
+        "<leader>dq",
         function()
-          require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+          require("dap").close()
+          require("dapui").close() -- sometimes the event doesn't fire??
         end,
-        desc = '[D]ebug: Set [B]reakpoint'
+        desc = "[D]ebug: [Q]uit",
       },
-
+      {
+        "<leader>dsi",
+        function()
+          require("dap").step_into()
+        end,
+        desc = "[D]ebug: [S]tep [I]nto",
+      },
+      {
+        "<leader>dso",
+        function()
+          require("dap").step_over()
+        end,
+        desc = "[D]ebug: [S]tep [o]ver",
+      },
+      {
+        "<leader>dsO",
+        function()
+          require("dap").step_out()
+        end,
+        desc = "[D]ebug: [S]tep [O]ut",
+      },
+      {
+        "<leader>db",
+        function()
+          require("dap").toggle_breakpoint()
+        end,
+        desc = "[D]ebug: Toggle [b]reakpoint",
+      },
+      {
+        "<leader>dB",
+        function()
+          require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end,
+        desc = "[D]ebug: Set [B]reakpoint",
+      },
     },
     dependencies = {
       -- Creates a beautiful debugger UI
       {
-        'rcarriga/nvim-dap-ui',
+        "rcarriga/nvim-dap-ui",
         opts = {
-          icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+          icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
           controls = {
             icons = {
-              pause = '⏸',
-              play = '▶',
-              step_into = '⏎',
-              step_over = '⏭',
-              step_out = '⏮',
-              step_back = 'b',
-              run_last = '▶▶',
-              terminate = '⏹',
-              disconnect = '⏏',
+              pause = "⏸",
+              play = "▶",
+              step_into = "⏎",
+              step_over = "⏭",
+              step_out = "⏮",
+              step_back = "b",
+              run_last = "▶▶",
+              terminate = "⏹",
+              disconnect = "⏏",
             },
           },
         },
         keys = {
-          { '<leader>dls', function() require('dapui').toggle() end, desc = '[D]ebug: See [l]ast [s]ession result.' },
-        }
+          {
+            "<leader>dls",
+            function()
+              require("dapui").toggle()
+            end,
+            desc = "[D]ebug: See [l]ast [s]ession result.",
+          },
+        },
       },
 
       -- Debug adapters come from nix (../../../default.nix).
-      'theHamsta/nvim-dap-virtual-text',
+      "theHamsta/nvim-dap-virtual-text",
 
-      'nvim-neotest/nvim-nio',
+      "nvim-neotest/nvim-nio",
     },
     config = function()
-      local dap = require 'dap'
-      local dapui = require 'dapui'
+      local dap = require("dap")
+      local dapui = require("dapui")
 
-      require('nvim-dap-virtual-text').setup()
+      require("nvim-dap-virtual-text").setup()
 
-      dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-      dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-      dap.listeners.before.event_exited['dapui_config'] = dapui.close
+      dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+      dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+      dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
       -- lldb-dap, from PATH.
-      local lldb_dap = vim.fn.exepath('lldb-dap')
-      if lldb_dap ~= '' then
+      local lldb_dap = vim.fn.exepath("lldb-dap")
+      if lldb_dap ~= "" then
         dap.adapters.lldb = {
-          type = 'executable',
+          type = "executable",
           command = lldb_dap,
-          name = 'lldb',
+          name = "lldb",
         }
 
         dap.configurations.cpp = {
           {
-            name = 'Launch',
-            type = 'lldb',
-            request = 'launch',
+            name = "Launch",
+            type = "lldb",
+            request = "launch",
             program = function()
               ---@diagnostic disable-next-line: redundant-parameter
-              return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+              return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
-            cwd = '${workspaceFolder}',
+            cwd = "${workspaceFolder}",
             stopOnEntry = false,
             args = {},
             runInTerminal = false,
@@ -100,21 +130,21 @@ return {
   },
   {
     -- Owns the python adapter setup.
-    'mfussenegger/nvim-dap-python',
+    "mfussenegger/nvim-dap-python",
     dependencies = {
-      'mfussenegger/nvim-dap'
+      "mfussenegger/nvim-dap",
     },
-    ft = 'python',
+    ft = "python",
     config = function()
-      local dap_python = require('dap-python')
-      dap_python.setup('uv')
-      vim.keymap.set('n', '<leader>dpt', function()
+      local dap_python = require("dap-python")
+      dap_python.setup("uv")
+      vim.keymap.set("n", "<leader>dpt", function()
         dap_python.test_method()
-      end, { desc = '[D]ebug [P]ython [T]est (method)' })
+      end, { desc = "[D]ebug [P]ython [T]est (method)" })
 
-      vim.keymap.set('n', '<leader>dpc', function()
+      vim.keymap.set("n", "<leader>dpc", function()
         dap_python.test_class()
-      end, { desc = '[D]ebug [P]ython [C]lass' })
-    end
+      end, { desc = "[D]ebug [P]ython [C]lass" })
+    end,
   },
 }

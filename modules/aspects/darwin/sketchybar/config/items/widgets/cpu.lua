@@ -5,7 +5,7 @@ local settings = require("settings")
 -- cpu_load fires "cpu_update" every 2 seconds.
 sbar.exec("killall cpu_load >/dev/null 2>&1; $CONFIG_DIR/helpers/event_providers/cpu_load/bin/cpu_load cpu_update 2.0")
 
-local cpu = sbar.add("graph", "widgets.cpu" , 42, {
+local cpu = sbar.add("graph", "widgets.cpu", 42, {
   position = "right",
   graph = { color = colors.blue },
   background = {
@@ -25,9 +25,9 @@ local cpu = sbar.add("graph", "widgets.cpu" , 42, {
     align = "right",
     padding_right = 0,
     width = 0,
-    y_offset = 4
+    y_offset = 4,
   },
-  padding_right = settings.paddings + 6
+  padding_right = settings.paddings + 6,
 })
 
 cpu:subscribe("cpu_update", function(env)
@@ -47,4 +47,3 @@ end)
 cpu:subscribe("mouse.clicked", function(env)
   sbar.exec("open -a 'Activity Monitor'")
 end)
-

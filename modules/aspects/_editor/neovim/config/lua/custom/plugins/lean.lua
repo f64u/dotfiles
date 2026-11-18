@@ -1,14 +1,14 @@
 return {
   -- Lean proofing helper
-  'Julian/lean.nvim',
-  ft = 'lean',
+  "Julian/lean.nvim",
+  ft = "lean",
   config = function(_, opts)
-    vim.lsp.config('leanls', {
+    vim.lsp.config("leanls", {
 
-      on_attach = require('custom.util.lspconfig').on_attach,
+      on_attach = require("custom.util.lspconfig").on_attach,
     })
 
-    require('lean').setup(opts)
+    require("lean").setup(opts)
   end,
   opts = {
     mappings = true,

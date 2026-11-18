@@ -1,17 +1,19 @@
 return {
   {
-    'kaarmu/typst.vim',
+    "kaarmu/typst.vim",
     -- not ft='typst' because the plugin itself offers the ft
-    event = 'VeryLazy',
+    event = "VeryLazy",
     init = function()
       vim.g.typst_syntax_highlight = 0
       vim.g.typst_conceal_emoji = true
-    end
+    end,
   },
   {
-    'chomosuke/typst-preview.nvim',
-    ft = 'typst',
-    version = '0.3.*',
-    build = function() require 'typst-preview'.update() end,
-  }
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    version = "0.3.*",
+    build = function()
+      require("typst-preview").update()
+    end,
+  },
 }
