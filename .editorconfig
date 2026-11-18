@@ -1,0 +1,9 @@
+# Read by the editors and by the formatters behind `nix fmt`.
+root = true
+
+[{*.nix,*.lua,*.sh,sketchybarrc}]
+indent_style = space
+indent_size = 2
+
+[{*.lua,sketchybarrc}]
+max_line_length = 120
