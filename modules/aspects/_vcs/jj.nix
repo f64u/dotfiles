@@ -56,6 +56,10 @@ in
             revsets.bookmark-advance-to = "@-";
             # Pushed commits are immutable.
             revset-aliases."immutable_heads()" = "builtin_immutable_heads() | remote_bookmarks()";
+            fix.tools = lib.mapAttrs (_: f: {
+              command = [ (lib.getExe f.package) ] ++ f.stdin;
+              patterns = map (g: "glob:'**/${g}'") f.files;
+            }) (import ../../_formatters.nix pkgs);
             git.private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
           }
           # The other identities, each inside its own repos.
