@@ -3,18 +3,14 @@
 { user, ... }:
 let
   signs = user.keyed != [ ];
-  # Who commits as `id`. A key signs every commit of mine as written.
+  # Who commits as `id`. A key signs what is pushed.
   as =
     id:
     {
       user.email = id.email;
     }
-    // lib.optionalAttrs signs {
-      signing = {
-        behavior = if id.hasKey then "own" else "drop";
-      }
-      // lib.optionalAttrs id.hasKey { inherit (id) key; };
-    };
+    // lib.optionalAttrs signs { git.sign-on-push = id.hasKey; }
+    // lib.optionalAttrs id.hasKey { signing.key = id.key; };
 in
 {
   homeManager =
@@ -66,6 +62,9 @@ in
           })
           (lib.mkIf signs {
             signing = {
+              # Commits stay unsigned until pushed. The shell prompt runs jj,
+              # which would otherwise sign a new snapshot after every edit.
+              behavior = "drop";
               backend = "ssh";
               backends.ssh = {
                 allowed-signers = config.programs.git.settings.gpg.ssh.allowedSignersFile;
