@@ -9,7 +9,9 @@ let
     {
       user.email = id.email;
     }
-    // lib.optionalAttrs signs { git.sign-on-push = id.hasKey; }
+    // lib.optionalAttrs signs {
+      revsets.git-sign-on-push = if id.hasKey then "~signed() & mine()" else "none()";
+    }
     // lib.optionalAttrs id.hasKey { signing.key = id.key; };
 in
 {
